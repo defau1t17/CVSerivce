@@ -5,12 +5,18 @@ import com.example.cvservice.Entity.Files.Image;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "candidates")
 public class Candidate {
 
@@ -36,7 +42,11 @@ public class Candidate {
     @Embedded
     private CurriculumVitae curriculumVitae;
 
-    @OneToMany
-    private ArrayList<Direction> directions;
+    @ManyToMany
+//    @JoinTable(name = "candidates_directions", joinColumns = @JoinColumn(name = "candidate_id"),
+//            inverseJoinColumns = @JoinColumn(name = "direction_id")
+//    )
+    private List<Direction> directions;
+
 
 }

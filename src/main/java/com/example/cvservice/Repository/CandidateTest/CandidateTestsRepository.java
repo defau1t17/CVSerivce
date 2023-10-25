@@ -1,4 +1,4 @@
-package com.example.cvservice.Repository;
+package com.example.cvservice.Repository.CandidateTest;
 
 import com.example.cvservice.Entity.Main.CandidatesTest;
 import org.springframework.data.jpa.repository.JpaRepository;

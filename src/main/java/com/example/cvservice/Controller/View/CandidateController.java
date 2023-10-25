@@ -1,29 +1,40 @@
 package com.example.cvservice.Controller.View;
 
-import com.example.cvservice.Service.CandidateService;
+import com.example.cvservice.DTO.Candidate.NewCandidateDTO;
+import com.example.cvservice.Service.Candidate.CandidateService;
+import com.example.cvservice.Service.Direction.DirectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
 
 @Controller
 @RequestMapping("/task/candidates")
 public class CandidateController {
 
     @Autowired
+    private DirectionService directionService;
+
+
+    @Autowired
     private CandidateService candidateService;
 
     @GetMapping("/view/all")
     public String allCandidatesPage(Model model) {
-
         return "/candidates/all_candidates_page";
     }
 
     @GetMapping("/add")
-    public String displayAddNewCandidatePage() {
+    public String displayAddNewCandidatePage(Model model) {
+        model.addAttribute("allDirections", directionService.findAll());
+        model.addAttribute("newCandidate", new NewCandidateDTO());
         return "/candidates/add_new_candidate_page";
     }
 
-
+//    @PostMapping("/add")
+//    public String getNewCandidate(@ModelAttribute NewCandidateDTO newCandidateDTO) {
+//        return "redirect:/task/candidates/add";
+//    }
 }

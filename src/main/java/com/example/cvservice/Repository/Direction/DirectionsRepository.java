@@ -1,4 +1,4 @@
-package com.example.cvservice.Repository;
+package com.example.cvservice.Repository.Direction;
 
 import com.example.cvservice.Entity.Main.Direction;
 import org.springframework.data.jpa.repository.JpaRepository;

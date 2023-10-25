@@ -1,4 +1,4 @@
-package com.example.cvservice.Service;
+package com.example.cvservice.Service.CandidateTest;
 
 import org.springframework.stereotype.Service;
 
