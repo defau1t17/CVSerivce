@@ -37,13 +37,14 @@
 <!--</div>-->
 
 <div>
-    <form method="post" action="#" th:action="@{/task/candidates/add}" th:object="${newCandidate}"
-          enctype="multipart/form-data" id="newCandidateForm">
-        <input th:field="*{name}" type="text" id="input-name-field" placeholder="Input candidate name">
+    <form th:object="${newCandidate}" enctype="multipart/form-data" id="newCandidateForm">
+        <input th:field="*{name}" type="text" id="input-name-field" placeholder="Input candidate name" minlength="2"
+               maxlength="25" required>
         <input th:field="*{second_name}" type="text" id="input-second-name-field"
-               placeholder="Input candidate second name" required>
-        <input th:field="*{patr}" type="text" id="input-patronymic-field" placeholder="Input candidate patronymic">
-        <input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}" required>
+               placeholder="Input candidate second name" minlength="3" maxlength="25" required>
+        <input th:field="*{patr}" type="text" id="input-patronymic-field" placeholder="Input candidate patronymic"
+               required minlength="3" maxlength="25">
+        <input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
 
 
         <div class="select-directions-container">
@@ -54,8 +55,7 @@
             <input th:field="*{cvFile}" name="cvFile" type="file" id="input-cv-file">
             <input th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file">
         </div>
-
-        <button type="button" onclick="addNewCandidateRequest()">ADD</button>
+        <button type="button" onclick="validateBeforeSend()">ADD</button>
     </form>
 </div>
 
@@ -78,6 +78,7 @@
             candidateData[key] = value;
         });
 
+
         $.ajax({
             url: '/task/candidates/rest/add/new',
             type: 'POST',
@@ -89,14 +90,32 @@
             },
             success: function (data, status, xhr) {
                 if (xhr.status === 200) {
-                    location.reload();
-                    // showNotification("Пользователь успешно добавлен", 1000);
-                    console.log('Изображения успешно загружены.');
-                } else if (xhr.status === 404) {
-                    console.error('Произошла ошибка при загрузке изображений.');
+                    showNotification("Пользователь успешно добавлен", 1000);
+                    setTimeout(function () {
+                        window.location.href = "/task/candidates/add"
+                    }, 1000);
+
+                    console.log("новый клиент был загружен на сервер")
                 }
+            },
+            error: function () {
+                showNotification("Заполните все поля!", 1000);
+
             }
         });
+    }
+
+    function validateBeforeSend() {
+        var name = $('#input-name-field').val();
+        var secondName = $('#input-second-name-field').val();
+        var patronymic = $('#input-patronymic-field').val();
+        var checkedDirection = $('input[type="checkbox"]:checked').length;
+        if (name.length < 2 || secondName.length < 3 || patronymic.length < 3 || checkedDirection === 0) {
+            showNotification("Заполните все поля!", 1000);
+            return;
+        } else {
+            addNewCandidateRequest();
+        }
     }
 
 

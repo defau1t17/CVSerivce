@@ -49,8 +49,6 @@ public class DirectionService implements EntityOperations {
         directions.add(direction);
 
         repository.saveAll(directions);
-
-
     }
 
 }
