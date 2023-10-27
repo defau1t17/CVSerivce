@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -22,10 +23,19 @@ public class DirectionService implements EntityOperations {
         return repository.findAll();
     }
 
+    public Optional<Direction> findDirectionByName(String name) {
+        return repository.findByName(name);
+    }
+
+    public Optional<Direction> findDirectionByID(Long id) {
+        return repository.findById(id);
+    }
+
     @Override
     public void save(Object object) {
         repository.save((Direction) object);
     }
+
 
     @Override
     public void update(Object object) {
@@ -44,8 +54,6 @@ public class DirectionService implements EntityOperations {
         direction.setName("test");
         direction.setDescription("testDesc");
 
-        directions.add(direction);
-        directions.add(direction);
         directions.add(direction);
 
         repository.saveAll(directions);

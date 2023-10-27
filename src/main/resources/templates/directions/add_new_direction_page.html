@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Add New Direction</title>
+</head>
+<body>
+
+<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
+
+<div class="direction-container">
+    <div class="direction">
+        <form id="newDirection" th:object="${newDirection}">
+            <div class="direction-info">
+                <label class="direction-label">Название Направления</label>
+                <input th:field="*{name}" class="direction-input-field" type="text" id="direction-name-field"
+                       placeholder="Java Developer Trainee" minlength="2" maxlength="30" required>
+            </div>
+            <div class="direction-info">
+                <label class="direction-label">Придумайте описание для Направления</label>
+                <textarea th:field="*{description}" class="direction-input-field" id="direction-description-field"
+                          placeholder="Новое развивающееся направление..." minlength="2" maxlength="300"> </textarea>
+            </div>
+            <div class="button-block">
+                <button type="button" id="add-new-direction-button" class="form-button" onclick="validateBeforeSend()">
+                    Добавить
+                </button>
+                <button type="reset" id="clear-direction-button" class="form-button">Очистить</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="notification" class="notification">
+
+    </div>
+
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var csrf_token = $('#_csrf_token').attr("content");
+
+
+    function addNewCandidateRequest() {
+
+        var formData = new FormData($('#newDirection')[0]);
+
+        $.ajax({
+            url: '/task/directions/rest/add/new',
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: formData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    showNotification("Новое направление успешно добавлено!", 1000);
+                    setTimeout(function () {
+                        window.location.href = "/task/directions/add"
+                    }, 1000);
+
+                    console.log("новое направление было добавлено на сервер!")
+                }
+            },
+            error: function () {
+                showNotification("Направление с таким названием уже существует!", 1000);
+
+            }
+        });
+    }
+
+    function validateBeforeSend() {
+        var dirname = $('#direction-name-field').val();
+        console.log(dirname)
+        if (dirname.length < 2) {
+            showNotification("Обязательно введите названии и описание!", 1000);
+            return;
+        } else {
+            addNewCandidateRequest();
+        }
+    }
+
+
+    const notification = document.getElementById('notification');
+
+    function showNotification(message, duration) {
+        notification.textContent = message;
+        notification.style.opacity = '1';
+
+        setTimeout(() => {
+            notification.style.opacity = '0';
+        }, duration);
+    }
+
+
+</script>
+</body>
+</html>

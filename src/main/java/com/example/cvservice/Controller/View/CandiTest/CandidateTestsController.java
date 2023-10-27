@@ -1,4 +1,4 @@
-package com.example.cvservice.Controller.View;
+package com.example.cvservice.Controller.View.CandiTest;
 
 import org.springframework.stereotype.Controller;
 

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Directions</title>
+</head>
+<body>
+
+<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
+
+<div class="directions-container" th:if="${directions != null}">
+    <div class="direction" th:each="direction : ${directions}">
+        <div class="direction-name-field">
+            <span th:text="${direction.name}">название</span>
+        </div>
+
+        <div class="direction-name-field">
+            <textarea th:text="${direction.description}" th:value="${direction.description}">описание</textarea>
+        </div>
+
+        <div class="direction-process-button">
+            <a th:href="@{/task/directions/direction/edit/__${direction.id}__}">Изменить</a>
+            <button class="direction-button" id="direction-remove-button" th:value="${direction.id}"
+                    onclick="sendRemoveDirectionRequest(this)">
+                Удалить
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<div class="directions-container" th:if="${directions == null}">
+    <h1>Направлений пока нет </h1>
+</div>
+
+<div id="notification" class="notification">
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var csrf_token = $('#_csrf_token').attr("content");
+
+    function sendRemoveDirectionRequest(element) {
+        var directionID = $(element).attr('value');
+
+        $.ajax({
+            url: '/task/directions/rest/direction/delete/' + directionID,
+            type: 'DELETE',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    window.location.href = "/task/directions/view/all";
+                }
+            },
+            error: function () {
+                showNotification("Произошла ошибка удаления!", 1000);
+            }
+        });
+    }
+
+    const notification = document.getElementById('notification');
+
+    function showNotification(message, duration) {
+        notification.textContent = message;
+        notification.style.opacity = '1';
+
+        setTimeout(() => {
+            notification.style.opacity = '0';
+        }, duration);
+    }
+</script>
+
+
+</body>
+</html>

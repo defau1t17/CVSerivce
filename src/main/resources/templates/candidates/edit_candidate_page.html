@@ -43,9 +43,10 @@
                 <input th:field="*{cvFile}" name="cvFile" type="file" id="input-cv-file" accept="application/pdf">
                 <input th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file">
             </div>
+            <button type="button" onclick="validateBeforeSend()">Загрузить</button>
+            <button type="button" onclick="sendRemoveRequest()">Удалить</button>
 
 
-            <button type="button" onclick="validateBeforeSend()">ADD</button>
         </div>
     </form>
 </div>
@@ -67,19 +68,12 @@
 
         var formData = new FormData($('#requestUpdateCandidate')[0]);
 
-        console.log(formData);
-
-
         var update_id = $('.update-candidate').attr('value');
-
 
         var candidateData = {};
         formData.forEach(function (value, key) {
             candidateData[key] = value;
         });
-
-        console.log(candidateData);
-
 
         $.ajax({
             url: '/task/candidates/rest/update/candidate/' + update_id,
@@ -104,6 +98,30 @@
             }
         });
     }
+
+
+    function sendRemoveRequest() {
+        var candidateID = $('.update-candidate').attr('value');
+
+        $.ajax({
+            url: '/task/candidates/rest/remove/candidate/' + candidateID,
+            type: 'DELETE',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    window.location.href = "/task/candidates/view/all";
+                }
+            },
+            error: function () {
+                showNotification("Произошла ошибка удаления!", 1000);
+            }
+        });
+    }
+
+
+    const notification = document.getElementById('notification');
 
     function validateBeforeSend() {
         var name = $('#input-name-field').val();

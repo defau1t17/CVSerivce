@@ -1,4 +1,4 @@
-package com.example.cvservice.Controller.View;
+package com.example.cvservice.Controller.View.File;
 
 
 import com.example.cvservice.Entity.Files.CurriculumVitae;

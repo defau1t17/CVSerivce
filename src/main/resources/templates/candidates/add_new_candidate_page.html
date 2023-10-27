@@ -35,6 +35,7 @@
 <!--    </div>-->
 
 <!--</div>-->
+<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
 
 <div>
     <form th:object="${newCandidate}" enctype="multipart/form-data" id="newCandidateForm">
@@ -44,7 +45,6 @@
                placeholder="Input candidate second name" minlength="3" maxlength="25" required>
         <input th:field="*{patr}" type="text" id="input-patronymic-field" placeholder="Input candidate patronymic"
                required minlength="3" maxlength="25">
-        <input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
 
 
         <div class="select-directions-container">
@@ -53,7 +53,7 @@
         </div>
         <div class="input-file-container">
             <input th:field="*{cvFile}" accept="application/pdf" name="cvFile" type="file" id="input-cv-file">
-            <input th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file">
+            <input th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file" accept=".png,.jpeg,.jpg">
         </div>
         <button type="button" onclick="validateBeforeSend()">ADD</button>
     </form>

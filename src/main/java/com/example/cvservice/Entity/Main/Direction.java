@@ -3,6 +3,7 @@ package com.example.cvservice.Entity.Main;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,7 +13,6 @@ import org.hibernate.validator.constraints.UniqueElements;
 @Data
 @Table(name = "directions")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Direction {
 
     @Id
@@ -21,13 +21,16 @@ public class Direction {
 
     @NotEmpty
     @NotBlank
-    @Column(name = "directionName")
+    @Column(name = "directionName", unique = true)
     private String name;
 
-    @NotEmpty
-    @NotBlank
-    @Column(name = "directionDescription")
+    @NotNull
+    @Column(name = "directionDescription", columnDefinition = "TEXT")
     private String description;
 
 
+    public Direction(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }

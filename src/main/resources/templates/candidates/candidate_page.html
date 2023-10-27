@@ -39,10 +39,7 @@
     </div>
 
     <div class="button-block">
-        <button class="candidate-process-button" id="remove-button" th:value="${candidate.id}"
-                onclick="sendRemoveRequest(this)">REMOVE
-        </button>
-        <a class="candidate-process-button" th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">EDIT</a>
+        <a class="candidate-process-button" th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">Редактировать</a>
     </div>
 
     <div id="notification" class="notification">
@@ -58,45 +55,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-    var csrf_token = $('#_csrf_token').attr("content");
-
-    function sendRemoveRequest(element) {
-        var candidateID = $('.candidate-info-block').attr('value');
-
-        $.ajax({
-            url: '/task/candidates/rest/remove/candidate/' + candidateID,
-            type: 'DELETE',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
-            success: function (data, status, xhr) {
-                if (xhr.status === 200) {
-                    showNotification("Пользователь успешно удален", 1000);
-                    setTimeout(function () {
-                        window.location.href = "/task/candidates/view/all";
-                    }, 1000);
-                }
-            },
-            error: function () {
-                showNotification("Произошла ошибка !", 1000);
-            }
-        });
-
-        console.log(candidateID);
-    }
-
-
-    const notification = document.getElementById('notification');
-
-    function showNotification(message, duration) {
-        notification.textContent = message;
-        notification.style.opacity = '1';
-
-        setTimeout(() => {
-            notification.style.opacity = '0';
-        }, duration);
-    }
 
 
 </script>
