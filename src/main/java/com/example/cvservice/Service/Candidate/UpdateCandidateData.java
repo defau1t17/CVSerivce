@@ -6,7 +6,7 @@ import com.example.cvservice.Service.Files.FileService;
 
 public class UpdateCandidateData {
 
-    public Candidate updateCandidate(Candidate candidate, UpdateCandidateDTO updateCandidateDTO)  {
+    public Candidate updateCandidate(Candidate candidate, UpdateCandidateDTO updateCandidateDTO) {
         if (!updateCandidateDTO.getName().trim().isEmpty() || updateCandidateDTO.getName() != null) {
             candidate.setName(updateCandidateDTO.getName());
         }
@@ -15,6 +15,9 @@ public class UpdateCandidateData {
         }
         if (!updateCandidateDTO.getPatr().trim().isEmpty() || updateCandidateDTO.getPatr() != null) {
             candidate.setPatronymic(updateCandidateDTO.getPatr());
+        }
+        if (updateCandidateDTO.getCandidateDesc() != null) {
+            candidate.setCandidateDescription(updateCandidateDTO.getCandidateDesc());
         }
         if (!updateCandidateDTO.getCvFile().isEmpty()) {
             candidate.setCurriculumVitae(FileService.buildCV(updateCandidateDTO.getCvFile()));

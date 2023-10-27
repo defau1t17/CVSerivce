@@ -16,6 +16,8 @@ public class NewCandidateDTO {
 
     private String patr;
 
+    private String candidateDesc;
+
     private MultipartFile cvFile;
 
     private MultipartFile imageFile;

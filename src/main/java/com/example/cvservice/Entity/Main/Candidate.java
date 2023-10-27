@@ -5,6 +5,7 @@ import com.example.cvservice.Entity.Files.Image;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -35,6 +36,10 @@ public class Candidate {
     @NotEmpty
     @NotBlank
     private String patronymic;
+
+    @NotNull
+    @Column(columnDefinition = "TEXT")
+    private String candidateDescription;
 
     @Embedded
     private Image image;
