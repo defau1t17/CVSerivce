@@ -43,9 +43,6 @@ public class Candidate {
     private CurriculumVitae curriculumVitae;
 
     @ManyToMany
-//    @JoinTable(name = "candidates_directions", joinColumns = @JoinColumn(name = "candidate_id"),
-//            inverseJoinColumns = @JoinColumn(name = "direction_id")
-//    )
     private List<Direction> directions;
 
 

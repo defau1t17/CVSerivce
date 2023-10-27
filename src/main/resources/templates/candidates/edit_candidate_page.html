@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Candidate</title>
+</head>
+<body>
+<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
+<div th:if="${requestUpdateCandidate != null}">
+    <form th:object="${requestUpdateCandidate}" enctype="multipart/form-data" id="requestUpdateCandidate">
+        <div class="update-candidate" th:value="${requestUpdateCandidate.id}">
+            <img th:src="@{'data:image/*;base64,' + ${requestUpdateCandidate.generateBase64Image()}}"
+                 style="height: 200px">
+
+            <input th:field="*{name}" type="text" id="input-name-field" placeholder="Input candidate name" minlength="2"
+                   maxlength="25" required th:value="${requestUpdateCandidate.name}">
+            <input th:field="*{second_name}" type="text" id="input-second-name-field"
+                   placeholder="Input candidate second name" minlength="3" maxlength="25" required
+                   th:value="${requestUpdateCandidate.second_name}">
+            <input th:field="*{patr}" type="text" id="input-patronymic-field" placeholder="Input candidate patronymic"
+                   required minlength="3" maxlength="25" th:value="${requestUpdateCandidate.patr}">
+
+            <div class="select-directions-container">
+                <div th:each="direction : ${allDirections}">
+                    <input th:field="*{directions}" th:value="${direction.id}" id="direction" type="checkbox"
+                           th:checked="${requestUpdateCandidate.directions != null && requestUpdateCandidate.directions.contains(direction)}">
+                    <label th:for="'direction-' + ${direction.id}" th:text="${direction.name}"></label>
+                </div>
+            </div>
+
+            <div th:if="${requestUpdateCandidate.cvFile != null}">
+                <label>Candidate CV FILE</label>
+                <a th:href="@{/task/view/file/candidate/__${requestUpdateCandidate.id}__}"
+                   th:text="${requestUpdateCandidate.cvFile.name}"></a>
+            </div>
+
+            <div th:if="${requestUpdateCandidate.cvFile == null}">
+                <label>NO CV FILE</label>
+            </div>
+
+
+            <div class="input-file-container">
+                <input th:field="*{cvFile}" name="cvFile" type="file" id="input-cv-file" accept="application/pdf">
+                <input th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file">
+            </div>
+
+
+            <button type="button" onclick="validateBeforeSend()">ADD</button>
+        </div>
+    </form>
+</div>
+
+<div th:if="${requestUpdateCandidate == null}">
+    <h1>Пользователя с таким id не существует</h1>
+</div>
+
+<div id="notification" class="notification">
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var csrf_token = $('#_csrf_token').attr("content");
+
+
+    function addNewCandidateRequest() {
+
+        var formData = new FormData($('#requestUpdateCandidate')[0]);
+
+        console.log(formData);
+
+
+        var update_id = $('.update-candidate').attr('value');
+
+
+        var candidateData = {};
+        formData.forEach(function (value, key) {
+            candidateData[key] = value;
+        });
+
+        console.log(candidateData);
+
+
+        $.ajax({
+            url: '/task/candidates/rest/update/candidate/' + update_id,
+            type: 'PATCH',
+            processData: false,
+            contentType: false,
+            data: formData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    showNotification("Данные успешно обновлены!", 1000);
+                    setTimeout(function () {
+                        window.location.href = "/task/candidates/candidate/edit/" + update_id;
+                    }, 1000);
+                }
+            },
+            error: function () {
+                showNotification("Заполните все поля!", 1000);
+
+            }
+        });
+    }
+
+    function validateBeforeSend() {
+        var name = $('#input-name-field').val();
+        var secondName = $('#input-second-name-field').val();
+        var patronymic = $('#input-patronymic-field').val();
+        var checkedDirection = $('input[type="checkbox"]:checked').length;
+
+        if (name.length < 2 || secondName.length < 3 || patronymic.length < 3 || checkedDirection === 0) {
+            showNotification("Форма должна включить в себя ФИО, и как минимум одно направление!", 1000);
+            return;
+        } else {
+            addNewCandidateRequest();
+        }
+    }
+
+    const notification = document.getElementById('notification');
+
+    function showNotification(message, duration) {
+        notification.textContent = message;
+        notification.style.opacity = '1';
+
+        setTimeout(() => {
+            notification.style.opacity = '0';
+        }, duration);
+    }
+
+
+</script>
+
+</body>
+</html>

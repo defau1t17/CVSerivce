@@ -49,10 +49,10 @@
 
         <div class="select-directions-container">
             <input th:each="direction : ${allDirections}" th:field="*{directions}" th:value="${direction.id}"
-                   id="direction" type="checkbox">
+                   id="direction" type="checkbox" th:text="${direction.name}">
         </div>
         <div class="input-file-container">
-            <input th:field="*{cvFile}" name="cvFile" type="file" id="input-cv-file">
+            <input th:field="*{cvFile}" accept="application/pdf" name="cvFile" type="file" id="input-cv-file">
             <input th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file">
         </div>
         <button type="button" onclick="validateBeforeSend()">ADD</button>
@@ -111,7 +111,7 @@
         var patronymic = $('#input-patronymic-field').val();
         var checkedDirection = $('input[type="checkbox"]:checked').length;
         if (name.length < 2 || secondName.length < 3 || patronymic.length < 3 || checkedDirection === 0) {
-            showNotification("Заполните все поля!", 1000);
+            showNotification("Форма должна включить в себя ФИО, и как минимум одно направление!", 1000);
             return;
         } else {
             addNewCandidateRequest();
