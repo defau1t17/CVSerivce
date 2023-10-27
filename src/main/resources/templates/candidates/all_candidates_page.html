@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Candidates</title>
+</head>
+<body>
+<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
+
+<div class="all-candidates-container">
+    <div class="candidates-list" th:each="candidate : ${allCandidates}">
+        <div class="candidate">
+            <a th:href="@{/task/candidates/candidate/__${candidate.id}__}">
+                <div class="candidate-image-block">
+                    <img src="" th:if="${candidate.image != null}"
+                         th:src="@{'data:image/*;base64,'+ ${candidate.image.generateBase64Image()}}"
+                         style="height: 100px">
+                </div>
+            </a>
+
+            <div class="candidate-info-block" th:value="${candidate.id}">
+                <span th:text="${candidate.name}">name</span>
+                <span th:text="${candidate.secondName}">second_name</span>
+                <span th:text="${candidate.patronymic}">part</span>
+            </div>
+
+            <div class="candidates-direction">
+                <ul th:each="direction : ${candidate.directions}">
+                    <li th:text="${direction.name}">direction</li>
+                </ul>
+            </div>
+            <div class="button-block">
+                <button class="candidate-process-button" id="remove-button" onclick="sendRemoveRequest(this)">REMOVE
+                </button>
+                <a class="candidate-process-button" th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">EDIT</a>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+
+<div id="notification" class="notification">
+
+</div>
+
+<div class="pagination-links-container">
+
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+
+    var csrf_token = $('#_csrf_token').attr("content");
+
+    function sendRemoveRequest(element) {
+        var candidateID = $(element).closest('.candidate').find('.candidate-info-block').attr('value');
+
+
+        $.ajax({
+            url: '/task/candidates/rest/remove/candidate/' + candidateID,
+            type: 'DELETE',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    showNotification("Пользователь успешно удален", 1000);
+                    $(element).closest('.candidate').remove();
+                }
+            },
+            error: function () {
+                showNotification("Произошла ошибка !", 1000);
+            }
+        });
+
+        console.log(candidateID);
+    }
+
+
+    const notification = document.getElementById('notification');
+
+    function showNotification(message, duration) {
+        notification.textContent = message;
+        notification.style.opacity = '1';
+
+        setTimeout(() => {
+            notification.style.opacity = '0';
+        }, duration);
+    }
+
+
+</script>
+
+</body>
+</html>
