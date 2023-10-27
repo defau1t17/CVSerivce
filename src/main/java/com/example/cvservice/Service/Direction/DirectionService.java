@@ -36,6 +36,7 @@ public class DirectionService implements EntityOperations {
         repository.save((Direction) object);
     }
 
+
     @Override
     public void update(Object object) {
         repository.save((Direction) object);
@@ -53,8 +54,6 @@ public class DirectionService implements EntityOperations {
         direction.setName("test");
         direction.setDescription("testDesc");
 
-        directions.add(direction);
-        directions.add(direction);
         directions.add(direction);
 
         repository.saveAll(directions);

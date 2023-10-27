@@ -3,6 +3,7 @@ package com.example.cvservice.Entity.Main;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,9 +24,8 @@ public class Direction {
     @Column(name = "directionName", unique = true)
     private String name;
 
-    @NotEmpty
-    @NotBlank
-    @Column(name = "directionDescription")
+    @NotNull
+    @Column(name = "directionDescription", columnDefinition = "TEXT")
     private String description;
 
 

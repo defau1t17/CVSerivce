@@ -1,6 +1,7 @@
 package com.example.cvservice.Service.Direction;
 
 import com.example.cvservice.DTO.Direction.NewDirectionDTO;
+import com.example.cvservice.DTO.Direction.UpdateDirectionDTO;
 
 public class InputDirectionVerification {
 
@@ -14,5 +15,11 @@ public class InputDirectionVerification {
         }
         return false;
     }
+
+    public static boolean isUpdatedDirectionEmpty(UpdateDirectionDTO updateDirectionDTO) {
+        return updateDirectionDTO.getName().trim().isEmpty() && updateDirectionDTO.getName() == null;
+
+    }
+
 
 }
