@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,6 +33,7 @@ public class CandidateService implements EntityOperations {
     }
 
     @Override
+    @Transactional
     public void save(Object object) {
         repository.save((Candidate) object);
     }
@@ -48,7 +48,7 @@ public class CandidateService implements EntityOperations {
         repository.delete((Candidate) object);
     }
 
-    @Transactional()
+    @Transactional
     public void updateByID(Long id, UpdateCandidateDTO updateCandidateDTO) {
         Optional<Candidate> clientById = findClientById(id);
         if (clientById.isPresent()) {

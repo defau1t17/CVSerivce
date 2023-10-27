@@ -4,8 +4,6 @@ import com.example.cvservice.DTO.Candidate.UpdateCandidateDTO;
 import com.example.cvservice.Entity.Main.Candidate;
 import com.example.cvservice.Service.Files.FileService;
 
-import java.io.IOException;
-
 public class UpdateCandidateData {
 
     public Candidate updateCandidate(Candidate candidate, UpdateCandidateDTO updateCandidateDTO)  {

@@ -1,4 +1,4 @@
-package com.example.cvservice.Controller.View;
+package com.example.cvservice.Controller.View.Candidate;
 
 import com.example.cvservice.DTO.Candidate.NewCandidateDTO;
 import com.example.cvservice.DTO.Candidate.UpdateCandidateDTO;
@@ -11,7 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Arrays;
 import java.util.Optional;
 
 @Controller

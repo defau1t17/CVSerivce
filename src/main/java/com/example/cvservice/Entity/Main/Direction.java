@@ -12,7 +12,6 @@ import org.hibernate.validator.constraints.UniqueElements;
 @Data
 @Table(name = "directions")
 @NoArgsConstructor
-@AllArgsConstructor
 public class Direction {
 
     @Id
@@ -21,7 +20,7 @@ public class Direction {
 
     @NotEmpty
     @NotBlank
-    @Column(name = "directionName")
+    @Column(name = "directionName", unique = true)
     private String name;
 
     @NotEmpty
@@ -30,4 +29,8 @@ public class Direction {
     private String description;
 
 
+    public Direction(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
 }
