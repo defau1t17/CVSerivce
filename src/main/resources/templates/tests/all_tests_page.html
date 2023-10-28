@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Tests</title>
+</head>
+<body>
+
+<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
+
+<div class="test-container">
+    <div class="test-list" th:each="test : ${tests}">
+        <div class="test">
+            <!--            <a th:href="@{/task/tests/}">-->
+            <div class="test-name-block">
+                <label>Название теста :</label>
+                <span th:name="${test.name}">name</span>
+            </div>
+            <!--            </a>-->
+            <div class="test-description-block">
+                <label>Описание теста :</label>
+                <span th:text="${test.description}" th:value="${test.description}"></span>
+            </div>
+            <div class="test-direction-block">
+                <label>Направление теста :</label>
+                <span th:each="direction : ${test.directions}" th:text="${direction.name}"></span>
+            </div>
+            <div class="test-process-block">
+                <button class="process-button" th:value="${test.id}" id="remove-button"
+                        onclick="sendRemoveDirectionRequest(this)">Удалить
+                </button>
+                <a class="process-button" th:href="@{/task/tests/test/edit/__${test.id}__}">Изменить</a>
+            </div>
+        </div>
+    </div>
+    <div id="notification" class="notification">
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var csrf_token = $('#_csrf_token').attr("content");
+
+    function sendRemoveDirectionRequest(element) {
+        var testId = $(element).attr('value');
+
+        $.ajax({
+            url: '/task/tests/rest/test/delete/' + testId,
+            type: 'DELETE',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    window.location.href = "/task/tests/view/all";
+                }
+            },
+            error: function () {
+                showNotification("Произошла ошибка удаления!", 1000);
+            }
+        });
+    }
+
+    const notification = document.getElementById('notification');
+
+    function showNotification(message, duration) {
+        notification.textContent = message;
+        notification.style.opacity = '1';
+
+        setTimeout(() => {
+            notification.style.opacity = '0';
+        }, duration);
+    }
+</script>
+
+
+</body>
+</html>

@@ -5,6 +5,7 @@ import com.example.cvservice.Repository.Direction.DirectionsRepository;
 import com.example.cvservice.Service.EntityOperations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,12 +32,13 @@ public class DirectionService implements EntityOperations {
         return repository.findById(id);
     }
 
+    @Transactional
     @Override
     public void save(Object object) {
         repository.save((Direction) object);
     }
 
-
+    @Transactional
     @Override
     public void update(Object object) {
         repository.save((Direction) object);

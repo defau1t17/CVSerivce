@@ -38,6 +38,8 @@ public class CandidateService implements EntityOperations {
         repository.save((Candidate) object);
     }
 
+    @Transactional
+
     @Override
     public void update(Object object) {
         repository.save((Candidate) object);
