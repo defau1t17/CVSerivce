@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
+<div th:if="${updateTest != null}">
+    <form th:object="${updateTest}" id="updateTestForm">
+        <div class="update-test" th:value="${updateTest.id}">
+            <input th:field="*{name}" type="text" id="input-name-field" placeholder="Введите название теста"
+                   minlength="2"
+                   maxlength="40" required th:value="${updateTest.name}">
+            <textarea th:field="*{description}" id="input-candidate-description-field"
+                      placeholder="Напишите о кандидате." th:text="${updateTest.description}"
+                      th:value="${updateTest.description}"
+                      required minlength="3" maxlength="100"></textarea>
+            <div class="select-directions-container">
+                <div th:each="direction : ${allDirections}">
+                    <input th:field="*{testDirections}" th:value="${direction.id}" id="direction" type="checkbox"
+                           th:checked="${updateTest.testDirections != null && updateTest.testDirections.contains(direction)}">
+                    <label th:for="'direction-' + ${direction.id}" th:text="${direction.name}"></label>
+                </div>
+            </div>
+            <button type="button" onclick="validateBeforeSend()">Загрузить</button>
+            <button type="button" onclick="sendRemoveRequest()">Удалить</button>
+
+
+        </div>
+    </form>
+</div>
+
+<div th:if="${updateTest == null}">
+    <h1>Пользователя с таким id не существует</h1>
+</div>
+
+<div id="notification" class="notification">
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var csrf_token = $('#_csrf_token').attr("content");
+
+    function addNewCandidateRequest() {
+
+        var formData = new FormData($('#updateTestForm')[0]);
+
+        var update_id = $('.update-test').attr('value');
+
+        var candidateData = {};
+        formData.forEach(function (value, key) {
+            candidateData[key] = value;
+        });
+
+        $.ajax({
+            url: '/task/tests/rest/test/update/' + update_id,
+            type: 'PATCH',
+            processData: false,
+            contentType: false,
+            data: formData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    showNotification("Данные успешно обновлены!", 1000);
+                    setTimeout(function () {
+                        window.location.href = "/task/tests/test/edit/" + update_id;
+                    }, 1000);
+                }
+            },
+            error: function () {
+                showNotification("Заполните все поля!", 1000);
+
+            }
+        });
+    }
+
+
+    function sendRemoveRequest() {
+        var testID = $('.update-candidate').attr('value');
+
+        $.ajax({
+            url: '/task/tests/rest/delete/test/' + testID,
+            type: 'DELETE',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    window.location.href = "/task/tests/view/all";
+                }
+            },
+            error: function () {
+                showNotification("Произошла ошибка удаления!", 1000);
+            }
+        });
+    }
+
+
+    function validateBeforeSend() {
+        var name = $('#input-name-field').val();
+        var checkedDirection = $('input[type="checkbox"]:checked').length;
+        if (name.length < 2 || checkedDirection === 0) {
+            showNotification("Тест должен иметь название и как минимум одно направление!", 1000);
+        } else {
+            addNewCandidateRequest();
+        }
+    }
+
+    const notification = document.getElementById('notification');
+
+    function showNotification(message, duration) {
+        notification.textContent = message;
+        notification.style.opacity = '1';
+
+        setTimeout(() => {
+            notification.style.opacity = '0';
+        }, duration);
+    }
+
+
+</script>
+</body>
+</html>

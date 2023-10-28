@@ -6,13 +6,16 @@ import com.example.cvservice.Entity.Main.Candidate;
 import com.example.cvservice.Entity.Main.Direction;
 import com.example.cvservice.Service.Candidate.CandidateService;
 import com.example.cvservice.Service.Candidate.InputCandidateVerification;
+import com.example.cvservice.Service.Candidate.UpdateCandidateData;
 import com.example.cvservice.Service.Files.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/task/candidates/rest")
@@ -21,11 +24,16 @@ public class CandidateRestController {
     @Autowired
     private CandidateService candidateService;
 
-
     @PostMapping("/add/new")
     public ResponseEntity addNewCandidate(@ModelAttribute NewCandidateDTO newCandidateDTO) {
         if (!InputCandidateVerification.doesCandidateIsEmpty(newCandidateDTO)) {
-            Candidate newCandidate = Candidate.builder().name(newCandidateDTO.getName()).secondName(newCandidateDTO.getSecond_name()).patronymic(newCandidateDTO.getPatr()).directions((ArrayList<Direction>) newCandidateDTO.getDirections()).image(FileService.buildImage(newCandidateDTO.getImageFile())).curriculumVitae(FileService.buildCV(newCandidateDTO.getCvFile())).build();
+            Candidate newCandidate = Candidate.builder().name(newCandidateDTO.getName())
+                    .secondName(newCandidateDTO.getSecond_name())
+                    .patronymic(newCandidateDTO.getPatr())
+                    .directions((ArrayList<Direction>) newCandidateDTO.getDirections())
+                    .candidateDescription(newCandidateDTO.getCandidateDesc())
+                    .image(FileService.buildImage(newCandidateDTO.getImageFile()))
+                    .curriculumVitae(FileService.buildCV(newCandidateDTO.getCvFile())).build();
             candidateService.save(newCandidate);
             return ResponseEntity.status(200).build();
         }
@@ -34,18 +42,23 @@ public class CandidateRestController {
 
     @DeleteMapping("/remove/candidate/{id}")
     public ResponseEntity removeCandidateByID(@PathVariable(value = "id") Long id) {
-        candidateService.deleteByID(id);
-        return ResponseEntity.status(200).build();
+        Optional<Candidate> optionalCandidate = candidateService.findClientById(id);
+        if (optionalCandidate.isPresent()) {
+            candidateService.delete(optionalCandidate.get());
+            return ResponseEntity.status(200).build();
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
-
 
     @PatchMapping("/update/candidate/{id}")
     public ResponseEntity updateCandidateByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandidateDTO updateCandidateDTO) throws IOException {
-
         if (!InputCandidateVerification.doesUpdatedCandidateIsEmpty(updateCandidateDTO)) {
-
-            candidateService.updateByID(id, updateCandidateDTO);
-            return ResponseEntity.status(200).build();
+            Optional<Candidate> optionalCandidate = candidateService.findClientById(id);
+            if (optionalCandidate.isPresent()) {
+                candidateService.update(new UpdateCandidateData().updateCandidate(optionalCandidate.get(), updateCandidateDTO));
+                return ResponseEntity.status(200).build();
+            }
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
         return ResponseEntity.status(409).build();
 

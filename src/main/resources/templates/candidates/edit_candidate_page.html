@@ -19,6 +19,10 @@
                    th:value="${requestUpdateCandidate.second_name}">
             <input th:field="*{patr}" type="text" id="input-patronymic-field" placeholder="Input candidate patronymic"
                    required minlength="3" maxlength="25" th:value="${requestUpdateCandidate.patr}">
+            <textarea th:field="*{candidateDesc}" id="input-candidate-description-field"
+                      placeholder="Напишите о кандидате." th:text="${requestUpdateCandidate.candidateDesc}" th:value="${requestUpdateCandidate.candidateDesc}"
+                      required minlength="3" maxlength="100"></textarea>
+
 
             <div class="select-directions-container">
                 <div th:each="direction : ${allDirections}">
@@ -62,7 +66,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     var csrf_token = $('#_csrf_token').attr("content");
-
 
     function addNewCandidateRequest() {
 
@@ -121,7 +124,6 @@
     }
 
 
-    const notification = document.getElementById('notification');
 
     function validateBeforeSend() {
         var name = $('#input-name-field').val();
@@ -131,7 +133,7 @@
 
         if (name.length < 2 || secondName.length < 3 || patronymic.length < 3 || checkedDirection === 0) {
             showNotification("Форма должна включить в себя ФИО, и как минимум одно направление!", 1000);
-            return;
+
         } else {
             addNewCandidateRequest();
         }

@@ -62,6 +62,7 @@ public class CandidatesController {
                         .second_name(candidate.getSecondName())
                         .patr(candidate.getPatronymic())
                         .directions(candidate.getDirections())
+                        .candidateDesc(candidate.getCandidateDescription())
                         .cvFile(FileService.createMultipartFileFormByteArray(candidate.getCurriculumVitae().getCvData(), "application/octet-stream", candidate.getCurriculumVitae().getCvFileName()))
                         .imageFile(FileService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();
             } else {
@@ -69,6 +70,8 @@ public class CandidatesController {
                         .name(candidate.getName())
                         .second_name(candidate.getSecondName())
                         .patr(candidate.getPatronymic())
+                        .candidateDesc(candidate.getCandidateDescription())
+
                         .directions(candidate.getDirections())
                         .cvFile(null)
                         .imageFile(FileService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();

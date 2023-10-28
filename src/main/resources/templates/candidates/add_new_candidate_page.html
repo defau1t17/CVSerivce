@@ -39,14 +39,14 @@
 
 <div>
     <form th:object="${newCandidate}" enctype="multipart/form-data" id="newCandidateForm">
-        <input th:field="*{name}" type="text" id="input-name-field" placeholder="Input candidate name" minlength="2"
+        <input th:field="*{name}" type="text" id="input-name-field" placeholder="Введите имя кандидата" minlength="2"
                maxlength="25" required>
         <input th:field="*{second_name}" type="text" id="input-second-name-field"
-               placeholder="Input candidate second name" minlength="3" maxlength="25" required>
-        <input th:field="*{patr}" type="text" id="input-patronymic-field" placeholder="Input candidate patronymic"
+               placeholder="Введите фамилию кандидата" minlength="3" maxlength="25" required>
+        <input th:field="*{patr}" type="text" id="input-patronymic-field" placeholder="Введите отчество кандидата"
                required minlength="3" maxlength="25">
-
-
+        <textarea th:field="*{candidateDesc}" id="input-candidate-description-field" placeholder="Внесите описанеи кандидата"
+                  required minlength="3" maxlength="100"></textarea>
         <div class="select-directions-container">
             <input th:each="direction : ${allDirections}" th:field="*{directions}" th:value="${direction.id}"
                    id="direction" type="checkbox" th:text="${direction.name}">
@@ -109,15 +109,16 @@
         var name = $('#input-name-field').val();
         var secondName = $('#input-second-name-field').val();
         var patronymic = $('#input-patronymic-field').val();
+        var description = $('#input-candidate-description-field').val();
+
         var checkedDirection = $('input[type="checkbox"]:checked').length;
-        if (name.length < 2 || secondName.length < 3 || patronymic.length < 3 || checkedDirection === 0) {
+        if (name.length < 2 || secondName.length < 3 || patronymic.length < 3 || checkedDirection === 0 || description.length < 2) {
             showNotification("Форма должна включить в себя ФИО, и как минимум одно направление!", 1000);
             return;
         } else {
             addNewCandidateRequest();
         }
     }
-
 
     const notification = document.getElementById('notification');
 
