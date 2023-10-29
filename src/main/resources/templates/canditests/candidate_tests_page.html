@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Candidate Tests</title>
+</head>
+<body>
+
+<div class="candidate-tests-container">
+
+    <div class="candidate-info">
+        <label>Имя</label>
+        <a th:href="@{/task/candidates/candidate/__${candidate.id}__}"
+           th:text="${candidate.name + ' ' + candidate.secondName + ' ' + candidate.patronymic}"></a>
+        <label>Направления</label>
+        <div th:each="candidateDirections : ${candidate.directions}">
+            <a th:text="${candidateDirections.name}"
+               th:href="@{/task/directions/direction/__${candidateDirections.id}__}"></a>
+        </div>
+    </div>
+    <div class="candidates-tests" th:each="candidateTest : ${allCandidateTests}" th:value="${candidateTest.id}">
+        <div>
+            <a th:text="${candidateTest.test.name}" th:href="@{/task/tests/test/__${candidateTest.test.id}__}"></a>
+            <span th:text="${candidateTest.test.description}"></span>
+        </div>
+        <div>
+            <span th:text="${candidateTest.grade.date}"></span>
+            <span th:text="${candidateTest.grade.mark}"></span>
+        </div>
+        <div class="button-block">
+            <a th:href="@{/task/canditests/canditest/edit/candidate/__${candidateTest.id}__}">Изменить тесты
+                кандидата</a>
+        </div>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

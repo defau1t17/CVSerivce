@@ -11,12 +11,12 @@
 <div class="test-container">
     <div class="test-list" th:each="test : ${tests}">
         <div class="test">
-            <!--            <a th:href="@{/task/tests/}">-->
-            <div class="test-name-block">
-                <label>Название теста :</label>
-                <span th:name="${test.name}">name</span>
-            </div>
-            <!--            </a>-->
+            <a th:href="@{/task/tests/test/__${test.id}__}">
+                <div class="test-name-block">
+                    <label>Название теста :</label>
+                    <span th:name="${test.name}">name</span>
+                </div>
+            </a>
             <div class="test-description-block">
                 <label>Описание теста :</label>
                 <span th:text="${test.description}" th:value="${test.description}"></span>

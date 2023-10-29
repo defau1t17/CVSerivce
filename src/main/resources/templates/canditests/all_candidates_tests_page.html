@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All Candidates Page</title>
+</head>
+<body>
+
+<div class="candidates-tests-page">
+    <div class="candidate-test" th:each="entry : ${groupedTestsByCandidate}">
+        <div class="candidate-info">
+            <span th:text="${entry.key.name}"></span>
+        </div>
+        <div th:each="test : ${entry.value}">
+            <div>
+                <span th:text="${test.test.name}"></span>
+                <span th:text="${test.grade.date}"></span>
+                <span th:text="${test.grade.mark}"></span>
+            </div>
+        </div>
+        <div class="button-block">
+            <a th:href="@{/task/canditests/canditest/candidate/__${entry.key.id}__}">Просмотреть тесты кандидата</a>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>

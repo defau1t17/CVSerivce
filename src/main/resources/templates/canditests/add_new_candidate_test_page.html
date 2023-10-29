@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Candidate Test</title>
+</head>
+<body>
+
+<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
+
+<div class="candidate-test-container">
+    <div class="canditest">
+        <form id="newCandiTestForm" th:object="${newCandiTest}">
+            <div class="select-candidate-block">
+                <select th:field="*{candidateID}">
+                    <option class="selected-candidate" value="0">Выбирете кандидата</option>
+                    <option class="selected-candidate" th:each="candidate : ${allCandidates}"
+                            th:value="${candidate.id}">
+                        <div class="candidate-info">
+                            <span th:text="${candidate.name + ' ' + candidate.secondName + ' ' + candidate.patronymic + ' '}"></span>
+                            <span>Directions : </span>
+                            <span th:each="candidateDirection : ${candidate.directions}"
+                                  th:text="${'(' + candidateDirection.name + ') '}"
+                                  style="display: inline"></span>
+                        </div>
+                    </option>
+                </select>
+            </div>
+
+            <div class="select-test-block">
+                <select th:field="*{testID}">
+                    <option class="selected-test" value="0">Выберите тест</option>
+                    <option class="selected-test" th:each="test : ${allTests}" th:value="${test.id}"
+                            th:text="${test.name}">
+                        <span> </span>
+                    </option>
+                </select>
+            </div>
+            <div class="select-grade-block">
+                <input class="selected-date" th:field="*{date}" type="date"
+                       placeholder="Выберите дату прохождения теста">
+                <input class="selected-mark" th:field="*{mark}" type="number" min="0" max="100"
+                       placeholder="Выберите оценку теста.">
+            </div>
+
+            <div class="button-block">
+                <button type="button" class="process-button" onclick="validateBeforeSend()">Добавить</button>
+                <button type="reset" class="process-button">Очистить</button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div id="notification" class="notification">
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var csrf_token = $('#_csrf_token').attr("content");
+
+
+    function addNewCandidateTestRequest() {
+
+        var formData = new FormData($('#newCandiTestForm')[0]);
+
+        $.ajax({
+            url: '/task/canditests/rest/add/new',
+            type: 'POST',
+            processData: false,
+            contentType: false,
+            data: formData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                console.log(status);
+                if (xhr.status === 200) {
+                    showNotification("Новый тест кандидата успешно добавлен!", 1000);
+                    setTimeout(function () {
+                        window.location.href = "/task/canditests/add"
+                    }, 1000);
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 409) {
+                    showNotification("Тест с таким кандидатом и датой уже существует!", 1000);
+                }
+                if (xhr.status === 403) {
+                    showNotification("Ошибка добавлния теста кандидата!", 1000);
+
+                }
+            }
+        });
+    }
+
+    function validateBeforeSend() {
+        var candidateValue = $('.selected-candidate').val();
+        var testValue = $('.selected-test').val();
+        var dateValue = $('.selected-date').val();
+        var markValue = $('.selected-mark').val();
+
+        if (candidateValue === 0 || testValue === 0 || dateValue === '') {
+            showNotification("Обязательно выбирте Кандитата, пройденный им тест, дату и оценку!", 1000);
+        } else {
+            addNewCandidateTestRequest()
+        }
+    }
+
+
+    const notification = document.getElementById('notification');
+
+    function showNotification(message, duration) {
+        notification.textContent = message;
+        notification.style.opacity = '1';
+
+        setTimeout(() => {
+            notification.style.opacity = '0';
+        }, duration);
+    }
+
+
+</script>
+
+</body>
+</html>

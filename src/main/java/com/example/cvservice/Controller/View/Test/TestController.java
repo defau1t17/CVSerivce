@@ -39,6 +39,19 @@ public class TestController {
         return "/tests/all_tests_page";
     }
 
+    @GetMapping("/test/{id}")
+    public String displayTestPage(@PathVariable(value = "id") Long id, Model model) {
+        Optional<Test> optionalTest = testService.findTestByID(id);
+        Test test = null;
+        if (optionalTest.isPresent()) {
+            test = optionalTest.get();
+        }
+        model.addAttribute("test", test);
+
+        return "/tests/test_page";
+    }
+
+
     @GetMapping("/test/edit/{id}")
     public String displayEditTestPage(@PathVariable(value = "id") Long id, Model model) {
         Optional<Test> optionalTest = testService.findTestByID(id);

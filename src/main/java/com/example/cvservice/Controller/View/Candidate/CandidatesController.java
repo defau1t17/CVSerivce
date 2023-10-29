@@ -7,11 +7,16 @@ import com.example.cvservice.Service.Candidate.CandidateService;
 import com.example.cvservice.Service.Direction.DirectionService;
 import com.example.cvservice.Service.Files.FileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/task/candidates")
@@ -24,13 +29,20 @@ public class CandidatesController {
     private CandidateService candidateService;
 
     @GetMapping("/view/all")
-    public String allCandidatesPage(Model model) {
-        model.addAttribute("allCandidates", candidateService.findAllCandidates());
+    public String allCandidatesPage(Model model,
+                                    @RequestParam(required = false) Optional<Integer> page,
+                                    @RequestParam(required = false) Optional<Integer> size,
+                                    @RequestParam(required = false) List<String> sort) {
+        System.out.println(sort);
+        Page<Candidate> allCandidatesByPageNumber = candidateService.findAllCandidatesByPageNumber(page.orElse(0), size.orElse(10), sort);
+        model.addAttribute("allCandidates", allCandidatesByPageNumber);
+        model.addAttribute("pages", IntStream.rangeClosed(0, allCandidatesByPageNumber.getTotalPages() - 1).boxed().collect(Collectors.toList()));
 
         return "/candidates/all_candidates_page";
     }
 
     @GetMapping("/add")
+
     public String displayAddNewCandidatePage(Model model) {
         model.addAttribute("allDirections", directionService.findAll());
         model.addAttribute("newCandidate", new NewCandidateDTO());
@@ -39,7 +51,7 @@ public class CandidatesController {
 
     @GetMapping("/candidate/{id}")
     public String displayCandidatePage(@PathVariable(value = "id") Long id, Model model) {
-        Optional<Candidate> optionalCandidate = candidateService.findClientById(id);
+        Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         Candidate candidate = null;
         if (optionalCandidate.isPresent()) {
             candidate = optionalCandidate.get();
@@ -50,7 +62,7 @@ public class CandidatesController {
 
     @GetMapping("/candidate/edit/{id}")
     public String displayUpdateCandidatePage(@PathVariable(value = "id") Long id, Model model) {
-        Optional<Candidate> optionalCandidate = candidateService.findClientById(id);
+        Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         Candidate candidate = null;
         UpdateCandidateDTO updateCandidateDTO = null;
 

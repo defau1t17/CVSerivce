@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Candidate Test</title>
+</head>
+<body>
+
+<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
+
+<div class="candidate-test-container" th:if="${candidateTest != null}">
+    <form id="updateCandidateTestForm" th:object="${candidateTest}" th:value="${candidateTest.candiTestID}">
+        <input th:field="*{candiTestID}" type="hidden" th:value="${candidateTest.candiTestID}">
+        <div class="candidate-info-block">
+            <label>Кандидат :</label>
+            <a th:field="*{candidateID}" th:value="${candidate.id}"
+               th:href="@{/task/candidates/candidate/__${candidate.id}__}"
+               th:text="${candidate.name}"></a>
+            <input th:field="*{candidateID}" id="candidate-id" type="hidden" th:value="${candidateTest.candidateID}">
+
+        </div>
+        <label>Информация о тесте</label>
+        <div class="test-edit-block">
+            <input th:field="*{testID}" type="hidden" th:value="${candidateTest.testID}">
+            <a th:href="@{/task/tests/test/__${candidateTest.testID}__}" th:text="${candidateTest.testName}"></a>
+            <input th:field="*{date}" class="selected-value" id="updated-date" type="date"
+                   th:value="${candidateTest.date}">
+            <input th:field="*{mark}" class="selected-value" id="updated-value" min="0" max="100" type="number"
+                   th:value="${candidateTest.mark}">
+        </div>
+        <div>
+            <button type="button" class="process-block" id="edit-test-results-button"
+                    onclick="validateBeforeSend()">Изменить
+            </button>
+            <button type="button" class="process-block" id="remove-test" onclick="sendCandidateTestRemoveRequest()">
+                Удалить
+            </button>
+        </div>
+    </form>
+</div>
+
+<div id="notification" class="notification">
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    var csrf_token = $('#_csrf_token').attr("content");
+
+
+    function editCandidateTestRequest() {
+
+        var formData = new FormData($('#updateCandidateTestForm')[0]);
+
+        var candidateTestID = $('#updateCandidateTestForm').attr('value');
+
+        $.ajax({
+            url: '/task/canditests/rest/canditest/update/' + candidateTestID,
+            type: 'PATCH',
+            processData: false,
+            contentType: false,
+            data: formData,
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    showNotification("Тест кандидата успешно обновлен ", 1000);
+                    setTimeout(function () {
+                        window.location.href = "/task/canditests/canditest/edit/candidate/" + candidateTestID
+                    }, 1000);
+                }
+            },
+            error: function (xhr) {
+                if (xhr.status === 403) {
+                    showNotification("У данного пользователя уже есть такой тест с такой датой!", 1500);
+                } else {
+                    showNotification("Заполните все обязательные поля!", 1000);
+                }
+
+            }
+        });
+    }
+
+    function sendCandidateTestRemoveRequest() {
+        var candidateTestID = $('#updateCandidateTestForm').attr('value');
+
+        var candidateID = $('#candidate-id').attr('value')
+
+        $.ajax({
+            url: '/task/canditests/rest/canditest/delete/' + candidateTestID,
+            type: 'DELETE',
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
+            },
+            success: function (data, status, xhr) {
+                if (xhr.status === 200) {
+                    window.location.href = "/task/canditests/canditest/candidate/" + candidateID;
+                }
+            },
+            error: function () {
+                showNotification("Произошла ошибка удаления!", 1000);
+            }
+        });
+    }
+
+    function validateBeforeSend() {
+        var dateValue = $('#updated-date').val();
+        var markValue = $('#updated-value').val();
+
+        if (dateValue === '' || markValue < 0 || markValue > 100) {
+            showNotification("Обязательно выберите дату и оценку теста в пределах [0;100]!", 1000);
+        } else {
+            editCandidateTestRequest();
+        }
+    }
+
+
+    const notification = document.getElementById('notification');
+
+    function showNotification(message, duration) {
+        notification.textContent = message;
+        notification.style.opacity = '1';
+
+        setTimeout(() => {
+            notification.style.opacity = '0';
+        }, duration);
+    }
+</script>
+
+
+</body>
+</html>

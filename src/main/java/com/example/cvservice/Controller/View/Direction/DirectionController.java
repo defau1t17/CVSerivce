@@ -32,6 +32,19 @@ public class DirectionController {
         return "/directions/add_new_direction_page";
     }
 
+    @GetMapping("/direction/{id}")
+    public String displayDirectionPage(@PathVariable(value = "id") Long id, Model model) {
+        Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
+        Direction direction = null;
+        if (optionalDirection.isPresent()) {
+            direction = optionalDirection.get();
+        }
+        model.addAttribute("direction", direction);
+        return "/directions/direction_page";
+
+    }
+
+
     @GetMapping("/direction/edit/{id}")
     public String editDirectionsByID(@PathVariable(value = "id") Long id, Model model) {
         Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
