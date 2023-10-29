@@ -11,11 +11,14 @@
 <div class="directions-container" th:if="${directions != null}">
     <div class="direction" th:each="direction : ${directions}">
         <div class="direction-name-field">
-            <span th:text="${direction.name}">название</span>
+            <a th:href="@{/task/directions/direction/__${direction.id}__}">
+                <span th:text="${direction.name}">название</span>
+            </a>
+
         </div>
 
         <div class="direction-name-field">
-            <textarea th:text="${direction.description}" th:value="${direction.description}">описание</textarea>
+            <span th:text="${direction.description}" th:value="${direction.description}">описание</span>
         </div>
 
         <div class="direction-process-button">

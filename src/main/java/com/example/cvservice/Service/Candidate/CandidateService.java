@@ -24,7 +24,7 @@ public class CandidateService implements EntityOperations {
         return repository.findAll();
     }
 
-    public Optional<Candidate> findClientById(Long id) {
+    public Optional<Candidate> findCandidateByID(Long id) {
         return repository.findById(id);
     }
 
@@ -52,7 +52,7 @@ public class CandidateService implements EntityOperations {
 
     @Transactional
     public void updateByID(Long id, UpdateCandidateDTO updateCandidateDTO) {
-        Optional<Candidate> clientById = findClientById(id);
+        Optional<Candidate> clientById = findCandidateByID(id);
         if (clientById.isPresent()) {
             Candidate candidate = new UpdateCandidateData().updateCandidate(clientById.get(), updateCandidateDTO);
             repository.save(candidate);

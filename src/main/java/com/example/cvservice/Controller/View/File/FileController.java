@@ -24,7 +24,7 @@ public class FileController {
     @GetMapping("/candidate/{id}")
     public ResponseEntity<byte[]> viewFile(@PathVariable(value = "id") Long id) {
         System.out.println("i'm here");
-        Optional<Candidate> optionalCandidate = candidateService.findClientById(id);
+        Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         Candidate candidate = null;
         CurriculumVitae curriculumVitae = null;
         if (optionalCandidate.isPresent()) {

@@ -1,10 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Test Page</title>
 </head>
 <body>
+
+
+<div th:if="${test != null}" th:object="${test}">
+    <div class="test-info-block">
+        <div class="test-name-block">
+            <span th:text="${test.name}"></span>
+        </div>
+
+        <div class="test-description-block">
+            <span th:text="${test.description}"></span>
+        </div>
+
+        <div class="test-directions-block" th:each="testDirection : ${test.directions}">
+            <a th:href="@{/task/directions/direction/__${testDirection.id}__}" th:text="${testDirection.name}"></a>
+        </div>
+        <div class="button-block">
+            <a th:href="@{/task/tests/test/edit/__${test.id}__}">Изменить тест</a>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>

@@ -42,7 +42,7 @@ public class CandidateRestController {
 
     @DeleteMapping("/remove/candidate/{id}")
     public ResponseEntity removeCandidateByID(@PathVariable(value = "id") Long id) {
-        Optional<Candidate> optionalCandidate = candidateService.findClientById(id);
+        Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         if (optionalCandidate.isPresent()) {
             candidateService.delete(optionalCandidate.get());
             return ResponseEntity.status(200).build();
@@ -53,7 +53,7 @@ public class CandidateRestController {
     @PatchMapping("/update/candidate/{id}")
     public ResponseEntity updateCandidateByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandidateDTO updateCandidateDTO) throws IOException {
         if (!InputCandidateVerification.doesUpdatedCandidateIsEmpty(updateCandidateDTO)) {
-            Optional<Candidate> optionalCandidate = candidateService.findClientById(id);
+            Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
             if (optionalCandidate.isPresent()) {
                 candidateService.update(new UpdateCandidateData().updateCandidate(optionalCandidate.get(), updateCandidateDTO));
                 return ResponseEntity.status(200).build();

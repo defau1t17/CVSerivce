@@ -39,7 +39,7 @@ public class CandidatesController {
 
     @GetMapping("/candidate/{id}")
     public String displayCandidatePage(@PathVariable(value = "id") Long id, Model model) {
-        Optional<Candidate> optionalCandidate = candidateService.findClientById(id);
+        Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         Candidate candidate = null;
         if (optionalCandidate.isPresent()) {
             candidate = optionalCandidate.get();
@@ -50,7 +50,7 @@ public class CandidatesController {
 
     @GetMapping("/candidate/edit/{id}")
     public String displayUpdateCandidatePage(@PathVariable(value = "id") Long id, Model model) {
-        Optional<Candidate> optionalCandidate = candidateService.findClientById(id);
+        Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         Candidate candidate = null;
         UpdateCandidateDTO updateCandidateDTO = null;
 
