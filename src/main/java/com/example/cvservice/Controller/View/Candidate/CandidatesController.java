@@ -6,6 +6,7 @@ import com.example.cvservice.Entity.Main.Candidate;
 import com.example.cvservice.Service.Candidate.CandidateService;
 import com.example.cvservice.Service.Direction.DirectionService;
 import com.example.cvservice.Service.Files.FileService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -32,17 +33,19 @@ public class CandidatesController {
     public String allCandidatesPage(Model model,
                                     @RequestParam(required = false) Optional<Integer> page,
                                     @RequestParam(required = false) Optional<Integer> size,
-                                    @RequestParam(required = false) List<String> sort) {
-        System.out.println(sort);
-        Page<Candidate> allCandidatesByPageNumber = candidateService.findAllCandidatesByPageNumber(page.orElse(0), size.orElse(10), sort);
+                                    @RequestParam(required = false) String sort,
+                                    @RequestParam(required = false) String direction) {
+        Page<Candidate> allCandidatesByPageNumber = candidateService.findAllCandidatesByPageNumber(page.orElse(0), size.orElse(10), sort, direction);
         model.addAttribute("allCandidates", allCandidatesByPageNumber);
+        model.addAttribute("pageSize", size.orElse(10));
         model.addAttribute("pages", IntStream.rangeClosed(0, allCandidatesByPageNumber.getTotalPages() - 1).boxed().collect(Collectors.toList()));
+        model.addAttribute("sort", sort);
+        model.addAttribute("direction", direction);
 
         return "/candidates/all_candidates_page";
     }
 
     @GetMapping("/add")
-
     public String displayAddNewCandidatePage(Model model) {
         model.addAttribute("allDirections", directionService.findAll());
         model.addAttribute("newCandidate", new NewCandidateDTO());

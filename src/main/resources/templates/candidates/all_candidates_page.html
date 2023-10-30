@@ -1,148 +1,168 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8">
-    <link rel="stylesheet"
-          href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-          crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script type="text/javascript" language="javascript"
-            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
-    <script language="javascript" type="text/javascript">
-        $(document).ready(function () {
-            $('#dataTable').DataTable();
-        });
-    </script>
+    <meta charset="UTF-8">
     <title>All Candidates</title>
+    <link rel="stylesheet" th:href="@{/condidates/all_candidates_style.css}">
 </head>
 <body>
 <input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
 
-<!--<div class="control-container">-->
-<!--    <div class="sort-container">-->
-<!--        <form action="">-->
-<!--            <input class="sort-checkbox" name="sort" th:value="name" type="checkbox" th:text="'Имя'">-->
-<!--            <input class="sort-checkbox" name="sort" th:value="secondName" type="checkbox" th:text="'Фамилия'">-->
-<!--            <input class="sort-checkbox" name="sort" th:value="patronymic" type="checkbox" th:text="'Отчество'">-->
-<!--            <input class="sort-checkbox" name="sort" th:value="directions" type="checkbox" th:text="'Направление'">-->
-<!--            <button type="submit">Соритровать</button>-->
-<!--        </form>-->
-<!--    </div>-->
+<div class="control-container">
+    <div class="sort-container">
+        <div class="sort-main-block">
+            <span>Имя</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="name">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="name">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Фамилия</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="secondName">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="secondName">
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Отчество</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="patronymic">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="patronymic">
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Направления</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="directions">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="directions">
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="all-candidates-container">
+        <div class="candidates-list" th:each="candidate : ${allCandidates}">
+            <div class="candidate">
+                <a th:href="@{/task/candidates/candidate/__${candidate.id}__}">
+                    <div class="candidate-image-block">
+                        <img src="" th:if="${candidate.image != null}"
+                             th:src="@{'data:image/*;base64,'+ ${candidate.image.generateBase64Image()}}"
+                             style="height: 100px">
+                    </div>
+                </a>
+                <div class="candidate-info-block" th:value="${candidate.id}">
+                    <span th:text="${candidate.name}">name</span>
+                    <span th:text="${candidate.secondName}">second_name</span>
+                    <span th:text="${candidate.patronymic}">part</span>
+                </div>
+
+                <div class="candidates-direction">
+                    <ul th:each="direction : ${candidate.directions}">
+                        <li th:text="${direction.name}">direction</li>
+                    </ul>
+                </div>
+                <div class="button-block">
+                    <a class="candidate-process-button"
+                       th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">EDIT</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="notification" class="notification">
+
+    </div>
 
 
-<!--</div>-->
-
-<table class="table table-striped" id="dataTable" data-page-length='50' data-order='[[1, "desc"]]'>
-    <thead>
-    <tr>
-        <th scope="col">Имя</th>
-        <th scope="col">Фамилия</th>
-        <th scope="col">Отчество</th>
-        <th scope="col">Направления</th>
-        <th scope="col">Удалить</th>
-        <th scope="col">Изменить</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    <tr th:each="candidate : ${allCandidates}" class="candidate-container">
-        <td th:text="${candidate.name}">Name</td>
-        <td th:text="${candidate.secondName}">Second Name</td>
-        <td th:text="${candidate.patronymic}">Patronymic</td>
-
-        <td>
-            <ul th:each="direction : ${candidate.directions}">
-                <li th:text="${direction.name}">Direction</li>
-            </ul>
-        </td>
-        <td>
-            <button class="candidate-process-button" id="remove-button" th:value="${candidate.id}"
-                    onclick="sendRemoveRequest(this)">REMOVE
-            </button>
-        </td>
-        <td>
-            <a class="candidate-process-button"
-               th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">EDIT</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-
-<!--<div class="all-candidates-container">-->
-<!--    <div class="candidates-list" th:each="candidate : ${allCandidates}">-->
-<!--        <div class="candidate">-->
-<!--            <a th:href="@{/task/candidates/candidate/__${candidate.id}__}">-->
-<!--                <div class="candidate-image-block">-->
-<!--                    <img src="" th:if="${candidate.image != null}"-->
-<!--                         th:src="@{'data:image/*;base64,'+ ${candidate.image.generateBase64Image()}}"-->
-<!--                         style="height: 100px">-->
-<!--                </div>-->
-<!--            </a>-->
-
-<!--            <div class="candidate-info-block" th:value="${candidate.id}">-->
-<!--                <span th:text="${candidate.name}">name</span>-->
-<!--                <span th:text="${candidate.secondName}">second_name</span>-->
-<!--                <span th:text="${candidate.patronymic}">part</span>-->
-<!--            </div>-->
-
-<!--            <div class="candidates-direction">-->
-<!--                <ul th:each="direction : ${candidate.directions}">-->
-<!--                    <li th:text="${direction.name}">direction</li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--            <div class="button-block">-->
-<!--                <button class="candidate-process-button" id="remove-button" onclick="sendRemoveRequest(this)">REMOVE-->
-<!--                </button>-->
-<!--                <a class="candidate-process-button" th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">EDIT</a>-->
-<!--            </div>-->
-<!--        </div>-->
-
-
-<!--    </div>-->
-<!--</div>-->
-
-
-<div id="notification" class="notification">
-
-</div>
-
-
-<div class="pagination-links-container" th:if="${allCandidates.totalPages >= 0}">
-    <div th:each="pageNumber : ${pages}">
-        <a th:href="@{/task/candidates/view/all?page=__${pageNumber}__}" th:text="${pageNumber+1}"></a>
+    <div class="pagination-links-container" th:if="${allCandidates.totalPages >= 0}">
+        <div th:each="pageNumber : ${pages}">
+            <a th:if="${sort != null && direction != null}"
+               th:href="@{/task/candidates/view/all?page=__${pageNumber}__&size=__${pageSize}__&direction=__${direction}__&sort=__${sort}__}"
+               th:text="${pageNumber+1}"></a>
+            <a th:if="${sort == null}"
+               th:href="@{/task/candidates/view/all?page=__${pageNumber}__&size=__${pageSize}__}"
+               th:text="${pageNumber+1}"></a>
+        </div>
     </div>
 </div>
 
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    $(document).ready(function () {
-        $('#dataTable').DataTable();
-    });
     var csrf_token = $('#_csrf_token').attr("content");
-
-    function sendRemoveRequest(element) {
-        var candidateID = $(element).attr('value');
-
-        $.ajax({
-            url: '/task/candidates/rest/remove/candidate/' + candidateID,
-            type: 'DELETE',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
-            success: function (data, status, xhr) {
-                if (xhr.status === 200) {
-                    showNotification("Пользователь успешно удален", 1000);
-                    $(element).closest('.candidate').remove();
-                }
-            },
-            error: function () {
-                showNotification("Произошла ошибка !", 1000);
-            }
-        });
-
-    }
 
     const notification = document.getElementById('notification');
 
@@ -155,16 +175,26 @@
         }, duration);
     }
 
-    // $(document).ready(function () {
-    //     $('input[type="checkbox"]').change(function () {
-    //         var orderInput = $('input[name="order"]');
-    //         if ($(this).prop("checked")) {
-    //             orderInput.val("asc");
-    //         } else {
-    //             orderInput.val("desc");
-    //         }
-    //     });
-    // });
+
+    $(document).ready(function () {
+        var url = new URLSearchParams(window.location.search);
+        var sort = url.get('sort');
+        var direction = url.get('direction');
+        $('.sort-form').each(function () {
+            var sortInput = $(this).find('.selected-radio[name="sort"]').val();
+            var directionInput = $(this).find('.sort-radio[name="direction"]').val();
+            if (sortInput === sort && directionInput === direction) {
+                $(this).find('.sort-inner-block').css('background', '#8f8f8f');
+            }
+        });
+    });
+
+    function sortData(element) {
+        var radioInput = $(element).closest('.sort-inner-block').find('.sort-radio');
+        radioInput.prop('checked', true);
+        var form = $(element).closest('.sort-form');
+        form.submit();
+    }
 
 </script>
 
