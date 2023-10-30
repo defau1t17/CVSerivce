@@ -1,0 +1,34 @@
+.sort-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.sort-list-block {
+    display: flex;
+    flex-direction: row;
+}
+
+.sort-main-block {
+    display: flex;
+    flex-direction: row
+}
+
+.sort-info-block {
+    display: flex;
+    align-items: center;
+}
+
+.sort-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.up-image, .down-image {
+    height: 15px;
+    cursor: pointer;
+}
+
+.sort-radio {
+    display: none;
+}
+

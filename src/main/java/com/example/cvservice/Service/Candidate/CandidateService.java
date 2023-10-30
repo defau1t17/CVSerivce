@@ -30,22 +30,18 @@ public class CandidateService implements EntityOperations {
         return repository.findAll();
     }
 
-    public Page<Candidate> findAllCandidatesByPageNumber(int pageNumber, int pageSize, List<String> sort) {
+
+    public Page<Candidate> findAllCandidatesByPageNumber(int pageNumber, int pageSize, String name, String direction) {
         Pageable pageable = null;
-        if (sort != null) {
-            System.out.println(sort.stream().collect(Collectors.joining(",")));
 
-
-            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(new SortedList().getAscendingSortedList(sort)));
-//            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sort.s).reverse());
-
-
+        if (name != null && direction != null) {
+            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(new SortedList().getAscendingSortedList(name, direction)));
         } else {
             pageable = PageRequest.of(pageNumber, pageSize);
         }
+
         return repository.findAll(pageable);
     }
-
 
     public Optional<Candidate> findCandidateByID(Long id) {
         return repository.findById(id);
