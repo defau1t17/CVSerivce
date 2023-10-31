@@ -1,5 +1,6 @@
 package com.example.cvservice.Controller.View.Candidate;
 
+import com.example.cvservice.DAO.CandidateDAO;
 import com.example.cvservice.DTO.Candidate.NewCandidateDTO;
 import com.example.cvservice.DTO.Candidate.UpdateCandidateDTO;
 import com.example.cvservice.Entity.Main.Candidate;
@@ -34,16 +35,29 @@ public class CandidatesController {
                                     @RequestParam(required = false) Optional<Integer> page,
                                     @RequestParam(required = false) Optional<Integer> size,
                                     @RequestParam(required = false) String sort,
-                                    @RequestParam(required = false) String direction) {
-        Page<Candidate> allCandidatesByPageNumber = candidateService.findAllCandidatesByPageNumber(page.orElse(0), size.orElse(10), sort, direction);
+                                    @RequestParam(required = false) String direction,
+                                    @RequestParam(required = false) String name,
+                                    @RequestParam(required = false) String secondName,
+                                    @RequestParam(required = false) String patronymic,
+                                    @RequestParam(required = false) List<String> dir,
+                                    @RequestParam(required = false) boolean filter) {
+        Page<Candidate> allCandidatesByPageNumber = candidateService.findAllCandidatesByPageNumber(page.orElse(0), size.orElse(10), sort, direction, filter, name, secondName, patronymic, dir);
+
         model.addAttribute("allCandidates", allCandidatesByPageNumber);
         model.addAttribute("pageSize", size.orElse(10));
         model.addAttribute("pages", IntStream.rangeClosed(0, allCandidatesByPageNumber.getTotalPages() - 1).boxed().collect(Collectors.toList()));
         model.addAttribute("sort", sort);
         model.addAttribute("direction", direction);
+        model.addAttribute("allDirections", directionService.findAll());
+        model.addAttribute("filterName", name);
+        model.addAttribute("filterSecondName", secondName);
+        model.addAttribute("filterPatr", patronymic);
+        model.addAttribute("filterDirections", dir);
+        model.addAttribute("filter", filter);
 
         return "/candidates/all_candidates_page";
     }
+
 
     @GetMapping("/add")
     public String displayAddNewCandidatePage(Model model) {

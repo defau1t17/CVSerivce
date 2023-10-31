@@ -1,22 +1,19 @@
 package com.example.cvservice.Service.Candidate;
 
-import com.example.cvservice.DTO.Candidate.UpdateCandidateDTO;
 import com.example.cvservice.Entity.Main.Candidate;
+import com.example.cvservice.Filter.CandidateFilter;
 import com.example.cvservice.Repository.Candidate.CandidateRepository;
+import com.example.cvservice.Service.Direction.DirectionService;
 import com.example.cvservice.Service.EntityOperations;
-import com.example.cvservice.Service.SortedList;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 @Service
 public class CandidateService implements EntityOperations {
@@ -26,29 +23,41 @@ public class CandidateService implements EntityOperations {
     private CandidateRepository repository;
 
 
+    @Autowired
+    private DirectionService directionService;
+
     public List<Candidate> findAllCandidates() {
         return repository.findAll();
     }
 
-
-    public Page<Candidate> findAllCandidatesByPageNumber(int pageNumber, int pageSize, String name, String direction) {
+    public Page<Candidate> findAllCandidatesByPageNumber(int pageNumber, int pageSize, String param, String direction, boolean filer, String name, String secondName, String patr, List<String> directionsNames) {
         Pageable pageable = null;
+        Specification<Candidate> candidateSpecification = null;
 
-        if (name != null && direction != null) {
-            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(new SortedList().getAscendingSortedList(name, direction)));
+        if (param != null && direction != null && !filer) {
+            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.valueOf(direction), param));
+        } else if (param != null && direction != null && filer) {
+            candidateSpecification = CandidateFilter.filterCandidateByParams(CandidateFilter.generateCandidateFromParams(name, secondName, patr, directionsNames), directionService);
+            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.valueOf(direction), param));
+            try {
+                return repository.findAll(candidateSpecification, pageable);
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        } else if (filer) {
+            candidateSpecification = CandidateFilter.filterCandidateByParams(CandidateFilter.generateCandidateFromParams(name, secondName, patr, directionsNames), directionService);
+            pageable = PageRequest.of(pageNumber, pageSize);
+            return repository.findAll(candidateSpecification, pageable);
         } else {
             pageable = PageRequest.of(pageNumber, pageSize);
         }
 
-        return repository.findAll(pageable);
+        return repository.findAll(candidateSpecification, pageable);
     }
+
 
     public Optional<Candidate> findCandidateByID(Long id) {
         return repository.findById(id);
-    }
-
-    public void deleteByID(Long id) {
-        repository.deleteById(id);
     }
 
     @Override
@@ -67,15 +76,6 @@ public class CandidateService implements EntityOperations {
     @Override
     public void delete(Object object) {
         repository.delete((Candidate) object);
-    }
-
-    @Transactional
-    public void updateByID(Long id, UpdateCandidateDTO updateCandidateDTO) {
-        Optional<Candidate> clientById = findCandidateByID(id);
-        if (clientById.isPresent()) {
-            Candidate candidate = new UpdateCandidateData().updateCandidate(clientById.get(), updateCandidateDTO);
-            repository.save(candidate);
-        }
     }
 
 

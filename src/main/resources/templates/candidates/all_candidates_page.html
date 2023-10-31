@@ -8,155 +8,48 @@
 <body>
 <input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
 
-<div class="control-container">
-    <div class="sort-container">
-        <div class="sort-main-block">
-            <span>Имя</span>
-            <form class="sort-form" action="" th:with="sortDirection='ASC'">
-                <input type="hidden" name="page" th:value="${0}">
-                <input type="hidden" name="size" th:value="${pageSize}">
-                <div class="sort-block">
-                    <div class="sort-inner-block">
-                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
-                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
-                        <input type="hidden" class="selected-radio" th:name="sort" th:value="name">
-                    </div>
-                </div>
-            </form>
-            <form class="sort-form" action="" th:with="sortDirection='DESC'">
-                <input type="hidden" name="page" th:value="${0}">
-                <input type="hidden" name="size" th:value="${pageSize}">
-                <div class="sort-block">
-                    <div class="sort-inner-block">
-                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
-                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
-                        <input type="hidden" class="selected-radio" th:name="sort" th:value="name">
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="sort-main-block">
-            <span>Фамилия</span>
-            <form class="sort-form" action="" th:with="sortDirection='ASC'">
-                <input type="hidden" name="page" th:value="${0}">
-                <input type="hidden" name="size" th:value="${pageSize}">
-                <div class="sort-block">
-                    <div class="sort-inner-block">
-                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
-                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
-                        <input type="hidden" class="selected-radio" th:name="sort" th:value="secondName">
-                    </div>
-                </div>
-            </form>
-            <form class="sort-form" action="" th:with="sortDirection='DESC'">
-                <input type="hidden" name="page" th:value="${0}">
-                <input type="hidden" name="size" th:value="${pageSize}">
-                <div class="sort-block">
-                    <div class="sort-inner-block">
-                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
-                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
-                        <input type="hidden" class="selected-radio" th:name="sort" th:value="secondName">
 
-                    </div>
+<div th:replace="inner/sort_and_filter_candidate :: div"></div>
+<div class="all-candidates-container">
+    <div class="candidates-list" th:each="candidate : ${allCandidates}">
+        <div class="candidate">
+            <a th:href="@{/task/candidates/candidate/__${candidate.id}__}">
+                <div class="candidate-image-block">
+                    <img src="" th:if="${candidate.image != null}"
+                         th:src="@{'data:image/*;base64,'+ ${candidate.image.generateBase64Image()}}"
+                         style="height: 100px">
                 </div>
-            </form>
-        </div>
-        <div class="sort-main-block">
-            <span>Отчество</span>
-            <form class="sort-form" action="" th:with="sortDirection='ASC'">
-                <input type="hidden" name="page" th:value="${0}">
-                <input type="hidden" name="size" th:value="${pageSize}">
-                <div class="sort-block">
-                    <div class="sort-inner-block">
-                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
-                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
-                        <input type="hidden" class="selected-radio" th:name="sort" th:value="patronymic">
-                    </div>
-                </div>
-            </form>
-            <form class="sort-form" action="" th:with="sortDirection='DESC'">
-                <input type="hidden" name="page" th:value="${0}">
-                <input type="hidden" name="size" th:value="${pageSize}">
-                <div class="sort-block">
-                    <div class="sort-inner-block">
-                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
-                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
-                        <input type="hidden" class="selected-radio" th:name="sort" th:value="patronymic">
+            </a>
+            <div class="candidate-info-block" th:value="${candidate.id}">
+                <span th:text="${candidate.name}">name</span>
+                <span th:text="${candidate.secondName}">second_name</span>
+                <span th:text="${candidate.patronymic}">part</span>
+            </div>
 
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="sort-main-block">
-            <span>Направления</span>
-            <form class="sort-form" action="" th:with="sortDirection='ASC'">
-                <input type="hidden" name="page" th:value="${0}">
-                <input type="hidden" name="size" th:value="${pageSize}">
-                <div class="sort-block">
-                    <div class="sort-inner-block">
-                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
-                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
-                        <input type="hidden" class="selected-radio" th:name="sort" th:value="directions">
-                    </div>
-                </div>
-            </form>
-            <form class="sort-form" action="" th:with="sortDirection='DESC'">
-                <input type="hidden" name="page" th:value="${0}">
-                <input type="hidden" name="size" th:value="${pageSize}">
-                <div class="sort-block">
-                    <div class="sort-inner-block">
-                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
-                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
-                        <input type="hidden" class="selected-radio" th:name="sort" th:value="directions">
-
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-    <div class="all-candidates-container">
-        <div class="candidates-list" th:each="candidate : ${allCandidates}">
-            <div class="candidate">
-                <a th:href="@{/task/candidates/candidate/__${candidate.id}__}">
-                    <div class="candidate-image-block">
-                        <img src="" th:if="${candidate.image != null}"
-                             th:src="@{'data:image/*;base64,'+ ${candidate.image.generateBase64Image()}}"
-                             style="height: 100px">
-                    </div>
-                </a>
-                <div class="candidate-info-block" th:value="${candidate.id}">
-                    <span th:text="${candidate.name}">name</span>
-                    <span th:text="${candidate.secondName}">second_name</span>
-                    <span th:text="${candidate.patronymic}">part</span>
-                </div>
-
-                <div class="candidates-direction">
-                    <ul th:each="direction : ${candidate.directions}">
-                        <li th:text="${direction.name}">direction</li>
-                    </ul>
-                </div>
-                <div class="button-block">
-                    <a class="candidate-process-button"
-                       th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">EDIT</a>
-                </div>
+            <div class="candidates-direction">
+                <ul th:each="direction : ${candidate.directions}">
+                    <li th:text="${direction.name}">direction</li>
+                </ul>
+            </div>
+            <div class="button-block">
+                <a class="candidate-process-button"
+                   th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">EDIT</a>
             </div>
         </div>
     </div>
-    <div id="notification" class="notification">
-
+</div>
+<div id="notification" class="notification">
+</div>
+<div class="pagination-links-container" th:if="${allCandidates.totalPages >= 0}">
+    <div th:each="pageNumber : ${pages}">
+        <a th:if="${sort != null && direction != null}"
+           th:href="@{/task/candidates/view/all?page=__${pageNumber}__&size=__${pageSize}__&direction=__${direction}__&sort=__${sort}__}"
+           th:text="${pageNumber+1}"></a>
+        <a th:if="${sort == null}"
+           th:href="@{/task/candidates/view/all?page=__${pageNumber}__&size=__${pageSize}__}"
+           th:text="${pageNumber+1}"></a>
     </div>
-
-
-    <div class="pagination-links-container" th:if="${allCandidates.totalPages >= 0}">
-        <div th:each="pageNumber : ${pages}">
-            <a th:if="${sort != null && direction != null}"
-               th:href="@{/task/candidates/view/all?page=__${pageNumber}__&size=__${pageSize}__&direction=__${direction}__&sort=__${sort}__}"
-               th:text="${pageNumber+1}"></a>
-            <a th:if="${sort == null}"
-               th:href="@{/task/candidates/view/all?page=__${pageNumber}__&size=__${pageSize}__}"
-               th:text="${pageNumber+1}"></a>
-        </div>
-    </div>
+</div>
 </div>
 
 
