@@ -24,6 +24,11 @@ public class DirectionService implements EntityOperations {
         return repository.findAll();
     }
 
+    public List<Direction> findAllByNames(List<String> names) {
+        return repository.findAllByNameIn(names);
+    }
+
+
     public Optional<Direction> findDirectionByName(String name) {
         return repository.findByName(name);
     }
