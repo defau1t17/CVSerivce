@@ -1,9 +1,16 @@
 package com.example.cvservice.Service.Direction;
 
 import com.example.cvservice.Entity.Main.Direction;
+import com.example.cvservice.Entity.Main.Test;
+import com.example.cvservice.Filter.DirectionFilter;
+import com.example.cvservice.Filter.TestFilter;
 import com.example.cvservice.Repository.Direction.DirectionsRepository;
 import com.example.cvservice.Service.EntityOperations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +33,11 @@ public class DirectionService implements EntityOperations {
 
     public List<Direction> findAllByNames(List<String> names) {
         return repository.findAllByNameIn(names);
+    }
+
+    public Page<Direction> findDirectionsByParams(int page, int size, String name, String description, String sort, String direction) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.valueOf(direction), sort));
+        return repository.findAll(DirectionFilter.filterDirections(DirectionFilter.generateDirectionFilterFromParams(name, description)), pageable);
     }
 
 

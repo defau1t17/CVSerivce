@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/condidates/all_candidates_style.css}">
+
+</head>
+<body>
+
+<div class="filter">
+    <form action="" name="filter">
+        <input type="hidden" name="page" th:value="${0}">
+        <input type="hidden" name="size" th:value="${pageSize}">
+        <input type="text" th:name="name" th:value="${filterName}">
+        <input type="text" th:name="description" th:value="${filterDesc}">
+        <button type="submit">Фильтр</button>
+        <input th:if="${sort != null && direction != null}" type="hidden" name="sort" th:value="${sort}">
+        <input th:if="${sort != null && direction != null}" type="hidden" name="direction" th:value="${direction}">
+    </form>
+</div>
+<div class="control-container">
+    <div class="sort-container">
+        <div class="sort-main-block">
+            <span>Название</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="name" th:value="${filterName}">
+                <input type="hidden" th:name="description" th:value="${filterDesc}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="name">
+                    </div>
+                </div>
+            </form>
+
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="name" th:value="${filterName}">
+                <input type="hidden" th:name="description" th:value="${filterDesc}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="name">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Описание</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="name" th:value="${filterName}">
+                <input type="hidden" th:name="description" th:value="${filterDesc}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="description">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="name" th:value="${filterName}">
+                <input type="hidden" th:name="description" th:value="${filterDesc}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="description">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

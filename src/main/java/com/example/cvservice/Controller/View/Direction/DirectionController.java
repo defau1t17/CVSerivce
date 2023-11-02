@@ -3,14 +3,18 @@ package com.example.cvservice.Controller.View.Direction;
 import com.example.cvservice.DTO.Direction.NewDirectionDTO;
 import com.example.cvservice.DTO.Direction.UpdateDirectionDTO;
 import com.example.cvservice.Entity.Main.Direction;
+import com.example.cvservice.Entity.Main.Test;
 import com.example.cvservice.Service.Direction.DirectionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -20,8 +24,26 @@ public class DirectionController {
     private DirectionService directionService;
 
     @GetMapping("/view/all")
-    public String displayAllDirectionsPage(Model model) {
-        model.addAttribute("directions", directionService.findAll());
+    public String displayAllDirectionsPage(@RequestParam(required = false) Optional<Integer> page,
+                                           @RequestParam(required = false) Optional<Integer> size,
+                                           @RequestParam(required = false, defaultValue = "name") String sort,
+                                           @RequestParam(required = false, defaultValue = "ASC") String direction,
+                                           @RequestParam(required = false) String name,
+                                           @RequestParam(required = false) String description,
+                                           Model model) {
+
+        Page<Direction> directionsByParams = directionService.findDirectionsByParams(page.orElse(0), size.orElse(10), name, description, sort, direction);
+
+
+        model.addAttribute("directions", directionsByParams);
+        model.addAttribute("filterName", name);
+        model.addAttribute("sort", sort);
+        model.addAttribute("direction", direction);
+        model.addAttribute("filterDesc", description);
+        model.addAttribute("pageSize", size.orElse(10));
+        model.addAttribute("pages", directionsByParams.getTotalPages());
+
+//        model.addAttribute("directions", directionService.findAll());
         return "/directions/all_directions_page";
     }
 
@@ -43,7 +65,6 @@ public class DirectionController {
         return "/directions/direction_page";
 
     }
-
 
     @GetMapping("/direction/edit/{id}")
     public String editDirectionsByID(@PathVariable(value = "id") Long id, Model model) {
