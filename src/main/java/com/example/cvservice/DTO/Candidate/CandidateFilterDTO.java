@@ -1,4 +1,4 @@
-package com.example.cvservice.DAO;
+package com.example.cvservice.DTO.Candidate;
 
 import com.example.cvservice.Entity.Main.Direction;
 import lombok.Data;
@@ -7,7 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @Data
-public class CandidateDAO {
+public class CandidateFilterDTO {
 
     private String name;
 

@@ -7,8 +7,6 @@
 </head>
 <body>
 <input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
-
-
 <div th:replace="inner/sort_and_filter_candidate :: div"></div>
 <div class="all-candidates-container">
     <div class="candidates-list" th:each="candidate : ${allCandidates}">
@@ -38,18 +36,26 @@
         </div>
     </div>
 </div>
+
 <div id="notification" class="notification">
 </div>
+
 <div class="pagination-links-container" th:if="${allCandidates.totalPages >= 0}">
-    <div th:each="pageNumber : ${pages}">
-        <a th:if="${sort != null && direction != null}"
-           th:href="@{/task/candidates/view/all?page=__${pageNumber}__&size=__${pageSize}__&direction=__${direction}__&sort=__${sort}__}"
-           th:text="${pageNumber+1}"></a>
-        <a th:if="${sort == null}"
-           th:href="@{/task/candidates/view/all?page=__${pageNumber}__&size=__${pageSize}__}"
-           th:text="${pageNumber+1}"></a>
-    </div>
-</div>
+    <form action="">
+        <input type="hidden" name="sort" th:value="${sort}">
+        <input type="hidden" name="direction" th:value="${direction}">
+        <input type="hidden" name="filter" th:value="${filter}">
+        <input type="hidden" th:name="name" th:value="${filterName}">
+        <input type="hidden" th:name="secondName" th:value="${filterSecondName}">
+        <input type="hidden" th:name="patronymic" th:value="${filterPatr}">
+
+        <input type="hidden" th:name="dir" th:if="${filterDirections != null}"
+               th:attr="value=${#strings.arrayJoin(filterDirections, ',')}">
+        <div th:each="pageNumber : ${#numbers.sequence(0, allCandidates.totalPages - 1)}">
+            <button type="submit" th:name="page" th:value="${pageNumber}" th:text="${pageNumber}"></button>
+        </div>
+        <input type="hidden" name="size" th:value="${pageSize}">
+    </form>
 </div>
 
 

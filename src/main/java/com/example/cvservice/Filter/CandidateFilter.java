@@ -1,6 +1,6 @@
 package com.example.cvservice.Filter;
 
-import com.example.cvservice.DAO.CandidateDAO;
+import com.example.cvservice.DTO.Candidate.CandidateFilterDTO;
 import com.example.cvservice.Entity.Main.Candidate;
 import com.example.cvservice.Entity.Main.Direction;
 import com.example.cvservice.Service.Direction.DirectionService;
@@ -10,26 +10,24 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class CandidateFilter {
 
-    public static Specification<Candidate> filterCandidateByParams(CandidateDAO candidateDAO, DirectionService service) {
+    public static Specification<Candidate> filterCandidateByParams(CandidateFilterDTO candidateFilter, DirectionService service) {
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
-            if (candidateDAO.getName() != null && !candidateDAO.getName().isEmpty()) {
-                predicates.add(builder.like(root.get("name"), "%" + candidateDAO.getName() + "%"));
+            if (candidateFilter.getName() != null && !candidateFilter.getName().isEmpty()) {
+                predicates.add(builder.like(root.get("name"), "%" + candidateFilter.getName() + "%"));
             }
-            if (candidateDAO.getSecond_name() != null && !candidateDAO.getSecond_name().isEmpty()) {
-                predicates.add(builder.like(root.get("secondName"), "%" + candidateDAO.getSecond_name() + "%"));
+            if (candidateFilter.getSecond_name() != null && !candidateFilter.getSecond_name().isEmpty()) {
+                predicates.add(builder.like(root.get("secondName"), "%" + candidateFilter.getSecond_name() + "%"));
             }
-            if (candidateDAO.getPatr() != null && !candidateDAO.getPatr().isEmpty()) {
-                predicates.add(builder.like(root.get("patronymic"), "%" + candidateDAO.getPatr() + "%"));
+            if (candidateFilter.getPatr() != null && !candidateFilter.getPatr().isEmpty()) {
+                predicates.add(builder.like(root.get("patronymic"), "%" + candidateFilter.getPatr() + "%"));
             }
-            if (candidateDAO.getDirectionNames() != null && !candidateDAO.getDirectionNames().isEmpty()) {
+            if (candidateFilter.getDirectionNames() != null && !candidateFilter.getDirectionNames().isEmpty()) {
                 Join<Candidate, Direction> directionJoin = root.join("directions");
-                List<String> directionNames = candidateDAO.getDirectionNames();
+                List<String> directionNames = candidateFilter.getDirectionNames();
                 predicates.add(directionJoin.get("name").in(directionNames));
             }
 
@@ -37,22 +35,22 @@ public class CandidateFilter {
         };
     }
 
-    public static CandidateDAO generateCandidateFromParams(String name, String secondName, String patr, List<String> dirNames) {
-        CandidateDAO candidateDAO = new CandidateDAO();
+    public static CandidateFilterDTO generateCandidateFromParams(String name, String secondName, String patr, List<String> dirNames) {
+        CandidateFilterDTO candidateFilter = new CandidateFilterDTO();
         if (name != null && !name.trim().isEmpty()) {
-            candidateDAO.setName(name);
+            candidateFilter.setName(name);
         }
 
         if (secondName != null && !secondName.trim().isEmpty()) {
-            candidateDAO.setSecond_name(secondName);
+            candidateFilter.setSecond_name(secondName);
         }
         if (patr != null && !patr.trim().isEmpty()) {
-            candidateDAO.setPatr(patr);
+            candidateFilter.setPatr(patr);
         }
         if (dirNames != null && !dirNames.isEmpty()) {
-            candidateDAO.setDirectionNames(dirNames);
+            candidateFilter.setDirectionNames(dirNames);
         }
-        return candidateDAO;
+        return candidateFilter;
     }
 
 

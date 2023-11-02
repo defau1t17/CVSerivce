@@ -1,6 +1,5 @@
 package com.example.cvservice.Controller.View.Candidate;
 
-import com.example.cvservice.DAO.CandidateDAO;
 import com.example.cvservice.DTO.Candidate.NewCandidateDTO;
 import com.example.cvservice.DTO.Candidate.UpdateCandidateDTO;
 import com.example.cvservice.Entity.Main.Candidate;
@@ -34,8 +33,8 @@ public class CandidatesController {
     public String allCandidatesPage(Model model,
                                     @RequestParam(required = false) Optional<Integer> page,
                                     @RequestParam(required = false) Optional<Integer> size,
-                                    @RequestParam(required = false) String sort,
-                                    @RequestParam(required = false) String direction,
+                                    @RequestParam(required = false, defaultValue = "name") String sort,
+                                    @RequestParam(required = false, defaultValue = "ASC") String direction,
                                     @RequestParam(required = false) String name,
                                     @RequestParam(required = false) String secondName,
                                     @RequestParam(required = false) String patronymic,
@@ -45,7 +44,7 @@ public class CandidatesController {
 
         model.addAttribute("allCandidates", allCandidatesByPageNumber);
         model.addAttribute("pageSize", size.orElse(10));
-        model.addAttribute("pages", IntStream.rangeClosed(0, allCandidatesByPageNumber.getTotalPages() - 1).boxed().collect(Collectors.toList()));
+        model.addAttribute("pages", allCandidatesByPageNumber.getTotalPages());
         model.addAttribute("sort", sort);
         model.addAttribute("direction", direction);
         model.addAttribute("allDirections", directionService.findAll());

@@ -7,13 +7,16 @@ import com.example.cvservice.Entity.Main.Test;
 import com.example.cvservice.Service.Direction.DirectionService;
 import com.example.cvservice.Service.Test.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -34,8 +37,25 @@ public class TestController {
     }
 
     @GetMapping("/view/all")
-    public String displayAllTestsPage(Model model) {
-        model.addAttribute("tests", testService.findAll());
+    public String displayAllTestsPage(@RequestParam(required = false) Optional<Integer> page,
+                                      @RequestParam(required = false) Optional<Integer> size,
+                                      @RequestParam(required = false) boolean filter,
+                                      @RequestParam(required = false, defaultValue = "name") String sort,
+                                      @RequestParam(required = false, defaultValue = "ASC") String direction,
+                                      @RequestParam(required = false) String name,
+                                      @RequestParam(required = false) String description,
+                                      @RequestParam(required = false) List<String> dir,
+                                      Model model) {
+        Page<Test> allTestByPageNumber = testService.findTestsByParams(page.orElse(0), size.orElse(10), filter, name, description, dir, sort, direction);
+        model.addAttribute("allDirections", directionService.findAll());
+        model.addAttribute("tests", allTestByPageNumber);
+        model.addAttribute("filterDirections", dir);
+        model.addAttribute("filterName", name);
+        model.addAttribute("sort", sort);
+        model.addAttribute("direction", direction);
+        model.addAttribute("filterDesc", description);
+        model.addAttribute("pageSize", size.orElse(10));
+        model.addAttribute("pages", allTestByPageNumber.getTotalPages());
         return "/tests/all_tests_page";
     }
 
