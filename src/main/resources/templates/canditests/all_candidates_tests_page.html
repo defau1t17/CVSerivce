@@ -3,28 +3,88 @@
 <head>
     <meta charset="UTF-8">
     <title>All Candidates Page</title>
+    <link rel="stylesheet" th:href="@{/inner_style/filter_and_sort_style.css}">
 </head>
 <body>
 
+<div th:replace="inner/sort_and_filter_canditests :: div"></div>
+
+
 <div class="candidates-tests-page">
-    <div class="candidate-test" th:each="entry : ${groupedTestsByCandidate}">
+    <div class="candidate-test" th:each="candidateTest: ${allCandidateTests}">
         <div class="candidate-info">
-            <span th:text="${entry.key.name}"></span>
+            <label>Кандидат</label>
+            <span th:text="${candidateTest.candidate.name}"></span>
+            <span th:text="${candidateTest.candidate.secondName}"></span>
+            <span th:text="${candidateTest.candidate.patronymic}"></span>
         </div>
-        <div th:each="test : ${entry.value}">
+        <div>
             <div>
-                <span th:text="${test.test.name}"></span>
-                <span th:text="${test.grade.date}"></span>
-                <span th:text="${test.grade.mark}"></span>
+                <span th:text="'Название : ' + ${candidateTest.test.name}"></span>
+                <span th:text="'Описание : ' +  ${candidateTest.test.description}"></span>
+                <li th:each="testDirection : ${candidateTest.test.directions}" th:text="${testDirection.name}"></li>
+            </div>
+            <div>
+                <label>Оценка и дата прохождения</label>
+                <span th:text=" 'Дата прохождения : ' + ${candidateTest.grade.date}"></span>
+                <span th:text="'Оценка : ' + ${candidateTest.grade.mark}"></span>
             </div>
         </div>
         <div class="button-block">
-            <a th:href="@{/task/canditests/canditest/candidate/__${entry.key.id}__}">Просмотреть тесты кандидата</a>
+            <a th:href="@{/task/canditests/canditest/candidate/__${candidateTest.candidate.id}__}">Просмотреть тесты
+                кандидата</a>
         </div>
 
     </div>
 </div>
 
+
+<div class="pagination-links-container">
+    <form action="">
+        <input type="hidden" th:name="cName" th:value="${cName}">
+        <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+        <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+        <input type="hidden" th:name="tName" th:value="${tName}">
+        <input type="hidden" name="tDesc" th:value="${tDesc}">
+        <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+               th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+        <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+        <input type="hidden" th:name="toMark" th:value="${toMark}">
+        <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+        <input type="hidden" th:name="toDate" th:value="${toDate}">
+        <div th:each="pageNumber : ${#numbers.sequence(0, allCandidateTests.totalPages - 1)}">
+            <button type="submit" th:name="page" th:value="${pageNumber}" th:text="${pageNumber}"></button>
+        </div>
+        <input type="hidden" name="size" th:value="${pageSize}">
+        <input type="hidden" name="sort" th:value="${sort}">
+        <input type="hidden" name="direction" th:value="${direction}">
+    </form>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var url = new URLSearchParams(window.location.search);
+        var sort = url.get('sort');
+        var direction = url.get('direction');
+        $('.sort-form').each(function () {
+            var sortInput = $(this).find('.selected-radio[name="sort"]').val();
+            var directionInput = $(this).find('.sort-radio[name="direction"]').val();
+            if (sortInput === sort && directionInput === direction) {
+                $(this).find('.sort-inner-block').css('background', '#8f8f8f');
+            }
+        });
+    });
+
+    function sortData(element) {
+        var radioInput = $(element).closest('.sort-inner-block').find('.sort-radio');
+        radioInput.prop('checked', true);
+        var form = $(element).closest('.sort-form');
+        form.submit();
+    }
+
+</script>
 
 </body>
 </html>

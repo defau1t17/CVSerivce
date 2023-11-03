@@ -5,7 +5,6 @@
     <title>Candidate</title>
 </head>
 <body>
-<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
 
 <div class="candidate-container" th:if="${candidate != null }">
     <div class="candidate">
@@ -21,14 +20,14 @@
 
         <div class="candidate-directions-block">
             <ul th:each="direction : ${candidate.directions}">
-                <li th:text="${direction.name}">
-                    <!--                    добавить ссылку на направление-->
+                <li>
+                    <a th:href="@{/task/directions/direction/__${direction.id}__}" th:text="${direction.name}"></a>
                 </li>
             </ul>
         </div>
 
         <div th:if="${candidate.curriculumVitae != null}">
-            <label>Candidate CV FILE</label>
+            <label>CV Файл Кандидата</label>
             <a th:href="@{/task/view/file/candidate/__${candidate.id}__}"
                th:text="${candidate.curriculumVitae.cvFileName}"></a>
         </div>
