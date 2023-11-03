@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/condidates/all_candidates_style.css}">
+
+</head>
+<body>
+
+
+<div class="filter">
+    <form action="">
+        <input type="text" th:name="cName" th:value="${cName}" placeholder="Имя кандидата">
+        <input type="text" th:name="cSecondName" th:value="${cSecondName}" placeholder="Фамилия кандидата">
+        <input type="text" th:name="cPatr" th:value="${cPatr}" placeholder="Отчество кандидата">
+        <select th:name="tName">
+            <option th:value="null" th:selected="${tName == null}">Выбирите тест</option>
+            <option th:each="test : ${allTests}" th:value="${test.name}" th:text="${test.name}"
+                    th:selected="${tName == test.name}"></option>
+        </select>
+        <input type="text" name="tDesc" th:value="${tDesc}" placeholder="Описание теста">
+        <input th:each="direction : ${allDirections}" th:name="dirNames" th:value="${direction.name}" id="direction"
+               type="checkbox" th:text="${direction.name}"
+               th:checked="${dirNames != null && dirNames.contains(direction.name)}">
+
+        <input type="number" th:name="fromMark" th:value="${fromMark}"
+               placeholder="Введите минимальный балл за тест" min="0" max="100">
+        <input type="number" th:name="toMark" th:value="${toMark}" min="0" max="100"
+               placeholder="Введите максимальный балл за тест">
+        <input type="date" th:name="fromDate" th:value="${fromDate}" placeholder="Начальная дата">
+        <input type="date" th:name="toDate" th:value="${toDate}" placeholder="Конечная дата">
+        <button type="submit">Фильтр</button>
+        <input th:if="${sort != null && direction != null}" type="hidden" name="sort" th:value="${sort}">
+        <input th:if="${sort != null && direction != null}" type="hidden" name="direction" th:value="${direction}">
+    </form>
+</div>
+
+<div class="control-container">
+    <div class="sort-container">
+        <div class="sort-main-block">
+            <span>Имя</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="candidate.name">
+                    </div>
+                </div>
+            </form>
+
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="candidate.name">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Фамилия</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="candidate.secondName">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="candidate.secondName">
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Отчество</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="candidate.patronymic">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="candidate.patronymic">
+
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Название теста</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="test.name">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="test.name">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Описание теста</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="test.description">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="test.description">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Направления</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="test.directions.name">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="test.directions.name">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Оценка</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="grade.mark">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="grade.mark">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="sort-main-block">
+            <span>Дата</span>
+            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="grade.date">
+                    </div>
+                </div>
+            </form>
+            <form class="sort-form" action="" th:with="sortDirection='DESC'">
+                <input type="hidden" name="page" th:value="${0}">
+                <input type="hidden" name="size" th:value="${pageSize}">
+                <input type="hidden" th:name="cName" th:value="${cName}">
+                <input type="hidden" th:name="cSecondName" th:value="${cSecondName}">
+                <input type="hidden" th:name="cPatr" th:value="${cPatr}">
+                <input type="hidden" th:name="tName" th:value="${tName}">
+                <input type="hidden" name="tDesc" th:value="${tDesc}">
+                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
+                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="fromMark" th:value="${fromMark}">
+                <input type="hidden" th:name="toMark" th:value="${toMark}">
+                <input type="hidden" th:name="fromDate" th:value="${fromDate}">
+                <input type="hidden" th:name="toDate" th:value="${toDate}">
+                <div class="sort-block">
+                    <div class="sort-inner-block">
+                        <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
+                        <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
+                        <input type="hidden" class="selected-radio" th:name="sort" th:value="grade.date">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>
