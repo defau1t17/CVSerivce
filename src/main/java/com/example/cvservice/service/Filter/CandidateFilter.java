@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CandidateFilter {
 
-    public static Specification<Candidate> filterCandidateByParams(CandidateFilterDTO candidateFilter, DirectionService service) {
+    public Specification<Candidate> filterCandidateByParams(CandidateFilterDTO candidateFilter, DirectionService service) {
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (candidateFilter.getName() != null && !candidateFilter.getName().isEmpty()) {
@@ -35,7 +35,7 @@ public class CandidateFilter {
         };
     }
 
-    public static CandidateFilterDTO generateCandidateFromParams(String name, String secondName, String patr, List<String> dirNames) {
+    public CandidateFilterDTO generateCandidateFromParams(String name, String secondName, String patr, List<String> dirNames) {
         CandidateFilterDTO candidateFilter = new CandidateFilterDTO();
         if (name != null && !name.trim().isEmpty()) {
             candidateFilter.setName(name.trim());

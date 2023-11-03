@@ -4,15 +4,15 @@ import com.example.cvservice.dto.Candidate.NewCandidateDTO;
 import com.example.cvservice.dto.Candidate.UpdateCandidateDTO;
 
 public class InputCandidateVerification {
-    public static boolean doesCandidateIsEmpty(NewCandidateDTO candidateDTO) {
-        if (candidateDTO.getName().trim().isEmpty()) {
+    public boolean doesCandidateIsEmpty(NewCandidateDTO candidateDTO) {
+        if (candidateDTO.getName() == null || candidateDTO.getName().trim().isEmpty()) {
             return true;
         }
-        if (candidateDTO.getSecond_name().trim().isEmpty()) {
+        if (candidateDTO.getSecond_name() == null || candidateDTO.getSecond_name().trim().isEmpty()) {
             return true;
         }
 
-        if (candidateDTO.getPatr().trim().isEmpty()) {
+        if (candidateDTO.getPatr() == null || candidateDTO.getPatr().trim().isEmpty()) {
             return true;
 
         }
@@ -22,19 +22,19 @@ public class InputCandidateVerification {
         return false;
     }
 
-    public static boolean doesUpdatedCandidateIsEmpty(UpdateCandidateDTO UpdateCandidateDTO) {
-        if (UpdateCandidateDTO.getName().trim().isEmpty()) {
+    public boolean doesUpdatedCandidateIsEmpty(UpdateCandidateDTO updateCandidateDTO) {
+        if (updateCandidateDTO.getName() == null || updateCandidateDTO.getName().trim().isEmpty()) {
             return true;
         }
-        if (UpdateCandidateDTO.getSecond_name().trim().isEmpty()) {
+        if (updateCandidateDTO.getSecond_name() == null || updateCandidateDTO.getSecond_name().trim().isEmpty()) {
             return true;
         }
 
-        if (UpdateCandidateDTO.getPatr().trim().isEmpty()) {
+        if (updateCandidateDTO.getPatr() == null  || updateCandidateDTO.getPatr().trim().isEmpty()) {
             return true;
 
         }
-        if (UpdateCandidateDTO.getDirections() == null || UpdateCandidateDTO.getDirections().size() == 0) {
+        if (updateCandidateDTO.getDirections() == null || updateCandidateDTO.getDirections().size() == 0) {
             return true;
         }
         return false;

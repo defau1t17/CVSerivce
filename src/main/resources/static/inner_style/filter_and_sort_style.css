@@ -1,0 +1,79 @@
+.filter {
+    width: 300px;
+}
+
+#filter-candidate-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-block {
+    width: 250px;
+    height: 20px;
+    margin: 3px;
+}
+
+.selection-block {
+    display: flex;
+    flex-direction: row;
+    width: 250px;
+    height: 25px;
+}
+
+
+.selection-checkbox {
+    display: flex;
+    flex-direction: row;
+}
+
+
+.filter-button-block {
+    margin-top: 10px;
+}
+
+.submit-filter-button {
+    width: 200px;
+    height: 25px;
+    background: gray;
+    border: none;
+    border-radius: 15px;
+}
+
+.selection-block input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.sort-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.sort-list-block {
+    display: flex;
+    flex-direction: row;
+}
+
+.sort-main-block {
+    display: flex;
+    flex-direction: row
+}
+
+.sort-info-block {
+    display: flex;
+    align-items: center;
+}
+
+.sort-block {
+    display: flex;
+    flex-direction: column;
+}
+
+.image {
+    height: 15px;
+    cursor: pointer;
+}
+
+.sort-radio {
+    display: none;
+}
+

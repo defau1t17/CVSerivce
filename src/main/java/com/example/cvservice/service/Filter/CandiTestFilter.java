@@ -56,7 +56,7 @@ public class CandiTestFilter {
                                                                    String testName, String testDesc, List<String> directionNames,
                                                                    LocalDate fromDate, LocalDate toDate, int fromMark, int toMark) {
         CandiTestFilterDTO candiTestFilterDTO = new CandiTestFilterDTO();
-        candiTestFilterDTO.setCandidateFilterDTO(CandidateFilter.generateCandidateFromParams(candidateName, candidateSecondName, candidatePatr, null));
+        candiTestFilterDTO.setCandidateFilterDTO(new CandidateFilter().generateCandidateFromParams(candidateName, candidateSecondName, candidatePatr, null));
         candiTestFilterDTO.setTestFilterDTO(TestFilter.generateFilterFromParams(testName, testDesc, directionNames));
 
         if (fromDate != null) {

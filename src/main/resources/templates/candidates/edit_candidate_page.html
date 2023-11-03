@@ -5,7 +5,6 @@
     <title>Edit Candidate</title>
 </head>
 <body>
-<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
 <div th:if="${requestUpdateCandidate != null}">
     <form th:object="${requestUpdateCandidate}" enctype="multipart/form-data" id="requestUpdateCandidate">
         <div class="update-candidate" th:value="${requestUpdateCandidate.id}">
@@ -20,10 +19,9 @@
             <input th:field="*{patr}" type="text" id="input-patronymic-field" placeholder="Input candidate patronymic"
                    required minlength="3" maxlength="25" th:value="${requestUpdateCandidate.patr}">
             <textarea th:field="*{candidateDesc}" id="input-candidate-description-field"
-                      placeholder="Напишите о кандидате." th:text="${requestUpdateCandidate.candidateDesc}" th:value="${requestUpdateCandidate.candidateDesc}"
+                      placeholder="Напишите о кандидате." th:text="${requestUpdateCandidate.candidateDesc}"
+                      th:value="${requestUpdateCandidate.candidateDesc}"
                       required minlength="3" maxlength="100"></textarea>
-
-
             <div class="select-directions-container">
                 <div th:each="direction : ${allDirections}">
                     <input th:field="*{directions}" th:value="${direction.id}" id="direction" type="checkbox"
@@ -48,9 +46,6 @@
                 <input th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file">
             </div>
             <button type="button" onclick="validateBeforeSend()">Загрузить</button>
-            <button type="button" onclick="sendRemoveRequest()">Удалить</button>
-
-
         </div>
     </form>
 </div>
@@ -65,7 +60,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    var csrf_token = $('#_csrf_token').attr("content");
 
     function addNewCandidateRequest() {
 
@@ -79,14 +73,11 @@
         });
 
         $.ajax({
-            url: '/task/candidates/rest/update/candidate/' + update_id,
+            url: '/task/candidates/rest/update/' + update_id,
             type: 'PATCH',
             processData: false,
             contentType: false,
             data: formData,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
             success: function (data, status, xhr) {
                 if (xhr.status === 200) {
                     showNotification("Данные успешно обновлены!", 1000);
@@ -101,29 +92,6 @@
             }
         });
     }
-
-
-    function sendRemoveRequest() {
-        var candidateID = $('.update-candidate').attr('value');
-
-        $.ajax({
-            url: '/task/candidates/rest/remove/candidate/' + candidateID,
-            type: 'DELETE',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
-            success: function (data, status, xhr) {
-                if (xhr.status === 200) {
-                    window.location.href = "/task/candidates/view/all";
-                }
-            },
-            error: function () {
-                showNotification("Произошла ошибка удаления!", 1000);
-            }
-        });
-    }
-
-
 
     function validateBeforeSend() {
         var name = $('#input-name-field').val();

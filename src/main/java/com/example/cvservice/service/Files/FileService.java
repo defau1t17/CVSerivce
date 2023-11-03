@@ -14,7 +14,7 @@ public class FileService {
 
     public static Image buildImage(MultipartFile multipartFile) {
         Image image = new Image();
-        if (!multipartFile.isEmpty()) {
+        if (multipartFile != null && !multipartFile.isEmpty()) {
             try {
                 image.setImageData(multipartFile.getBytes());
                 image.setImageFileName(multipartFile.getOriginalFilename());
@@ -38,7 +38,7 @@ public class FileService {
 
     public static CurriculumVitae buildCV(MultipartFile multipartFile) {
         CurriculumVitae curriculumVitae = new CurriculumVitae();
-        if (!multipartFile.isEmpty()) {
+        if (multipartFile != null && !multipartFile.isEmpty()) {
             try {
                 curriculumVitae.setCvFileName(multipartFile.getOriginalFilename());
                 curriculumVitae.setCvData(multipartFile.getBytes());

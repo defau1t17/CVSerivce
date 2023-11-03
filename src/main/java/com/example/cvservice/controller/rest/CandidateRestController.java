@@ -12,9 +12,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -24,9 +26,9 @@ public class CandidateRestController {
     @Autowired
     private CandidateService candidateService;
 
-    @PostMapping("/add/new")
-    public ResponseEntity addNewCandidate(@ModelAttribute NewCandidateDTO newCandidateDTO) {
-        if (!InputCandidateVerification.doesCandidateIsEmpty(newCandidateDTO)) {
+    @PostMapping(value = "/add")
+    public ResponseEntity<String> addNewCandidate(@ModelAttribute NewCandidateDTO newCandidateDTO) {
+        if (!new InputCandidateVerification().doesCandidateIsEmpty(newCandidateDTO)) {
             Candidate newCandidate = Candidate.builder().name(newCandidateDTO.getName())
                     .secondName(newCandidateDTO.getSecond_name())
                     .patronymic(newCandidateDTO.getPatr())
@@ -35,32 +37,39 @@ public class CandidateRestController {
                     .image(FileService.buildImage(newCandidateDTO.getImageFile()))
                     .curriculumVitae(FileService.buildCV(newCandidateDTO.getCvFile())).build();
             candidateService.save(newCandidate);
-            return ResponseEntity.status(200).build();
+            return ResponseEntity.ok("Новый пользователь успешно сохранен");
         }
-        return ResponseEntity.status(409).build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Пользователь не прошел валидацию");
     }
 
-    @DeleteMapping("/remove/candidate/{id}")
-    public ResponseEntity removeCandidateByID(@PathVariable(value = "id") Long id) {
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Candidate> findCandidateByID(@PathVariable(value = "id") Long id) {
+        if (candidateService.findCandidateByID(id).isPresent()) {
+            return ResponseEntity.ok(candidateService.findCandidateByID(id).get());
+        } else return ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<List<Candidate>> findFilteredCandidates(@RequestParam(required = false) Optional<Integer> page,
+                                                                  @RequestParam(required = false) Optional<Integer> size,
+                                                                  @RequestParam(required = false, defaultValue = "name") String sort,
+                                                                  @RequestParam(required = false, defaultValue = "ASC") String direction,
+                                                                  @RequestParam(required = false) String name,
+                                                                  @RequestParam(required = false) String secondName,
+                                                                  @RequestParam(required = false) String patronymic,
+                                                                  @RequestParam(required = false) List<String> dir) {
+        return ResponseEntity.ok(candidateService.findAllCandidatesByPageNumber(page.orElse(0), size.orElse(10), sort, direction, name, secondName, patronymic, dir).getContent());
+    }
+
+
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<String> updateCandidateByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandidateDTO updateCandidateDTO) throws IOException {
         Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         if (optionalCandidate.isPresent()) {
-            candidateService.delete(optionalCandidate.get());
-            return ResponseEntity.status(200).build();
+            candidateService.update(new UpdateCandidateData().updateCandidate(optionalCandidate.get(), updateCandidateDTO));
+            return ResponseEntity.status(200).body("Пользователь успешно обновлен");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
-    @PatchMapping("/update/candidate/{id}")
-    public ResponseEntity updateCandidateByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandidateDTO updateCandidateDTO) throws IOException {
-        if (!InputCandidateVerification.doesUpdatedCandidateIsEmpty(updateCandidateDTO)) {
-            Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
-            if (optionalCandidate.isPresent()) {
-                candidateService.update(new UpdateCandidateData().updateCandidate(optionalCandidate.get(), updateCandidateDTO));
-                return ResponseEntity.status(200).build();
-            }
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-        return ResponseEntity.status(409).build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь с таким ID не найден");
 
     }
 

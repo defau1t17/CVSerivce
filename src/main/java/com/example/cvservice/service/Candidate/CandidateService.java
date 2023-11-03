@@ -22,7 +22,6 @@ public class CandidateService implements EntityOperations {
     @Autowired
     private CandidateRepository repository;
 
-
     @Autowired
     private DirectionService directionService;
 
@@ -30,28 +29,9 @@ public class CandidateService implements EntityOperations {
         return repository.findAll();
     }
 
-    public Page<Candidate> findAllCandidatesByPageNumber(int pageNumber, int pageSize, String param, String direction, boolean filer, String name, String secondName, String patr, List<String> directionsNames) {
-        Pageable pageable = null;
-        Specification<Candidate> candidateSpecification = null;
-
-        if (param != null && direction != null && !filer) {
-            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.valueOf(direction), param));
-        } else if (param != null && direction != null && filer) {
-            candidateSpecification = CandidateFilter.filterCandidateByParams(CandidateFilter.generateCandidateFromParams(name, secondName, patr, directionsNames), directionService);
-            pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.valueOf(direction), param));
-            try {
-                return repository.findAll(candidateSpecification, pageable);
-            } catch (Exception exception) {
-                exception.printStackTrace();
-            }
-        } else if (filer) {
-            candidateSpecification = CandidateFilter.filterCandidateByParams(CandidateFilter.generateCandidateFromParams(name, secondName, patr, directionsNames), directionService);
-            pageable = PageRequest.of(pageNumber, pageSize);
-            return repository.findAll(candidateSpecification, pageable);
-        } else {
-            pageable = PageRequest.of(pageNumber, pageSize);
-        }
-
+    public Page<Candidate> findAllCandidatesByPageNumber(int pageNumber, int pageSize, String param, String direction, String name, String secondName, String patr, List<String> directionsNames) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.valueOf(direction), param));
+        Specification<Candidate> candidateSpecification = new CandidateFilter().filterCandidateByParams(new CandidateFilter().generateCandidateFromParams(name, secondName, patr, directionsNames), directionService);
         return repository.findAll(candidateSpecification, pageable);
     }
 

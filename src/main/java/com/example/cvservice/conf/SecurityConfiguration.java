@@ -13,8 +13,10 @@ public class SecurityConfiguration {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
                 .authorizeHttpRequests()
+                .requestMatchers("/task/").permitAll()
                 .anyRequest().permitAll()
                 .and()
+                .csrf().disable()
                 .build();
     }
 }
