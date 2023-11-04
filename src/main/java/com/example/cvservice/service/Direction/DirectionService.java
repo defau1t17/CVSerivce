@@ -35,7 +35,7 @@ public class DirectionService implements EntityOperations {
 
     public Page<Direction> findDirectionsByParams(int page, int size, String name, String description, String sort, String direction) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.valueOf(direction), sort));
-        return repository.findAll(DirectionFilter.filterDirections(DirectionFilter.generateDirectionFilterFromParams(name, description)), pageable);
+        return repository.findAll(new DirectionFilter().filterDirections(new DirectionFilter().generateDirectionFilterFromParams(name, description)), pageable);
     }
 
 
@@ -70,9 +70,7 @@ public class DirectionService implements EntityOperations {
         ArrayList<Direction> directions = new ArrayList<>();
         direction.setName("test");
         direction.setDescription("testDesc");
-
         directions.add(direction);
-
         repository.saveAll(directions);
     }
 

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+</head>
+<body>
+<header class="nav-header">
+    <div class="nav-block">
+        <a class="nav-link" th:href="@{/task/candidates/all}">Все Кандидаты</a>
+        <a class="nav-link" th:href="@{/task/candidates/add}">Добавить Кандидата</a>
+    </div>
+    <div class="nav-block">
+        <a class="nav-link" th:href="@{/task/tests/all}">Все Тесты</a>
+        <a class="nav-link" th:href="@{/task/tests/add}">Добавить Тест</a>
+    </div>
+    <div class="nav-block">
+        <a class="nav-link" th:href="@{/task/directions/all}">Все Направления</a>
+        <a class="nav-link" th:href="@{/task/directions/add}">Добавить Направление</a>
+    </div>
+    <div class="nav-block">
+        <a class="nav-link" th:href="@{/task/canditests/all}">Все Тесты Кандидатов</a>
+        <a class="nav-link" th:href="@{/task/canditests/add}">Добавить Тест Кандидата</a>
+    </div>
+</header>
+</body>
+</html>

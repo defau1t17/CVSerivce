@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>New Candidate Test</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
-
-<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
-
+<div th:replace="inner/navigation_header :: header"></div>
 <div class="candidate-test-container">
     <div class="canditest">
         <form id="newCandiTestForm" th:object="${newCandiTest}">
@@ -18,10 +18,11 @@
                             th:value="${candidate.id}">
                         <div class="candidate-info">
                             <span th:text="${candidate.name + ' ' + candidate.secondName + ' ' + candidate.patronymic + ' '}"></span>
-                            <span>Directions : </span>
+                            <span>[Directions : </span>
                             <span th:each="candidateDirection : ${candidate.directions}"
-                                  th:text="${'(' + candidateDirection.name + ') '}"
+                                  th:text="${' '+candidateDirection.name + ' '}"
                                   style="display: inline"></span>
+                            <span>]</span>
                         </div>
                     </option>
                 </select>
@@ -58,22 +59,17 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    var csrf_token = $('#_csrf_token').attr("content");
-
 
     function addNewCandidateTestRequest() {
 
         var formData = new FormData($('#newCandiTestForm')[0]);
 
         $.ajax({
-            url: '/task/canditests/rest/add/new',
+            url: '/task/canditests/rest/add',
             type: 'POST',
             processData: false,
             contentType: false,
             data: formData,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
             success: function (data, status, xhr) {
                 console.log(status);
                 if (xhr.status === 200) {

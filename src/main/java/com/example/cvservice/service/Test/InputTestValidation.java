@@ -8,32 +8,21 @@ import java.util.Optional;
 
 public class InputTestValidation {
 
-    public static boolean isNewTestEmpty(NewTestDTO newTestDTO) {
-        if (newTestDTO.getName().trim().isEmpty()) {
+    public boolean isNewTestEmpty(NewTestDTO newTestDTO) {
+        if (newTestDTO.getName() == null || newTestDTO.getName().trim().isEmpty()) {
             return true;
         }
-        if (newTestDTO.getTestDirections().size() == 0) {
+        if (newTestDTO.getTestDirections() == null || newTestDTO.getTestDirections().size() == 0) {
             return true;
         }
-
         return false;
     }
 
-    public static boolean isNewTestExists(TestService testService, NewTestDTO newTestDTO) {
+    public boolean isNewTestExists(TestService testService, NewTestDTO newTestDTO) {
         Optional<Test> optionalTest = testService.findTestByName(newTestDTO.getName());
         return optionalTest.isPresent();
     }
 
-    public static boolean isUpdateTestEmpty(UpdateTestDTO updateTestDTO) {
-        if (updateTestDTO.getName().trim().isEmpty()) {
-            return true;
-        }
 
-        if (updateTestDTO.getTestDirections().size() == 0) {
-            return true;
-        }
-
-        return false;
-    }
 
 }

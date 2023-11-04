@@ -4,16 +4,13 @@
     <meta charset="UTF-8">
     <title>All Directions</title>
     <link rel="stylesheet" th:href="@{/inner_style/filter_and_sort_style.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
 
 </head>
 <body>
-
-<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
-
+<div th:replace="inner/navigation_header :: header"></div>
 
 <div th:replace="inner/sort_and_filter_directions :: div"></div>
-
-
 <div class="directions-container">
     <div class="direction" th:each="direction : ${directions}">
         <div class="direction-name-field">
@@ -44,17 +41,8 @@
         </div>
     </form>
 </div>
-
-
-<div id="notification" class="notification">
-
-</div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-    const notification = document.getElementById('notification');
-
 
     $(document).ready(function () {
         var url = new URLSearchParams(window.location.search);
@@ -76,14 +64,6 @@
         form.submit();
     }
 
-    function showNotification(message, duration) {
-        notification.textContent = message;
-        notification.style.opacity = '1';
-
-        setTimeout(() => {
-            notification.style.opacity = '0';
-        }, duration);
-    }
 </script>
 
 

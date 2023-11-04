@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <title>All Tests</title>
     <link rel="stylesheet" th:href="@{/inner_style/filter_and_sort_style.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
-
-<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
-
-
+<div th:replace="inner/navigation_header :: header"></div>
 <div th:replace="inner/sort_and_filter_tests :: div"></div>
-
 
 <div class="test-container">
     <div class="test-list" th:each="test : ${tests}">
@@ -19,7 +17,7 @@
             <a th:href="@{/task/tests/test/__${test.id}__}">
                 <div class="test-name-block">
                     <label>Название теста :</label>
-                    <span th:name="${test.name}">name</span>
+                    <span th:text="${test.name}"></span>
                 </div>
             </a>
             <div class="test-description-block">
@@ -32,45 +30,31 @@
                     <a th:text="${direction.name}"
                        th:href="@{/task/directions/direction/__${direction.id}__}"></a>
                 </div>
-
             </div>
             <div class="test-process-block">
                 <a class="process-button" th:href="@{/task/tests/test/edit/__${test.id}__}">Изменить</a>
             </div>
         </div>
     </div>
-    <div id="notification" class="notification">
+</div>
 
-    </div>
-    <div class="pagination-links-container" th:if="${tests.totalPages >= 0}">
-        <form action="">
-            <input type="hidden" name="sort" th:value="${sort}">
-            <input type="hidden" name="direction" th:value="${direction}">
-            <input type="hidden" th:name="name" th:value="${filterName}">
-            <input type="hidden" th:name="description" th:value="${filterDesc}">
-            <input type="hidden" th:name="dir" th:if="${filterDirections != null}"
-                   th:attr="value=${#strings.arrayJoin(filterDirections, ',')}">
-            <div th:each="pageNumber : ${#numbers.sequence(0, tests.totalPages - 1)}">
-                <button type="submit" th:name="page" th:value="${pageNumber}" th:text="${pageNumber}"></button>
-            </div>
-            <input type="hidden" name="size" th:value="${pageSize}">
-        </form>
-    </div>
+<div class="pagination-links-container" th:if="${tests.totalPages >= 0}">
+    <form action="">
+        <input type="hidden" name="sort" th:value="${sort}">
+        <input type="hidden" name="direction" th:value="${direction}">
+        <input type="hidden" th:name="name" th:value="${filterName}">
+        <input type="hidden" th:name="description" th:value="${filterDesc}">
+        <input type="hidden" th:name="dir" th:if="${filterDirections != null}"
+               th:attr="value=${#strings.arrayJoin(filterDirections, ',')}">
+        <div th:each="pageNumber : ${#numbers.sequence(0, tests.totalPages - 1)}">
+            <button type="submit" th:name="page" th:value="${pageNumber}" th:text="${pageNumber}"></button>
+        </div>
+        <input type="hidden" name="size" th:value="${pageSize}">
+    </form>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    const notification = document.getElementById('notification');
-
-    function showNotification(message, duration) {
-        notification.textContent = message;
-        notification.style.opacity = '1';
-
-        setTimeout(() => {
-            notification.style.opacity = '0';
-        }, duration);
-    }
-
     $(document).ready(function () {
         var url = new URLSearchParams(window.location.search);
         var sort = url.get('sort');
@@ -90,7 +74,6 @@
         var form = $(element).closest('.sort-form');
         form.submit();
     }
-
 </script>
 
 

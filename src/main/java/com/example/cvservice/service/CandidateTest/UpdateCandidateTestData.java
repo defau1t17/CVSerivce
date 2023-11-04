@@ -4,7 +4,7 @@ import com.example.cvservice.dto.Canditests.UpdateCandiTestDTO;
 import com.example.cvservice.entity.main.CandidatesTest;
 
 public class UpdateCandidateTestData {
-    public static CandidatesTest updateCandidateTest(CandidatesTest candidatesTest, UpdateCandiTestDTO updateCandiTestDTO) {
+    public  CandidatesTest updateCandidateTest(CandidatesTest candidatesTest, UpdateCandiTestDTO updateCandiTestDTO) {
         if (updateCandiTestDTO.getDate() != null) {
             candidatesTest.getGrade().setDate(updateCandiTestDTO.getDate());
         }

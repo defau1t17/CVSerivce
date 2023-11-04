@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Candidate</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
+<div th:replace="inner/navigation_header :: header"></div>
+
 <div th:if="${requestUpdateCandidate != null}">
     <form th:object="${requestUpdateCandidate}" enctype="multipart/form-data" id="requestUpdateCandidate">
         <div class="update-candidate" th:value="${requestUpdateCandidate.id}">
             <img th:src="@{'data:image/*;base64,' + ${requestUpdateCandidate.generateBase64Image()}}"
                  style="height: 200px">
-
             <input th:field="*{name}" type="text" id="input-name-field" placeholder="Input candidate name" minlength="2"
                    maxlength="25" required th:value="${requestUpdateCandidate.name}">
             <input th:field="*{second_name}" type="text" id="input-second-name-field"
@@ -29,18 +32,14 @@
                     <label th:for="'direction-' + ${direction.id}" th:text="${direction.name}"></label>
                 </div>
             </div>
-
             <div th:if="${requestUpdateCandidate.cvFile != null}">
                 <label>Candidate CV FILE</label>
                 <a th:href="@{/task/view/file/candidate/__${requestUpdateCandidate.id}__}"
                    th:text="${requestUpdateCandidate.cvFile.name}"></a>
             </div>
-
             <div th:if="${requestUpdateCandidate.cvFile == null}">
                 <label>NO CV FILE</label>
             </div>
-
-
             <div class="input-file-container">
                 <input th:field="*{cvFile}" name="cvFile" type="file" id="input-cv-file" accept="application/pdf">
                 <input th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file">

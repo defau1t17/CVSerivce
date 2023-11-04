@@ -5,6 +5,8 @@ import com.example.cvservice.dto.Test.UpdateTestDTO;
 import com.example.cvservice.entity.main.Test;
 import com.example.cvservice.service.Direction.DirectionService;
 import com.example.cvservice.service.Test.TestService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ public class TestController {
     @Autowired
     private TestService testService;
 
+
     @GetMapping("/add")
     public String addNewTestPage(Model model) {
         model.addAttribute("newTest", new NewTestDTO());
@@ -34,17 +37,16 @@ public class TestController {
         return "/tests/add_new_test_page";
     }
 
-    @GetMapping("/view/all")
+    @GetMapping("/all")
     public String displayAllTestsPage(@RequestParam(required = false) Optional<Integer> page,
                                       @RequestParam(required = false) Optional<Integer> size,
-                                      @RequestParam(required = false) boolean filter,
                                       @RequestParam(required = false, defaultValue = "name") String sort,
                                       @RequestParam(required = false, defaultValue = "ASC") String direction,
                                       @RequestParam(required = false) String name,
                                       @RequestParam(required = false) String description,
                                       @RequestParam(required = false) List<String> dir,
                                       Model model) {
-        Page<Test> allTestByPageNumber = testService.findTestsByParams(page.orElse(0), size.orElse(10), filter, name, description, dir, sort, direction);
+        Page<Test> allTestByPageNumber = testService.findTestsByParams(page.orElse(0), size.orElse(10), name, description, dir, sort, direction);
         model.addAttribute("allDirections", directionService.findAll());
         model.addAttribute("tests", allTestByPageNumber);
         model.addAttribute("filterDirections", dir);
@@ -68,7 +70,6 @@ public class TestController {
 
         return "/tests/test_page";
     }
-
 
     @GetMapping("/test/edit/{id}")
     public String displayEditTestPage(@PathVariable(value = "id") Long id, Model model) {

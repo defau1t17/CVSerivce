@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Add New Direction</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
 
-<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
+<div th:replace="inner/navigation_header :: header"></div>
 
 <div class="direction-container">
     <div class="direction">
@@ -34,12 +36,10 @@
 
     </div>
 
-
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    var csrf_token = $('#_csrf_token').attr("content");
 
 
     function addNewCandidateRequest() {
@@ -47,14 +47,11 @@
         var formData = new FormData($('#newDirection')[0]);
 
         $.ajax({
-            url: '/task/directions/rest/add/new',
+            url: '/task/directions/rest/add',
             type: 'POST',
             processData: false,
             contentType: false,
             data: formData,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
             success: function (data, status, xhr) {
                 if (xhr.status === 200) {
                     showNotification("Новое направление успешно добавлено!", 1000);
@@ -82,7 +79,6 @@
             addNewCandidateRequest();
         }
     }
-
 
     const notification = document.getElementById('notification');
 
