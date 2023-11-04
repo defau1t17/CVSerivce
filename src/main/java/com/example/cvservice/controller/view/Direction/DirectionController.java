@@ -32,7 +32,6 @@ public class DirectionController {
 
         Page<Direction> directionsByParams = directionService.findDirectionsByParams(page.orElse(0), size.orElse(10), name, description, sort, direction);
 
-
         model.addAttribute("directions", directionsByParams);
         model.addAttribute("filterName", name);
         model.addAttribute("sort", sort);
@@ -40,8 +39,6 @@ public class DirectionController {
         model.addAttribute("filterDesc", description);
         model.addAttribute("pageSize", size.orElse(10));
         model.addAttribute("pages", directionsByParams.getTotalPages());
-
-//        model.addAttribute("directions", directionService.findAll());
         return "/directions/all_directions_page";
     }
 

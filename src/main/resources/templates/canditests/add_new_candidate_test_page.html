@@ -6,7 +6,6 @@
 </head>
 <body>
 
-<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
 
 <div class="candidate-test-container">
     <div class="canditest">
@@ -58,22 +57,17 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    var csrf_token = $('#_csrf_token').attr("content");
-
 
     function addNewCandidateTestRequest() {
 
         var formData = new FormData($('#newCandiTestForm')[0]);
 
         $.ajax({
-            url: '/task/canditests/rest/add/new',
+            url: '/task/canditests/rest/add',
             type: 'POST',
             processData: false,
             contentType: false,
             data: formData,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
             success: function (data, status, xhr) {
                 console.log(status);
                 if (xhr.status === 200) {

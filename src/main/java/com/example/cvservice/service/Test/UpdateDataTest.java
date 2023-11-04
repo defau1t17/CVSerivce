@@ -5,14 +5,15 @@ import com.example.cvservice.entity.main.Test;
 
 public class UpdateDataTest {
     public Test updateTest(Test test, UpdateTestDTO updateTestDTO) {
-        if (!updateTestDTO.getName().trim().isEmpty()) {
+        if (updateTestDTO.getName() != null && !updateTestDTO.getName().trim().isEmpty()) {
             test.setName(updateTestDTO.getName());
         }
-        if (updateTestDTO.getTestDirections().size() != 0) {
+        if (updateTestDTO.getTestDirections() != null && !updateTestDTO.getTestDirections().isEmpty()) {
             test.setDirections(updateTestDTO.getTestDirections());
         }
-
-        test.setDescription(updateTestDTO.getDescription());
+        if (updateTestDTO.getDescription() != null) {
+            test.setDescription(updateTestDTO.getDescription());
+        }
         return test;
     }
 

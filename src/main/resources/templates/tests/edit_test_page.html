@@ -6,7 +6,6 @@
 </head>
 <body>
 
-<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
 <div th:if="${updateTest != null}">
     <form th:object="${updateTest}" id="updateTestForm">
         <div class="update-test" th:value="${updateTest.id}">
@@ -25,9 +24,6 @@
                 </div>
             </div>
             <button type="button" onclick="validateBeforeSend()">Загрузить</button>
-            <button type="button" onclick="sendRemoveRequest()">Удалить</button>
-
-
         </div>
     </form>
 </div>
@@ -42,9 +38,8 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    var csrf_token = $('#_csrf_token').attr("content");
 
-    function addNewCandidateRequest() {
+    function updateTest() {
 
         var formData = new FormData($('#updateTestForm')[0]);
 
@@ -56,14 +51,11 @@
         });
 
         $.ajax({
-            url: '/task/tests/rest/test/update/' + update_id,
+            url: '/task/tests/rest/update/' + update_id,
             type: 'PATCH',
             processData: false,
             contentType: false,
             data: formData,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
             success: function (data, status, xhr) {
                 if (xhr.status === 200) {
                     showNotification("Данные успешно обновлены!", 1000);
@@ -79,35 +71,13 @@
         });
     }
 
-
-    function sendRemoveRequest() {
-        var testID = $('.update-candidate').attr('value');
-
-        $.ajax({
-            url: '/task/tests/rest/delete/test/' + testID,
-            type: 'DELETE',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
-            success: function (data, status, xhr) {
-                if (xhr.status === 200) {
-                    window.location.href = "/task/tests/view/all";
-                }
-            },
-            error: function () {
-                showNotification("Произошла ошибка удаления!", 1000);
-            }
-        });
-    }
-
-
     function validateBeforeSend() {
         var name = $('#input-name-field').val();
         var checkedDirection = $('input[type="checkbox"]:checked').length;
         if (name.length < 2 || checkedDirection === 0) {
             showNotification("Тест должен иметь название и как минимум одно направление!", 1000);
         } else {
-            addNewCandidateRequest();
+            updateTest();
         }
     }
 

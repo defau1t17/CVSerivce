@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -21,41 +22,43 @@ public class TestRestController {
     @Autowired
     private TestService testService;
 
-    @PostMapping("/add/new")
-    public ResponseEntity addNewTest(@ModelAttribute NewTestDTO newTestDTO) {
-        if (!InputTestValidation.isNewTestExists(testService, newTestDTO) && !InputTestValidation.isNewTestEmpty(newTestDTO)) {
+    @PostMapping("/add")
+    public ResponseEntity<String> addNewTest(@ModelAttribute NewTestDTO newTestDTO) {
+        if (!new InputTestValidation().isNewTestExists(testService, newTestDTO) && !new InputTestValidation().isNewTestEmpty(newTestDTO)) {
             Test newTest = Test.builder().name(newTestDTO.getName()).description(newTestDTO.getDescription()).directions(newTestDTO.getTestDirections()).build();
             testService.save(newTest);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Новый тест успешно добавлен");
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Ошибка добавления нового теста");
     }
 
-    @DeleteMapping("/test/delete/{id}")
-    public ResponseEntity deleteTestByID(@PathVariable(value = "id") Long id) {
-        Optional<Test> optionalTest = testService.findTestByID(id);
-        if (optionalTest.isPresent()) {
-            testService.delete(optionalTest.get());
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-    }
-
-    @PatchMapping("/test/update/{id}")
-    public ResponseEntity updateTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateTestDTO updateTestDTO) {
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<String> updateTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateTestDTO updateTestDTO) {
         Optional<Test> optionalTestTest = testService.findTestByID(id);
         if (optionalTestTest.isPresent()) {
-            if (!InputTestValidation.isUpdateTestEmpty(updateTestDTO)) {
-                testService.update(new UpdateDataTest().updateTest(optionalTestTest.get(), updateTestDTO));
-                return ResponseEntity.ok().build();
-            } else {
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
-            }
-
-        } else
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-
+            testService.update(new UpdateDataTest().updateTest(optionalTestTest.get(), updateTestDTO));
+            return ResponseEntity.ok("Тест успешно обновлен");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Тест с таким ID не найден");
+        }
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Test> getTestByID(@PathVariable(value = "id") Long id) {
+        Optional<Test> optionalTest = testService.findTestByID(id);
+        return optionalTest.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
+    @GetMapping("/get")
+    public ResponseEntity<List<Test>> getTestsByParams(@RequestParam(required = false) Optional<Integer> page,
+                                                       @RequestParam(required = false) Optional<Integer> size,
+                                                       @RequestParam(required = false) boolean filter,
+                                                       @RequestParam(required = false, defaultValue = "name") String sort,
+                                                       @RequestParam(required = false, defaultValue = "ASC") String direction,
+                                                       @RequestParam(required = false) String name,
+                                                       @RequestParam(required = false) String description,
+                                                       @RequestParam(required = false) List<String> dir) {
+        return ResponseEntity.ok(testService.findTestsByParams(page.orElse(0), size.orElse(10), filter, name, description, dir, sort, direction).getContent());
+    }
 
 }

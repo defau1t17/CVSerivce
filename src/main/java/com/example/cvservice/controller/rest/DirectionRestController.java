@@ -7,10 +7,12 @@ import com.example.cvservice.service.Direction.DirectionService;
 import com.example.cvservice.service.Direction.InputDirectionVerification;
 import com.example.cvservice.service.Direction.UpdateDirectionData;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -20,34 +22,39 @@ public class DirectionRestController {
     @Autowired
     private DirectionService directionService;
 
-    @PostMapping("/add/new")
-    public ResponseEntity addNewDirection(@ModelAttribute NewDirectionDTO newDirectionDTO) {
-        if (!InputDirectionVerification.isDirectionEmpty(newDirectionDTO) && !InputDirectionVerification.isDirectionExists(newDirectionDTO, directionService)) {
+    @PostMapping("/add")
+    public ResponseEntity<String> addNewDirection(@ModelAttribute NewDirectionDTO newDirectionDTO) {
+        if (!new InputDirectionVerification().isDirectionEmpty(newDirectionDTO) && !new InputDirectionVerification().isDirectionExists(newDirectionDTO, directionService)) {
             directionService.save(new Direction(newDirectionDTO.getName(), newDirectionDTO.getDescription()));
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok("Новое направление успешно добавлено");
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Ошибка добавления нового направления");
     }
 
-    @PatchMapping("/direction/update/{id}")
-    public ResponseEntity addNewDirection(@PathVariable(value = "id") Long id, @ModelAttribute UpdateDirectionDTO updateDirectionDTO) {
-        if (!InputDirectionVerification.isUpdatedDirectionEmpty(updateDirectionDTO)) {
-            Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
-            if (optionalDirection.isPresent()) {
-                directionService.update(UpdateDirectionData.updateDirection(optionalDirection.get(), updateDirectionDTO));
-                return ResponseEntity.ok().build();
-            } else
-                return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        }
-        return ResponseEntity.status(HttpStatus.CONFLICT).build();
-    }
-
-    @DeleteMapping("/direction/delete/{id}")
-    public ResponseEntity removeDirectionByID(@PathVariable(value = "id") Long id) {
+    @PatchMapping("/update/{id}")
+    public ResponseEntity<String> addNewDirection(@PathVariable(value = "id") Long id, @ModelAttribute UpdateDirectionDTO updateDirectionDTO) {
         Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
-        optionalDirection.ifPresent(direction -> directionService.delete(direction));
-        return ResponseEntity.ok().build();
+        if (optionalDirection.isPresent()) {
+            directionService.update(new UpdateDirectionData().updateDirection(optionalDirection.get(), updateDirectionDTO));
+            return ResponseEntity.ok("Направление успешно обновленно");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ошибка обновления нарпавления");
+        }
     }
 
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Direction> getDirectionByID(@PathVariable(value = "id") Long id) {
+        Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
+        return optionalDirection.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 
+    @GetMapping("/get")
+    public ResponseEntity<List<Direction>> getDirectionsByParams(@RequestParam(required = false) Optional<Integer> page,
+                                                                 @RequestParam(required = false) Optional<Integer> size,
+                                                                 @RequestParam(required = false, defaultValue = "name") String sort,
+                                                                 @RequestParam(required = false, defaultValue = "ASC") String direction,
+                                                                 @RequestParam(required = false) String name,
+                                                                 @RequestParam(required = false) String description) {
+        return ResponseEntity.ok(directionService.findDirectionsByParams(page.orElse(0), size.orElse(10), name, description, sort, direction).getContent());
+    }
 }

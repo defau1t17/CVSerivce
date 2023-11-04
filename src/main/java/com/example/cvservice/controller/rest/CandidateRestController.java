@@ -61,7 +61,6 @@ public class CandidateRestController {
         return ResponseEntity.ok(candidateService.findAllCandidatesByPageNumber(page.orElse(0), size.orElse(10), sort, direction, name, secondName, patronymic, dir).getContent());
     }
 
-
     @PatchMapping("/update/{id}")
     public ResponseEntity<String> updateCandidateByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandidateDTO updateCandidateDTO) throws IOException {
         Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);

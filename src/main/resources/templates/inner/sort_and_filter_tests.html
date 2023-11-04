@@ -72,7 +72,7 @@
                         <div class="sort-inner-block">
                             <img class="down-image" th:src="@{/images/up.png}" onclick="sortData(this, 'ASC')">
                             <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
-                            <input type="hidden" class="selected-radio" th:name="sort" th:value="secondName">
+                            <input type="hidden" class="selected-radio" th:name="sort" th:value="description">
                         </div>
                     </div>
                 </form>
@@ -87,7 +87,7 @@
                         <div class="sort-inner-block">
                             <img class="down-image" th:src="@{/images/down.png}" onclick="sortData(this, 'DESC')">
                             <input class="sort-radio" th:name="direction" th:value="${sortDirection}" type="radio">
-                            <input type="hidden" class="selected-radio" th:name="sort" th:value="secondName">
+                            <input type="hidden" class="selected-radio" th:name="sort" th:value="description">
                         </div>
                     </div>
                 </form>

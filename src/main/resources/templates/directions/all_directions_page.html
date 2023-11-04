@@ -8,7 +8,6 @@
 </head>
 <body>
 
-<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
 
 
 <div th:replace="inner/sort_and_filter_directions :: div"></div>
@@ -54,7 +53,6 @@
 <script>
 
     const notification = document.getElementById('notification');
-
 
     $(document).ready(function () {
         var url = new URLSearchParams(window.location.search);

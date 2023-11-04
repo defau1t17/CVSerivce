@@ -7,22 +7,17 @@
 <body>
 
 <div class="direction-container" th:if="${direction != null}" th:object="${direction}">
-
     <div class="direction">
         <div class="direction-name-block">
             <span th:text="${direction.name}"></span>
         </div>
-
         <div class="direction-description">
             <span th:text="${direction.description}"></span>
         </div>
-
         <div class="button-block">
             <a th:href="@{/task/directions/direction/edit/__${direction.id}__}">Изменить направление</a>
         </div>
-
     </div>
-
 </div>
 </body>
 </html>

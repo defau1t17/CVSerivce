@@ -5,14 +5,15 @@ import com.example.cvservice.entity.main.Direction;
 
 public class UpdateDirectionData {
 
-    public static Direction updateDirection(Direction direction, UpdateDirectionDTO updateDirectionDTO) {
+    public Direction updateDirection(Direction direction, UpdateDirectionDTO updateDirectionDTO) {
 
-        if (!updateDirectionDTO.getName().trim().isEmpty()) {
+        if (updateDirectionDTO.getName() != null && !updateDirectionDTO.getName().trim().isEmpty()) {
             direction.setName(updateDirectionDTO.getName());
         }
 
-        direction.setDescription(updateDirectionDTO.getDescription());
-
+        if (updateDirectionDTO.getDescription() != null) {
+            direction.setDescription(updateDirectionDTO.getDescription());
+        }
         return direction;
     }
 

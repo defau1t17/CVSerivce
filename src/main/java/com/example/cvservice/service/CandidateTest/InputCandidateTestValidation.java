@@ -4,11 +4,11 @@ import com.example.cvservice.dto.Canditests.UpdateCandiTestDTO;
 import com.example.cvservice.entity.main.CandidatesTest;
 
 public class InputCandidateTestValidation {
-    public static boolean isCandidateTestExists(CandidateTestsService candidateTestsService, CandidatesTest candidatesTest) {
+    public boolean isCandidateTestExists(CandidateTestsService candidateTestsService, CandidatesTest candidatesTest) {
         return candidateTestsService.isCandiTestsExists(candidatesTest).isPresent();
     }
 
-    public static boolean isCandidateTestEmpty(CandidatesTest candidatesTest) {
+    public boolean isCandidateTestEmpty(CandidatesTest candidatesTest) {
         if (candidatesTest.getTest() == null) {
             return true;
         }
@@ -27,7 +27,7 @@ public class InputCandidateTestValidation {
         return false;
     }
 
-    public static boolean isUpdateCandidateTestDataEmpty(UpdateCandiTestDTO updateCandiTestDTO) {
+    public boolean isUpdateCandidateTestDataEmpty(UpdateCandiTestDTO updateCandiTestDTO) {
         if (updateCandiTestDTO.getDate() == null) {
             return true;
         }

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class DirectionFilter {
 
-    public static Specification<Direction> filterDirections(DirectionFilterDTO directionFilterDTO) {
+    public  Specification<Direction> filterDirections(DirectionFilterDTO directionFilterDTO) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (directionFilterDTO.getName() != null && !directionFilterDTO.getName().isEmpty()) {
@@ -24,7 +24,7 @@ public class DirectionFilter {
     }
 
 
-    public static DirectionFilterDTO generateDirectionFilterFromParams(String name, String description) {
+    public  DirectionFilterDTO generateDirectionFilterFromParams(String name, String description) {
         DirectionFilterDTO directionFilterDTO = new DirectionFilterDTO();
         if (name != null && !name.trim().isEmpty()) {
             directionFilterDTO.setName(name);

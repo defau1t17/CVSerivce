@@ -6,8 +6,6 @@
 </head>
 <body>
 
-<input type="hidden" id="_csrf_token" name="_csrf" th:content="${_csrf.token}">
-
 <div class="candidate-test-container" th:if="${candidateTest != null}">
     <form id="updateCandidateTestForm" th:object="${candidateTest}" th:value="${candidateTest.candiTestID}">
         <input th:field="*{candiTestID}" type="hidden" th:value="${candidateTest.candiTestID}">
@@ -32,9 +30,6 @@
             <button type="button" class="process-block" id="edit-test-results-button"
                     onclick="validateBeforeSend()">Изменить
             </button>
-            <button type="button" class="process-block" id="remove-test" onclick="sendCandidateTestRemoveRequest()">
-                Удалить
-            </button>
         </div>
     </form>
 </div>
@@ -46,8 +41,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    var csrf_token = $('#_csrf_token').attr("content");
-
 
     function editCandidateTestRequest() {
 
@@ -56,14 +49,12 @@
         var candidateTestID = $('#updateCandidateTestForm').attr('value');
 
         $.ajax({
-            url: '/task/canditests/rest/canditest/update/' + candidateTestID,
+            url: '/task/canditests/rest/update/' + candidateTestID,
             type: 'PATCH',
             processData: false,
             contentType: false,
             data: formData,
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
+
             success: function (data, status, xhr) {
                 if (xhr.status === 200) {
                     showNotification("Тест кандидата успешно обновлен ", 1000);
@@ -79,28 +70,6 @@
                     showNotification("Заполните все обязательные поля!", 1000);
                 }
 
-            }
-        });
-    }
-
-    function sendCandidateTestRemoveRequest() {
-        var candidateTestID = $('#updateCandidateTestForm').attr('value');
-
-        var candidateID = $('#candidate-id').attr('value')
-
-        $.ajax({
-            url: '/task/canditests/rest/canditest/delete/' + candidateTestID,
-            type: 'DELETE',
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader('X-CSRF-TOKEN', csrf_token);
-            },
-            success: function (data, status, xhr) {
-                if (xhr.status === 200) {
-                    window.location.href = "/task/canditests/canditest/candidate/" + candidateID;
-                }
-            },
-            error: function () {
-                showNotification("Произошла ошибка удаления!", 1000);
             }
         });
     }
