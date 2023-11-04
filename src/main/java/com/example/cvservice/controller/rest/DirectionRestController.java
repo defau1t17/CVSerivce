@@ -6,6 +6,9 @@ import com.example.cvservice.entity.main.Direction;
 import com.example.cvservice.service.Direction.DirectionService;
 import com.example.cvservice.service.Direction.InputDirectionVerification;
 import com.example.cvservice.service.Direction.UpdateDirectionData;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -17,11 +20,15 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/task/directions/rest")
+@Tag(name = "Направления", description = "API для управления направлениями")
 public class DirectionRestController {
 
     @Autowired
     private DirectionService directionService;
 
+    @Operation(summary = "Добавить новое направление")
+    @ApiResponse(responseCode = "200", description = "Направление успешно добавлено")
+    @ApiResponse(responseCode = "409", description = "Ошибка при добавлении направления. Направление уже существует или пустое")
     @PostMapping("/add")
     public ResponseEntity<String> addNewDirection(@ModelAttribute NewDirectionDTO newDirectionDTO) {
         if (!new InputDirectionVerification().isDirectionEmpty(newDirectionDTO) && !new InputDirectionVerification().isDirectionExists(newDirectionDTO, directionService)) {
@@ -31,6 +38,9 @@ public class DirectionRestController {
         return ResponseEntity.status(HttpStatus.CONFLICT).body("Ошибка добавления нового направления");
     }
 
+    @Operation(summary = "Обновить направление по ID")
+    @ApiResponse(responseCode = "200", description = "Направление успешно обновлено")
+    @ApiResponse(responseCode = "404", description = "Напревление с таким ID не найдено")
     @PatchMapping("/update/{id}")
     public ResponseEntity<String> addNewDirection(@PathVariable(value = "id") Long id, @ModelAttribute UpdateDirectionDTO updateDirectionDTO) {
         Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
@@ -42,12 +52,17 @@ public class DirectionRestController {
         }
     }
 
+    @Operation(summary = "Получить направление по ID")
+    @ApiResponse(responseCode = "200", description = "Данные направления")
+    @ApiResponse(responseCode = "404", description = "Напревление с таким ID не найдено")
     @GetMapping("/get/{id}")
     public ResponseEntity<Direction> getDirectionByID(@PathVariable(value = "id") Long id) {
         Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
         return optionalDirection.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    @Operation(summary = "Обновить направление по параметрам")
+    @ApiResponse(responseCode = "200", description = "Данные направления")
     @GetMapping("/get")
     public ResponseEntity<List<Direction>> getDirectionsByParams(@RequestParam(required = false) Optional<Integer> page,
                                                                  @RequestParam(required = false) Optional<Integer> size,

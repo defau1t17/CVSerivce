@@ -12,6 +12,9 @@ import com.example.cvservice.service.CandidateTest.CandidateTestsService;
 import com.example.cvservice.service.CandidateTest.InputCandidateTestValidation;
 import com.example.cvservice.service.CandidateTest.UpdateCandidateTestData;
 import com.example.cvservice.service.Test.TestService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +26,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/task/canditests/rest")
+@Tag(name = "Тесты Кандидатов", description = "API для управления тестами кандидатов")
 public class CandidateTestsRestController {
 
     @Autowired
@@ -35,6 +39,10 @@ public class CandidateTestsRestController {
     @Autowired
     private CandidateTestsService candidateTestsService;
 
+    @Operation(summary = "Добавить новый тест кандидата")
+    @ApiResponse(responseCode = "200", description = "Тест кандидата успешно добавлен")
+    @ApiResponse(responseCode = "409", description = "Ошибка при добавлении теста кандидата. Тест кандидата с такими данными уже существует или данные пустые")
+    @ApiResponse(responseCode = "403", description = "Тест или кандидат не найдены")
     @PostMapping("/add")
     public ResponseEntity<String> addNewCandidateTest(@ModelAttribute CandiTestDTO candiTestDTO) {
         Candidate candidate = null;
@@ -57,6 +65,10 @@ public class CandidateTestsRestController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Ошибка добавления. Тест или Кандидат с таким ID не найдены");
     }
 
+    @Operation(summary = "Обновить тест кандидата")
+    @ApiResponse(responseCode = "200", description = "Тест кандидата успешно обновлен")
+    @ApiResponse(responseCode = "404", description = "Кандидат или тест с такими ID не найдены.")
+    @ApiResponse(responseCode = "409", description = "Ошибка обновления теста кандидата")
     @PatchMapping("/update/{id}")
     public ResponseEntity<String> updateCandiTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandiTestDTO candiTestDTO) {
         if (candidateTestsService.findCandidateTestByID(id).isPresent()) {
@@ -70,12 +82,18 @@ public class CandidateTestsRestController {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Ошибка при обновлении тест кандидата");
     }
 
+
+    @Operation(summary = "Получить тест кандидата по ID")
+    @ApiResponse(responseCode = "200", description = "Данные кандидата, теста, результатов")
+    @ApiResponse(responseCode = "404", description = "Тест кандидата с таким ID не найден")
     @GetMapping("/get/{id}")
     public ResponseEntity<CandidatesTest> getCandidateTestByID(@PathVariable(value = "id") Long id) {
         Optional<CandidatesTest> optionalCandidatesTest = candidateTestsService.findCandidateTestByID(id);
         return optionalCandidatesTest.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    @Operation(summary = "Получить тесты кандидатов по параметрам")
+    @ApiResponse(responseCode = "200", description = "Тесты кандидатов ")
     @GetMapping("/get")
     public ResponseEntity<List<CandidatesTest>> getCandidateTestsByParams(@RequestParam(required = false) Optional<Integer> page,
                                                                           @RequestParam(required = false) Optional<Integer> size,

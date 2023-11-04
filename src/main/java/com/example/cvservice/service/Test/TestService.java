@@ -27,7 +27,7 @@ public class TestService implements EntityOperations {
         return testRepository.findByName(name);
     }
 
-    public Page<Test> findTestsByParams(int page, int size, boolean filter, String name, String description, List<String> directionNames, String sort, String direction) {
+    public Page<Test> findTestsByParams(int page, int size, String name, String description, List<String> directionNames, String sort, String direction) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.valueOf(direction), sort));
         return testRepository.findAll(TestFilter.filterTests(TestFilter.generateFilterFromParams(name, description, directionNames)), pageable);
     }
