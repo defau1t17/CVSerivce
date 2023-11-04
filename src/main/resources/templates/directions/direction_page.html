@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Direction</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
+<div th:replace="inner/navigation_header :: header"></div>
 
 <div class="direction-container" th:if="${direction != null}" th:object="${direction}">
     <div class="direction">

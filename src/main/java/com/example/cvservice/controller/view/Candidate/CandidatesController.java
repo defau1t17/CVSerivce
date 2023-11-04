@@ -25,7 +25,7 @@ public class CandidatesController {
     @Autowired
     private CandidateService candidateService;
 
-    @GetMapping("/view/all")
+    @GetMapping("/all")
     public String allCandidatesPage(Model model,
                                     @RequestParam(required = false) Optional<Integer> page,
                                     @RequestParam(required = false) Optional<Integer> size,

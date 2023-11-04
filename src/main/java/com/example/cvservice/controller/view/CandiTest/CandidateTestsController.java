@@ -49,7 +49,7 @@ public class CandidateTestsController {
         return "/canditests/add_new_candidate_test_page";
     }
 
-    @GetMapping("/view/all")
+    @GetMapping("/all")
     public String displayAllCandiTestsPage(@RequestParam(required = false) Optional<Integer> page,
                                            @RequestParam(required = false) Optional<Integer> size,
                                            @RequestParam(required = false, defaultValue = "candidate.name") String sort,

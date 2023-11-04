@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <title>All Candidates Page</title>
     <link rel="stylesheet" th:href="@{/inner_style/filter_and_sort_style.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
+<div th:replace="inner/navigation_header :: header"></div>
 
 <div th:replace="inner/sort_and_filter_canditests :: div"></div>
-
-
 <div class="candidates-tests-page">
     <div class="candidate-test" th:each="candidateTest: ${allCandidateTests}">
         <div class="candidate-info">
@@ -34,11 +35,8 @@
             <a th:href="@{/task/canditests/canditest/candidate/__${candidateTest.candidate.id}__}">Просмотреть тесты
                 кандидата</a>
         </div>
-
     </div>
 </div>
-
-
 <div class="pagination-links-container">
     <form action="">
         <input type="hidden" th:name="cName" th:value="${cName}">

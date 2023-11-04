@@ -3,9 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>All Candidates</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
     <link rel="stylesheet" th:href="@{/inner_style/filter_and_sort_style.css}">
 </head>
 <body>
+
+<div th:replace="inner/navigation_header :: header"></div>
+
 
 <div th:replace="inner/sort_and_filter_candidate :: div"></div>
 
@@ -37,10 +42,6 @@
         </div>
     </div>
 </div>
-
-<div id="notification" class="notification">
-</div>
-
 <div class="pagination-links-container" th:if="${allCandidates.totalPages >= 0}">
     <form action="">
         <input type="hidden" name="sort" th:value="${sort}">
@@ -61,19 +62,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-    const notification = document.getElementById('notification');
-
-    function showNotification(message, duration) {
-        notification.textContent = message;
-        notification.style.opacity = '1';
-
-        setTimeout(() => {
-            notification.style.opacity = '0';
-        }, duration);
-    }
-
-
     $(document).ready(function () {
         var url = new URLSearchParams(window.location.search);
         var sort = url.get('sort');

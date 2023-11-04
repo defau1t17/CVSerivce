@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Test Page</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
+<div th:replace="inner/navigation_header :: header"></div>
 
 <div th:if="${test != null}" th:object="${test}">
     <div class="test-info-block">

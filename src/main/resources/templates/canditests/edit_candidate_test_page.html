@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Candidate Test</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
+<div th:replace="inner/navigation_header :: header"></div>
 
 <div class="candidate-test-container" th:if="${candidateTest != null}">
     <form id="updateCandidateTestForm" th:object="${candidateTest}" th:value="${candidateTest.candiTestID}">
@@ -15,7 +18,6 @@
                th:href="@{/task/candidates/candidate/__${candidate.id}__}"
                th:text="${candidate.name}"></a>
             <input th:field="*{candidateID}" id="candidate-id" type="hidden" th:value="${candidateTest.candidateID}">
-
         </div>
         <label>Информация о тесте</label>
         <div class="test-edit-block">

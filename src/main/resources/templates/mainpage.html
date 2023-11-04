@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
+
 </head>
 <body>
-
-<h1>Hello world</h1>
+<div th:replace="inner/navigation_header :: header"></div>
 
 </body>
 </html>

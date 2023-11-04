@@ -21,7 +21,7 @@ public class DirectionController {
     @Autowired
     private DirectionService directionService;
 
-    @GetMapping("/view/all")
+    @GetMapping("/all")
     public String displayAllDirectionsPage(@RequestParam(required = false) Optional<Integer> page,
                                            @RequestParam(required = false) Optional<Integer> size,
                                            @RequestParam(required = false, defaultValue = "name") String sort,

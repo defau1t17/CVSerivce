@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <title>Add New</title>
     <link rel="stylesheet" th:src="@{/candidates/add_new_candidate_style.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
 
 </head>
 <body>
 
-
+<div th:replace="inner/navigation_header :: header"></div>
 <div>
     <form th:object="${newCandidate}" enctype="multipart/form-data" id="newCandidateForm">
         <input th:field="*{name}" type="text" id="input-name-field" placeholder="Введите имя кандидата" minlength="2"
@@ -34,8 +35,6 @@
 <div id="notification" class="notification">
 
 </div>
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 

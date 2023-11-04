@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit Direction</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
-
-
+<div th:replace="inner/navigation_header :: header"></div>
 <div class="direction-container">
     <div class="direction" th:if="${updateDirection != null}">
         <form id="updateDirection" th:object="${updateDirection}">
@@ -30,7 +31,6 @@
             </div>
         </form>
     </div>
-
     <div th:if="${updateDirection == null}">
         <h1>Такого направления не существует</h1>
     </div>

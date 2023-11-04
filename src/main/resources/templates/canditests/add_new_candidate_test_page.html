@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>New Candidate Test</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
-
-
+<div th:replace="inner/navigation_header :: header"></div>
 <div class="candidate-test-container">
     <div class="canditest">
         <form id="newCandiTestForm" th:object="${newCandiTest}">
@@ -17,10 +18,11 @@
                             th:value="${candidate.id}">
                         <div class="candidate-info">
                             <span th:text="${candidate.name + ' ' + candidate.secondName + ' ' + candidate.patronymic + ' '}"></span>
-                            <span>Directions : </span>
+                            <span>[Directions : </span>
                             <span th:each="candidateDirection : ${candidate.directions}"
-                                  th:text="${'(' + candidateDirection.name + ') '}"
+                                  th:text="${' '+candidateDirection.name + ' '}"
                                   style="display: inline"></span>
+                            <span>]</span>
                         </div>
                     </option>
                 </select>

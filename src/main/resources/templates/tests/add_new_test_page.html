@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>New Test</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+
 </head>
 <body>
+<div th:replace="inner/navigation_header :: header"></div>
+
 <div class="test-container">
     <div class="test">
         <form id="newTestForm" th:object="${newTest}">

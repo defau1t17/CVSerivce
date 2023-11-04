@@ -3,8 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Candidate</title>
+    <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
 </head>
 <body>
+
+<div th:replace="inner/navigation_header :: header"></div>
+
 
 <div class="candidate-container" th:if="${candidate != null }">
     <div class="candidate">
@@ -40,11 +44,6 @@
     <div class="button-block">
         <a class="candidate-process-button" th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">Редактировать</a>
     </div>
-
-    <div id="notification" class="notification">
-
-    </div>
-
 </div>
 
 <div class="candidate-container" th:if="${candidate == null }">

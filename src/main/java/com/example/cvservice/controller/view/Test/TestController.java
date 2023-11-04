@@ -37,7 +37,7 @@ public class TestController {
         return "/tests/add_new_test_page";
     }
 
-    @GetMapping("/view/all")
+    @GetMapping("/all")
     public String displayAllTestsPage(@RequestParam(required = false) Optional<Integer> page,
                                       @RequestParam(required = false) Optional<Integer> size,
                                       @RequestParam(required = false, defaultValue = "name") String sort,
@@ -70,7 +70,6 @@ public class TestController {
 
         return "/tests/test_page";
     }
-
 
     @GetMapping("/test/edit/{id}")
     public String displayEditTestPage(@PathVariable(value = "id") Long id, Model model) {
