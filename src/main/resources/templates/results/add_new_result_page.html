@@ -10,7 +10,7 @@
 <div th:replace="inner/navigation_header :: header"></div>
 <div class="candidate-test-container">
     <div class="canditest">
-        <form id="newCandiTestForm" th:object="${newCandiTest}">
+        <form id="newResultForm" th:object="${newResult}">
             <div class="select-candidate-block">
                 <select th:field="*{candidateID}">
                     <option class="selected-candidate" value="0">Выбирете кандидата</option>
@@ -60,12 +60,12 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 
-    function addNewCandidateTestRequest() {
+    function addNewResult() {
 
-        var formData = new FormData($('#newCandiTestForm')[0]);
+        var formData = new FormData($('#newResultForm')[0]);
 
         $.ajax({
-            url: '/v1/canditests/',
+            url: '/v1/results/',
             type: 'POST',
             processData: false,
             contentType: false,
@@ -73,9 +73,9 @@
             success: function (data, status, xhr) {
                 console.log(status);
                 if (xhr.status === 200) {
-                    showNotification("Новый тест кандидата успешно добавлен!", 1000);
+                    showNotification("Новый результат добавлен!", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/canditests/add"
+                        window.location.href = "/task/results/add"
                     }, 1000);
                 }
             },
@@ -84,7 +84,7 @@
                     showNotification("Тест с таким кандидатом и датой уже существует!", 1000);
                 }
                 if (xhr.status === 403) {
-                    showNotification("Ошибка добавлния теста кандидата!", 1000);
+                    showNotification("Ошибка добавлния результата!", 1000);
 
                 }
             }
@@ -100,7 +100,7 @@
         if (candidateValue === 0 || testValue === 0 || dateValue === '') {
             showNotification("Обязательно выбирте Кандитата, пройденный им тест, дату и оценку!", 1000);
         } else {
-            addNewCandidateTestRequest()
+            addNewResult()
         }
     }
 

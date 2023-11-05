@@ -14,4 +14,5 @@ public class TestFilterDTO {
 
     private List<String> directionNames;
 
+
 }

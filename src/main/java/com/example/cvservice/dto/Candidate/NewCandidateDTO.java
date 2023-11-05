@@ -23,5 +23,23 @@ public class NewCandidateDTO {
 
     private List<Direction> directions;
 
+    public boolean isValid() {
+        if (this.getName() == null || this.getName().trim().isEmpty()) {
+            return false;
+        }
+        if (this.getSecond_name() == null || this.getSecond_name().trim().isEmpty()) {
+            return false;
+        }
+
+        if (this.getPatr() == null || this.getPatr().trim().isEmpty()) {
+            return false;
+
+        }
+        if (this.getDirections() == null || this.getDirections().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
 
 }

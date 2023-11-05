@@ -16,4 +16,5 @@ public class CandidateFilterDTO {
     private String candidateDesc;
 
     private List<String> directionNames;
+
 }

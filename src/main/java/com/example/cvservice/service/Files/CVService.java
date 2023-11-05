@@ -4,15 +4,17 @@ package com.example.cvservice.service.Files;
 import com.example.cvservice.entity.files.CurriculumVitae;
 import com.example.cvservice.entity.files.Image;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 
-public class FileService {
+@Service
+public class CVService {
 
-    public static Image buildImage(MultipartFile multipartFile) {
+    public  Image buildImage(MultipartFile multipartFile) {
         Image image = new Image();
         if (multipartFile != null && !multipartFile.isEmpty()) {
             try {
@@ -36,7 +38,7 @@ public class FileService {
         return image;
     }
 
-    public static CurriculumVitae buildCV(MultipartFile multipartFile) {
+    public  CurriculumVitae buildCV(MultipartFile multipartFile) {
         CurriculumVitae curriculumVitae = new CurriculumVitae();
         if (multipartFile != null && !multipartFile.isEmpty()) {
             try {
