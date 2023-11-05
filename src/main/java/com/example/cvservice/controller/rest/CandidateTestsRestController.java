@@ -25,8 +25,8 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/task/canditests/rest")
-@Tag(name = "Тесты Кандидатов", description = "API для управления тестами кандидатов")
+@RequestMapping("/v1/canditests")
+@Tag(name = "Candidates Tests", description = "API FOR MANAGING CANDIDATES TESTS")
 public class CandidateTestsRestController {
 
     @Autowired
@@ -39,11 +39,11 @@ public class CandidateTestsRestController {
     @Autowired
     private CandidateTestsService candidateTestsService;
 
-    @Operation(summary = "Добавить новый тест кандидата")
-    @ApiResponse(responseCode = "200", description = "Тест кандидата успешно добавлен")
-    @ApiResponse(responseCode = "409", description = "Ошибка при добавлении теста кандидата. Тест кандидата с такими данными уже существует или данные пустые")
-    @ApiResponse(responseCode = "403", description = "Тест или кандидат не найдены")
-    @PostMapping("/add")
+    @Operation(summary = "Add new Candidate's Test")
+    @ApiResponse(responseCode = "200", description = "New Candidate's Test has been added")
+    @ApiResponse(responseCode = "409", description = "Error while new Candidate's Test. Candidate's Test exists or DTO empty")
+    @ApiResponse(responseCode = "403", description = "Error while new Candidate's Test. Test or Candidate not found")
+    @PostMapping("/")
     public ResponseEntity<String> addNewCandidateTest(@ModelAttribute CandiTestDTO candiTestDTO) {
         Candidate candidate = null;
         Test test = null;
@@ -59,42 +59,46 @@ public class CandidateTestsRestController {
                     .build();
             if (!new InputCandidateTestValidation().isCandidateTestExists(candidateTestsService, newCandidateTest) && !new InputCandidateTestValidation().isCandidateTestEmpty(newCandidateTest)) {
                 candidateTestsService.save(newCandidateTest);
-                return ResponseEntity.ok("Новый тест кандидата успешно добавлен");
-            } else return ResponseEntity.status(HttpStatus.CONFLICT).body("Ошибка добавленияи нового теста кандидата");
+                return ResponseEntity.ok("New Candidate's Test has been added");
+            } else
+                return ResponseEntity.status(HttpStatus.CONFLICT).body("Error while new Candidate's Test. Candidate's Test exists or DTO empty");
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Ошибка добавления. Тест или Кандидат с таким ID не найдены");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error while new Candidate's Test. Test or Candidate not found");
     }
 
-    @Operation(summary = "Обновить тест кандидата")
-    @ApiResponse(responseCode = "200", description = "Тест кандидата успешно обновлен")
-    @ApiResponse(responseCode = "404", description = "Кандидат или тест с такими ID не найдены.")
-    @ApiResponse(responseCode = "409", description = "Ошибка обновления теста кандидата")
-    @PatchMapping("/update/{id}")
+    @Operation(summary = "Update Candidate's Test by ID")
+    @ApiResponse(responseCode = "200", description = "Candidate's Test has been updated")
+    @ApiResponse(responseCode = "404", description = "Error while updating Candidate's Test. Test not found")
+    @ApiResponse(responseCode = "404", description = "Error while updating Candidate's Test. Candidate not found")
+    @ApiResponse(responseCode = "409", description = "Error while updating Candidate's Test.")
+    @PatchMapping("/{id}")
     public ResponseEntity<String> updateCandiTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandiTestDTO candiTestDTO) {
         if (candidateTestsService.findCandidateTestByID(id).isPresent()) {
             if (candidateService.findCandidateByID(candiTestDTO.getCandidateID()).isPresent() && testService.findTestByID(candiTestDTO.getTestID()).isPresent()) {
                 if (!new InputCandidateTestValidation().isUpdateCandidateTestDataEmpty(candiTestDTO) && new InputCandidateTestValidation().isCandidateTestExists(candidateTestsService, candidateTestsService.findCandidateTestByID(candiTestDTO.getCandiTestID()).get())) {
                     candidateTestsService.update(new UpdateCandidateTestData().updateCandidateTest(candidateTestsService.findCandidateTestByID(candiTestDTO.getCandiTestID()).get(), candiTestDTO));
-                    return ResponseEntity.status(HttpStatus.OK).body("Тест кандидата успешно обновлен");
+                    return ResponseEntity.status(HttpStatus.OK).body("Candidate's Test has been updated");
                 }
-            } else ResponseEntity.status(HttpStatus.NOT_FOUND).body("Кандидат или Тест с таким ID не найдены");
-        } else return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Тест кандидата с таким ID не найден");
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Ошибка при обновлении тест кандидата");
+            } else
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error while updating Candidate's Test. Candidate not found");
+        } else
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Error while updating Candidate's Test. Test not found");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error while updating Candidate's Test.");
     }
 
 
-    @Operation(summary = "Получить тест кандидата по ID")
-    @ApiResponse(responseCode = "200", description = "Данные кандидата, теста, результатов")
-    @ApiResponse(responseCode = "404", description = "Тест кандидата с таким ID не найден")
-    @GetMapping("/get/{id}")
+    @Operation(summary = "Get Candidate's Test  ID")
+    @ApiResponse(responseCode = "200", description = "Candidate's Test")
+    @ApiResponse(responseCode = "404", description = "Candidate's Test with such ID not found")
+    @GetMapping("/{id}")
     public ResponseEntity<CandidatesTest> getCandidateTestByID(@PathVariable(value = "id") Long id) {
         Optional<CandidatesTest> optionalCandidatesTest = candidateTestsService.findCandidateTestByID(id);
         return optionalCandidatesTest.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @Operation(summary = "Получить тесты кандидатов по параметрам")
-    @ApiResponse(responseCode = "200", description = "Тесты кандидатов ")
-    @GetMapping("/get")
+    @Operation(summary = "Get Candidates Tests by params")
+    @ApiResponse(responseCode = "200", description = "Candidates Tests")
+    @GetMapping("")
     public ResponseEntity<List<CandidatesTest>> getCandidateTestsByParams(@RequestParam(required = false) Optional<Integer> page,
                                                                           @RequestParam(required = false) Optional<Integer> size,
                                                                           @RequestParam(required = false, defaultValue = "candidate.name") String sort,

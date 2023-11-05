@@ -22,17 +22,17 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/task/candidates/rest")
-@Tag(name = "Кандидаты", description = "API для управления кандидатами")
+@RequestMapping("/v1/candidates")
+@Tag(name = "Candidates", description = "API FOR MANAGING CANDIDATES")
 public class CandidateRestController {
 
     @Autowired
     private CandidateService candidateService;
 
-    @Operation(summary = "Добавить нового кандидата")
-    @ApiResponse(responseCode = "200", description = "Кандидат успешно добавлен")
-    @ApiResponse(responseCode = "409", description = "Ошибка при добавлении каниддата. Данные кандидата пусты")
-    @PostMapping(value = "/add")
+    @Operation(summary = "Add new Candidate")
+    @ApiResponse(responseCode = "200", description = "New candidate has been added")
+    @ApiResponse(responseCode = "409", description = "Error adding new Candidate")
+    @PostMapping(value = "/")
     public ResponseEntity<String> addNewCandidate(@ModelAttribute NewCandidateDTO newCandidateDTO) {
         if (!new InputCandidateVerification().doesCandidateIsEmpty(newCandidateDTO)) {
             Candidate newCandidate = Candidate.builder().name(newCandidateDTO.getName())
@@ -43,24 +43,24 @@ public class CandidateRestController {
                     .image(FileService.buildImage(newCandidateDTO.getImageFile()))
                     .curriculumVitae(FileService.buildCV(newCandidateDTO.getCvFile())).build();
             candidateService.save(newCandidate);
-            return ResponseEntity.ok("Новый пользователь успешно сохранен");
+            return ResponseEntity.ok("New candidate has been added");
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Пользователь не прошел валидацию");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Error adding new Candidate");
     }
 
-    @Operation(summary = "Получить кандидата по ID")
-    @ApiResponse(responseCode = "200", description = "Данные кандидата")
-    @ApiResponse(responseCode = "404", description = "Пользователь с таким ID не найден")
-    @GetMapping("/get/{id}")
+    @Operation(summary = "Get Candidate by ID")
+    @ApiResponse(responseCode = "200", description = "Candidate's Data")
+    @ApiResponse(responseCode = "404", description = "Candidate with such ID not found")
+    @GetMapping("/{id}")
     public ResponseEntity<Candidate> findCandidateByID(@PathVariable(value = "id") Long id) {
         if (candidateService.findCandidateByID(id).isPresent()) {
             return ResponseEntity.ok(candidateService.findCandidateByID(id).get());
         } else return ResponseEntity.notFound().build();
     }
 
-    @Operation(summary = "Получить кандидата по параметрам")
-    @ApiResponse(responseCode = "200", description = "Данные кандидата")
-    @GetMapping("/get")
+    @Operation(summary = "Get Candidates by params")
+    @ApiResponse(responseCode = "200", description = "Candidates Data")
+    @GetMapping("")
     public ResponseEntity<List<Candidate>> findFilteredCandidates(@RequestParam(required = false) Optional<Integer> page,
                                                                   @RequestParam(required = false) Optional<Integer> size,
                                                                   @RequestParam(required = false, defaultValue = "name") String sort,
@@ -72,18 +72,17 @@ public class CandidateRestController {
         return ResponseEntity.ok(candidateService.findAllCandidatesByPageNumber(page.orElse(0), size.orElse(10), sort, direction, name, secondName, patronymic, dir).getContent());
     }
 
-    @Operation(summary = "Обновить кандидата по ID")
-    @ApiResponse(responseCode = "200", description = "Данные кандидата  успешно обновлены")
-    @ApiResponse(responseCode = "404", description = "Пользователь с таким ID не найден")
-    @PatchMapping("/update/{id}")
+    @Operation(summary = "Update Candidate by ID")
+    @ApiResponse(responseCode = "200", description = "Candidate has been updated")
+    @ApiResponse(responseCode = "404", description = "Candidate with such ID not found")
+    @PatchMapping("/{id}")
     public ResponseEntity<String> updateCandidateByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandidateDTO updateCandidateDTO) throws IOException {
         Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         if (optionalCandidate.isPresent()) {
             candidateService.update(new UpdateCandidateData().updateCandidate(optionalCandidate.get(), updateCandidateDTO));
-            return ResponseEntity.status(200).body("Пользователь успешно обновлен");
+            return ResponseEntity.status(200).body("Candidate has been updated");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Пользователь с таким ID не найден");
-
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Candidate with such ID not found");
     }
 
 

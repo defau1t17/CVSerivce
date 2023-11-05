@@ -48,13 +48,9 @@
 
         var update_id = $('.update-test').attr('value');
 
-        var candidateData = {};
-        formData.forEach(function (value, key) {
-            candidateData[key] = value;
-        });
 
         $.ajax({
-            url: '/task/tests/rest/update/' + update_id,
+            url: '/v1/tests/' + update_id,
             type: 'PATCH',
             processData: false,
             contentType: false,
@@ -83,7 +79,6 @@
             updateTest();
         }
     }
-
     const notification = document.getElementById('notification');
 
     function showNotification(message, duration) {

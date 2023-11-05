@@ -19,53 +19,51 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/task/tests/rest")
-@Tag(name = "Тесты", description = "API для управления тестами")
+@RequestMapping("/v1/tests")
+@Tag(name = "Tests", description = "API FOR MANAGING TESTS")
 public class TestRestController {
-
     @Autowired
     private TestService testService;
 
-
-    @Operation(summary = "Добавить новый тест")
-    @ApiResponse(responseCode = "200", description = "Тест успешно добавлен")
-    @ApiResponse(responseCode = "403", description = "Ошибка при добавлении тест. Тест уже существует или пустой")
-    @PostMapping("/add")
+    @Operation(summary = "Add new Test")
+    @ApiResponse(responseCode = "200", description = "New Test has been added")
+    @ApiResponse(responseCode = "403", description = "Error while adding new Test. Test exists or DTO empty")
+    @PostMapping("/")
     public ResponseEntity<String> addNewTest(@ModelAttribute NewTestDTO newTestDTO) {
         if (!new InputTestValidation().isNewTestExists(testService, newTestDTO) && !new InputTestValidation().isNewTestEmpty(newTestDTO)) {
             Test newTest = Test.builder().name(newTestDTO.getName()).description(newTestDTO.getDescription()).directions(newTestDTO.getTestDirections()).build();
             testService.save(newTest);
-            return ResponseEntity.ok("Новый тест успешно добавлен");
+            return ResponseEntity.ok("New Test has been added");
         }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Ошибка добавления нового теста");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error while adding new Test. Test exists or DTO empty");
     }
 
-    @Operation(summary = "Обновить тест по ID")
-    @ApiResponse(responseCode = "200", description = "Тест успешно обновлен")
-    @ApiResponse(responseCode = "404", description = "Тест по ID не найден")
-    @PatchMapping("/update/{id}")
+    @Operation(summary = "Update Test by ID")
+    @ApiResponse(responseCode = "200", description = "Test has been updated")
+    @ApiResponse(responseCode = "404", description = "Test with such ID not found")
+    @PatchMapping("/{id}")
     public ResponseEntity<String> updateTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateTestDTO updateTestDTO) {
         Optional<Test> optionalTestTest = testService.findTestByID(id);
         if (optionalTestTest.isPresent()) {
             testService.update(new UpdateDataTest().updateTest(optionalTestTest.get(), updateTestDTO));
-            return ResponseEntity.ok("Тест успешно обновлен");
+            return ResponseEntity.ok("Test has been updated");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Тест с таким ID не найден");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Test with such ID not found");
         }
     }
 
-    @Operation(summary = "Получить тест по ID")
-    @ApiResponse(responseCode = "200", description = "Данные успешно отправлены")
-    @ApiResponse(responseCode = "404", description = "Тест по ID не найден")
-    @GetMapping("/get/{id}")
+    @Operation(summary = "Get Test by ID")
+    @ApiResponse(responseCode = "200", description = "Test's data")
+    @ApiResponse(responseCode = "404", description = "Test with such ID not found")
+    @GetMapping("/{id}")
     public ResponseEntity<Test> getTestByID(@PathVariable(value = "id") Long id) {
         Optional<Test> optionalTest = testService.findTestByID(id);
         return optionalTest.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
-    @Operation(summary = "Получить тест по параметрам")
-    @ApiResponse(responseCode = "200", description = "Данные успешно отправлены")
-    @GetMapping("/get")
+    @Operation(summary = "Get Tests by params")
+    @ApiResponse(responseCode = "200", description = "Tests Data")
+    @GetMapping("")
     public ResponseEntity<List<Test>> getTestsByParams(@RequestParam(required = false) Optional<Integer> page,
                                                        @RequestParam(required = false) Optional<Integer> size,
                                                        @RequestParam(required = false, defaultValue = "name") String sort,
