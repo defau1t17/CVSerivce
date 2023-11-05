@@ -93,7 +93,7 @@ public class ResultService implements EntityOperations {
     }
     public Result validateBeforeUpdate(Long resultID, UpdateResultDTO updateResultDTO) {
         if (updateResultDTO.isValid(candidateService, testService)) {
-            if (!findResultByID(resultID).isPresent()) {
+            if (findResultByID(resultID).isPresent()) {
                 Result updatedResult = findResultByID(resultID).get().update(updateResultDTO);
                 save(updatedResult);
                 return updatedResult;

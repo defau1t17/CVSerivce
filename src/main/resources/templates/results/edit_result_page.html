@@ -10,14 +10,14 @@
 <div th:replace="inner/navigation_header :: header"></div>
 
 <div class="candidate-test-container" th:if="${result != null}">
-    <form id="updateResultForm" th:object="${result}" th:value="${result.candiTestID}">
-        <input th:field="*{candiTestID}" type="hidden" th:value="${result.candiTestID}">
+    <form id="updateResultForm" th:object="${result}" th:value="${result.resultID}">
+        <input th:field="*{resultID}" type="hidden" th:value="${result.resultID}">
         <div class="candidate-info-block">
             <label>Кандидат :</label>
             <a th:field="*{candidateID}" th:value="${candidate.id}"
                th:href="@{/task/candidates/candidate/__${candidate.id}__}"
                th:text="${candidate.name}"></a>
-            <input th:field="*{candidateID}" id="candidate-id" type="hidden" th:value="${candidateTest.candidateID}">
+            <input th:field="*{candidateID}" id="candidate-id" type="hidden" th:value="${result.candidateID}">
         </div>
         <label>Информация о тесте</label>
         <div class="test-edit-block">
