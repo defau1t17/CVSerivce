@@ -1,11 +1,9 @@
 package com.example.cvservice.service.Result;
 
-import com.example.cvservice.dto.Direction.NewDirectionDTO;
 import com.example.cvservice.dto.Result.ResultDTO;
 import com.example.cvservice.dto.Result.UpdateResultDTO;
 import com.example.cvservice.entity.grade.TestGrade;
 import com.example.cvservice.entity.main.Candidate;
-import com.example.cvservice.entity.main.Direction;
 import com.example.cvservice.entity.main.Result;
 import com.example.cvservice.entity.main.Test;
 import com.example.cvservice.exception.ObjectAlreadyExistsException;
@@ -75,7 +73,7 @@ public class ResultService implements EntityOperations {
     public Optional<Result> isResultExists(Result result) {
         return repository.findFirstByCandidateAndTestAndGrade(result.getCandidate(), result.getTest(), result.getGrade());
     }
-    public Result validateBeforeSave(ResultDTO resultDTO) {
+    public Result saveNewResult(ResultDTO resultDTO) {
         if (resultDTO.isValid(candidateService, testService)) {
             Candidate candidate = candidateService.findCandidateByID(resultDTO.getCandidateID()).get();
             Test test = testService.findTestByID(resultDTO.getTestID()).get();
@@ -91,7 +89,7 @@ public class ResultService implements EntityOperations {
             } else throw new ObjectAlreadyExistsException("Result", "");
         } else throw new ObjectIsEmptyException();
     }
-    public Result validateBeforeUpdate(Long resultID, UpdateResultDTO updateResultDTO) {
+    public Result updateResult(Long resultID, UpdateResultDTO updateResultDTO) {
         if (updateResultDTO.isValid(candidateService, testService)) {
             if (findResultByID(resultID).isPresent()) {
                 Result updatedResult = findResultByID(resultID).get().update(updateResultDTO);

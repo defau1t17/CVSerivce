@@ -28,7 +28,7 @@ public class TestRestController {
     @ApiResponse(responseCode = "403", description = "Error while adding new Test. Test exists or DTO empty")
     @PostMapping("/")
     public ResponseEntity<?> addNewTest(@ModelAttribute NewTestDTO newTestDTO) {
-        Test test = testService.validateBeforeSave(newTestDTO);
+        Test test = testService.saveNewTest(newTestDTO);
         return ResponseEntity.ok(test);
     }
 
@@ -37,7 +37,7 @@ public class TestRestController {
     @ApiResponse(responseCode = "404", description = "Test with such ID not found")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateTestDTO updateTestDTO) {
-        Test test = testService.validateBeforeUpdate(id, updateTestDTO);
+        Test test = testService.updateTest(id, updateTestDTO);
         return ResponseEntity.ok(test);
     }
 

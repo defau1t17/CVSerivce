@@ -30,7 +30,7 @@ public class ResultRestController {
     @ApiResponse(responseCode = "403", description = "Error while new Candidate's Test. Test or Candidate not found")
     @PostMapping("/")
     public ResponseEntity<?> addNewCandidateTest(@ModelAttribute ResultDTO resultDTO) {
-        Result result = resultService.validateBeforeSave(resultDTO);
+        Result result = resultService.saveNewResult(resultDTO);
         return ResponseEntity.ok(result);
     }
 
@@ -41,7 +41,7 @@ public class ResultRestController {
     @ApiResponse(responseCode = "409", description = "Error while updating Candidate's Test.")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCandiTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateResultDTO updateResultDTO) {
-        Result result = resultService.validateBeforeUpdate(id, updateResultDTO);
+        Result result = resultService.updateResult(id, updateResultDTO);
         return ResponseEntity.ok(result);
     }
 

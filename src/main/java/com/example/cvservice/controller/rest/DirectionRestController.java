@@ -8,7 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class DirectionRestController {
     @ApiResponse(responseCode = "409", description = "Error while adding new Direction. Direction exists or DTO empty")
     @PostMapping("/")
     public ResponseEntity<?> addNewDirection(@ModelAttribute NewDirectionDTO newDirectionDTO) {
-        Direction direction = directionService.validateBeforeSave(newDirectionDTO);
+        Direction direction = directionService.saveNewDirection(newDirectionDTO);
         return ResponseEntity.ok().body(direction);
     }
 
@@ -37,7 +36,7 @@ public class DirectionRestController {
     @ApiResponse(responseCode = "404", description = "Direction with such ID not found")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateDirectionByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateDirectionDTO updateDirectionDTO) {
-        Direction direction = directionService.validateBeforeUpdate(id, updateDirectionDTO);
+        Direction direction = directionService.updateDirection(id, updateDirectionDTO);
         return ResponseEntity.ok(direction);
     }
 

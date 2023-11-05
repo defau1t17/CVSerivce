@@ -1,10 +1,7 @@
 package com.example.cvservice.service.Test;
 
-import com.example.cvservice.dto.Direction.NewDirectionDTO;
-import com.example.cvservice.dto.Direction.UpdateDirectionDTO;
 import com.example.cvservice.dto.Test.NewTestDTO;
 import com.example.cvservice.dto.Test.UpdateTestDTO;
-import com.example.cvservice.entity.main.Direction;
 import com.example.cvservice.entity.main.Test;
 import com.example.cvservice.exception.ObjectAlreadyExistsException;
 import com.example.cvservice.exception.ObjectIsEmptyException;
@@ -58,7 +55,7 @@ public class TestService implements EntityOperations {
         testRepository.save((Test) object);
     }
 
-    public Test validateBeforeSave(NewTestDTO newTestDTO) {
+    public Test saveNewTest(NewTestDTO newTestDTO) {
         if (!findTestByName(newTestDTO.getName()).isPresent()) {
             if (newTestDTO.isValid()) {
                 Test newTest = Test.builder().name(newTestDTO.getName()).description(newTestDTO.getDescription()).directions(newTestDTO.getTestDirections()).build();
@@ -69,7 +66,7 @@ public class TestService implements EntityOperations {
         throw new ObjectAlreadyExistsException("Test", newTestDTO.getName());
     }
 
-    public Test validateBeforeUpdate(Long testID, UpdateTestDTO updateTestDTO) {
+    public Test updateTest(Long testID, UpdateTestDTO updateTestDTO) {
         if (findTestByID(testID).isPresent()) {
             if (updateTestDTO.isValid()) {
                 Test updatedTest = findTestByID(testID).get().update(updateTestDTO);

@@ -61,7 +61,7 @@ public class DirectionService implements EntityOperations {
         repository.save((Direction) object);
     }
 
-    public Direction validateBeforeSave(NewDirectionDTO newDirectionDTO) {
+    public Direction saveNewDirection(NewDirectionDTO newDirectionDTO) {
         if (!findDirectionByName(newDirectionDTO.getName()).isPresent()) {
             if (newDirectionDTO.isValid()) {
                 Direction direction = Direction.builder().name(newDirectionDTO.getName()).description(newDirectionDTO.getDescription()).build();
@@ -73,7 +73,7 @@ public class DirectionService implements EntityOperations {
     }
 
 
-    public Direction validateBeforeUpdate(Long directionID, UpdateDirectionDTO updateDirectionDTO) {
+    public Direction updateDirection(Long directionID, UpdateDirectionDTO updateDirectionDTO) {
         if (findDirectionByID(directionID).isPresent()) {
             if (updateDirectionDTO.isValid()) {
                 Direction updatedDirection = findDirectionByID(directionID).get().update(updateDirectionDTO);

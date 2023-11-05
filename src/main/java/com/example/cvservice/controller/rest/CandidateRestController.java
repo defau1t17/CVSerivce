@@ -28,7 +28,7 @@ public class CandidateRestController {
     @ApiResponse(responseCode = "409", description = "Error adding new Candidate")
     @PostMapping(value = "/")
     public ResponseEntity<?> addNewCandidate(@ModelAttribute NewCandidateDTO newCandidateDTO) {
-        Candidate newCandidate = candidateService.validateBeforeSave(newCandidateDTO);
+        Candidate newCandidate = candidateService.saveNewCandidate(newCandidateDTO);
         return ResponseEntity.ok(newCandidate);
     }
 
@@ -61,7 +61,7 @@ public class CandidateRestController {
     @ApiResponse(responseCode = "404", description = "Candidate with such ID not found")
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCandidateByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandidateDTO updateCandidateDTO) throws IOException {
-        Candidate updatedCandidate = candidateService.validateBeforeUpdate(id, updateCandidateDTO);
+        Candidate updatedCandidate = candidateService.updateCandidate(id, updateCandidateDTO);
         return ResponseEntity.ok(updatedCandidate);
     }
 
