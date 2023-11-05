@@ -1,5 +1,6 @@
 package com.example.cvservice.service.Candidate;
 
+import com.example.cvservice.controller.view.Candidate.CandidatesController;
 import com.example.cvservice.dto.Candidate.NewCandidateDTO;
 import com.example.cvservice.dto.Candidate.UpdateCandidateDTO;
 import com.example.cvservice.entity.main.Candidate;
@@ -10,6 +11,8 @@ import com.example.cvservice.service.Files.CVService;
 import com.example.cvservice.service.Filter.CandidateFilter;
 import com.example.cvservice.service.Direction.DirectionService;
 import com.example.cvservice.service.EntityOperations;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
@@ -31,6 +34,9 @@ public class CandidateService implements EntityOperations {
     @Autowired
     private CVService cvService;
 
+    Logger logger = LoggerFactory.getLogger(CandidateService.class);
+
+
     public List<Candidate> findAllCandidates() {
         return repository.findAll();
     }
@@ -38,14 +44,13 @@ public class CandidateService implements EntityOperations {
     public Page<Candidate> findAllCandidatesByPageNumber(int pageNumber, int pageSize, String param, String direction, String name, String secondName, String patr, List<String> directionsNames) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.valueOf(direction), param));
         Specification<Candidate> candidateSpecification = new CandidateFilter().filterCandidateByParams(new CandidateFilter().generateCandidateFromParams(name, secondName, patr, directionsNames), directionService);
+        logger.info("new page with candidates created");
         return repository.findAll(candidateSpecification, pageable);
     }
-
 
     public Optional<Candidate> findCandidateByID(Long id) {
         return repository.findById(id);
     }
-
 
     @Override
     @Transactional
@@ -61,7 +66,9 @@ public class CandidateService implements EntityOperations {
     }
 
     public Candidate saveNewCandidate(NewCandidateDTO newCandidateDTO) {
+        logger.info("new candidate incoming");
         if (newCandidateDTO.isValid()) {
+            logger.info("new candidate validated");
             Candidate newCandidate = Candidate.builder().name(newCandidateDTO.getName())
                     .secondName(newCandidateDTO.getSecond_name())
                     .patronymic(newCandidateDTO.getPatr())
@@ -70,18 +77,27 @@ public class CandidateService implements EntityOperations {
                     .image(cvService.buildImage(newCandidateDTO.getImageFile()))
                     .cv(cvService.buildCV(newCandidateDTO.getCvFile())).build();
             save(newCandidate);
+            logger.info("new candidate created");
             return newCandidate;
-        } else throw new ObjectIsEmptyException();
+        } else
+            logger.warn("new candidate has been rejected");
+        throw new ObjectIsEmptyException();
     }
 
-
     public Candidate updateCandidate(Long candidateID, UpdateCandidateDTO updateCandidateDTO) {
+        logger.info("updated candidate incoming");
         if (findCandidateByID(candidateID).isPresent()) {
+            logger.info("updated candidate exists");
             if (updateCandidateDTO.isValid()) {
+                logger.info("updated candidate valid");
                 Candidate updatedCandidate = findCandidateByID(candidateID).get().update(updateCandidateDTO, cvService);
                 update(updatedCandidate);
+                logger.info("candidate updated ");
                 return updatedCandidate;
-            } else throw new ObjectIsEmptyException();
+            } else {
+                logger.warn("updated candidate has been rejected");
+                throw new ObjectIsEmptyException();
+            }
         } else throw new ObjectNotFoundException("Candidate", candidateID);
 
     }

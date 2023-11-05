@@ -2,6 +2,7 @@ package com.example.cvservice.controller.rest;
 
 import com.example.cvservice.dto.Direction.NewDirectionDTO;
 import com.example.cvservice.dto.Direction.UpdateDirectionDTO;
+import com.example.cvservice.entity.PageConstants;
 import com.example.cvservice.entity.main.Direction;
 import com.example.cvservice.service.Direction.DirectionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -58,6 +59,6 @@ public class DirectionRestController {
                                                                  @RequestParam(required = false, defaultValue = "ASC") String direction,
                                                                  @RequestParam(required = false) String name,
                                                                  @RequestParam(required = false) String description) {
-        return ResponseEntity.ok(directionService.findDirectionsByParams(page.orElse(0), size.orElse(10), name, description, sort, direction).getContent());
+        return ResponseEntity.ok(directionService.findDirectionsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), name, description, sort, direction).getContent());
     }
 }

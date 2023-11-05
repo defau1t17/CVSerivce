@@ -2,10 +2,13 @@ package com.example.cvservice.controller.view.Candidate;
 
 import com.example.cvservice.dto.Candidate.NewCandidateDTO;
 import com.example.cvservice.dto.Candidate.UpdateCandidateDTO;
+import com.example.cvservice.entity.PageConstants;
 import com.example.cvservice.entity.main.Candidate;
 import com.example.cvservice.service.Candidate.CandidateService;
 import com.example.cvservice.service.Direction.DirectionService;
 import com.example.cvservice.service.Files.CVService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -25,6 +28,9 @@ public class CandidatesController {
     @Autowired
     private CandidateService candidateService;
 
+    Logger logger = LoggerFactory.getLogger(CandidatesController.class);
+
+
     @GetMapping("")
     public String allCandidatesPage(Model model,
                                     @RequestParam(required = false) Optional<Integer> page,
@@ -35,9 +41,9 @@ public class CandidatesController {
                                     @RequestParam(required = false) String secondName,
                                     @RequestParam(required = false) String patronymic,
                                     @RequestParam(required = false) List<String> dir) {
-        Page<Candidate> allCandidatesByPageNumber = candidateService.findAllCandidatesByPageNumber(page.orElse(0), size.orElse(10), sort, direction, name, secondName, patronymic, dir);
+        Page<Candidate> allCandidatesByPageNumber = candidateService.findAllCandidatesByPageNumber(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), sort, direction, name, secondName, patronymic, dir);
         model.addAttribute("allCandidates", allCandidatesByPageNumber);
-        model.addAttribute("pageSize", size.orElse(10));
+        model.addAttribute("pageSize", size.orElse(PageConstants.DEFAULT_PAGE_SIZE));
         model.addAttribute("pages", allCandidatesByPageNumber.getTotalPages());
         model.addAttribute("sort", sort);
         model.addAttribute("direction", direction);
@@ -46,6 +52,7 @@ public class CandidatesController {
         model.addAttribute("filterSecondName", secondName);
         model.addAttribute("filterPatr", patronymic);
         model.addAttribute("filterDirections", dir);
+        logger.info("All candidates page works ");
 
         return "/candidates/all_candidates_page";
     }
@@ -55,6 +62,8 @@ public class CandidatesController {
     public String displayAddNewCandidatePage(Model model) {
         model.addAttribute("allDirections", directionService.findAll());
         model.addAttribute("newCandidate", new NewCandidateDTO());
+        logger.info("Add new candidate page works ");
+
         return "/candidates/add_new_candidate_page";
     }
 
@@ -66,6 +75,8 @@ public class CandidatesController {
             candidate = optionalCandidate.get();
         }
         model.addAttribute("candidate", candidate);
+        logger.info("candidate by id page works");
+
         return "/candidates/candidate_page";
     }
 
@@ -97,10 +108,13 @@ public class CandidatesController {
                         .cvFile(null)
                         .imageFile(CVService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();
             }
+            logger.info("entity for edit has been created");
         }
         model.addAttribute("allDirections", directionService.findAll());
 
         model.addAttribute("requestUpdateCandidate", updateCandidateDTO);
+
+        logger.info("edit candidate page works ");
 
 
         return "/candidates/edit_candidate_page";

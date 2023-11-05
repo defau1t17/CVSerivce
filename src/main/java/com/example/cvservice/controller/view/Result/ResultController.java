@@ -1,13 +1,17 @@
 package com.example.cvservice.controller.view.Result;
 
+import com.example.cvservice.controller.view.Candidate.CandidatesController;
 import com.example.cvservice.dto.Result.ResultDTO;
 import com.example.cvservice.dto.Result.UpdateResultDTO;
+import com.example.cvservice.entity.PageConstants;
 import com.example.cvservice.entity.main.Candidate;
 import com.example.cvservice.entity.main.Result;
 import com.example.cvservice.service.Candidate.CandidateService;
 import com.example.cvservice.service.Result.ResultService;
 import com.example.cvservice.service.Direction.DirectionService;
 import com.example.cvservice.service.Test.TestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -37,11 +41,16 @@ public class ResultController {
     @Autowired
     private DirectionService directionService;
 
+    Logger logger = LoggerFactory.getLogger(CandidatesController.class);
+
+
     @GetMapping("/add")
     public String addNewResultPage(Model model) {
         model.addAttribute("allCandidates", candidateService.findAllCandidates());
         model.addAttribute("allTests", testService.findAll());
         model.addAttribute("newResult", new ResultDTO());
+        logger.info("new result page works");
+
         return "/results/add_new_result_page";
     }
 
@@ -61,7 +70,7 @@ public class ResultController {
                                         @RequestParam(required = false) LocalDate fromDate,
                                         @RequestParam(required = false) LocalDate toDate,
                                         Model model) {
-        Page<Result> allResults = resultService.findResultsByParams(page.orElse(0), size.orElse(10), candidateName, candidateSecondName, candidatePatronymic, testName, testDesc, dirNames, fromDate, toDate, fromMark.orElse(0), toMark.orElse(100), sort, direction);
+        Page<Result> allResults = resultService.findResultsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), candidateName, candidateSecondName, candidatePatronymic, testName, testDesc, dirNames, fromDate, toDate, fromMark.orElse(0), toMark.orElse(100), sort, direction);
         model.addAttribute("cName", candidateName);
         model.addAttribute("cSecondName", candidateSecondName);
         model.addAttribute("cPatr", candidatePatronymic);
@@ -74,11 +83,13 @@ public class ResultController {
         model.addAttribute("toDate", toDate);
         model.addAttribute("sort", sort);
         model.addAttribute("direction", direction);
-        model.addAttribute("pageSize", size.orElse(10));
+        model.addAttribute("pageSize", size.orElse(PageConstants.DEFAULT_PAGE_SIZE));
 
         model.addAttribute("allDirections", directionService.findAll());
         model.addAttribute("allResults", allResults);
         model.addAttribute("allTests", testService.findAll());
+
+        logger.info("all results page works");
 
 
         return "/results/all_results_page";
@@ -95,6 +106,8 @@ public class ResultController {
             model.addAttribute("candidate", optionalCandidate.get());
         }
         model.addAttribute("allResults", allResults);
+        logger.info(" result by id page works");
+
         return "/results/result_page";
     }
 
@@ -118,6 +131,10 @@ public class ResultController {
         }
         model.addAttribute("result", resultDTO);
         model.addAttribute("allTests", testService.findAll());
+
+        logger.info("edit results by id  page works");
+
+
         return "/results/edit_result_page";
     }
 

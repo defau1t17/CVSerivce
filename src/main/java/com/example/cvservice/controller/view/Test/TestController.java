@@ -1,12 +1,16 @@
 package com.example.cvservice.controller.view.Test;
 
+import com.example.cvservice.controller.view.Candidate.CandidatesController;
 import com.example.cvservice.dto.Test.NewTestDTO;
 import com.example.cvservice.dto.Test.UpdateTestDTO;
+import com.example.cvservice.entity.PageConstants;
 import com.example.cvservice.entity.main.Test;
 import com.example.cvservice.service.Direction.DirectionService;
 import com.example.cvservice.service.Test.TestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -29,11 +33,15 @@ public class TestController {
     @Autowired
     private TestService testService;
 
+    Logger logger = LoggerFactory.getLogger(TestController.class);
+
 
     @GetMapping("/add")
     public String addNewTestPage(Model model) {
         model.addAttribute("newTest", new NewTestDTO());
         model.addAttribute("directions", directionService.findAll());
+        logger.info("add new test page works");
+
         return "/tests/add_new_test_page";
     }
 
@@ -46,7 +54,7 @@ public class TestController {
                                       @RequestParam(required = false) String description,
                                       @RequestParam(required = false) List<String> dir,
                                       Model model) {
-        Page<Test> allTestByPageNumber = testService.findTestsByParams(page.orElse(0), size.orElse(10), name, description, dir, sort, direction);
+        Page<Test> allTestByPageNumber = testService.findTestsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), name, description, dir, sort, direction);
         model.addAttribute("allDirections", directionService.findAll());
         model.addAttribute("tests", allTestByPageNumber);
         model.addAttribute("filterDirections", dir);
@@ -54,8 +62,10 @@ public class TestController {
         model.addAttribute("sort", sort);
         model.addAttribute("direction", direction);
         model.addAttribute("filterDesc", description);
-        model.addAttribute("pageSize", size.orElse(10));
+        model.addAttribute("pageSize", size.orElse(PageConstants.DEFAULT_PAGE_SIZE));
         model.addAttribute("pages", allTestByPageNumber.getTotalPages());
+        logger.info("all tests page works");
+
         return "/tests/all_tests_page";
     }
 
@@ -67,6 +77,7 @@ public class TestController {
             test = optionalTest.get();
         }
         model.addAttribute("test", test);
+        logger.info("test by id page works");
 
         return "/tests/test_page";
     }
@@ -83,7 +94,7 @@ public class TestController {
         }
         model.addAttribute("allDirections", directionService.findAll());
 
-
+        logger.info("edit test by id page works");
         return "/tests/edit_test_page";
 
     }

@@ -3,6 +3,7 @@ package com.example.cvservice.controller.rest;
 
 import com.example.cvservice.dto.Result.ResultDTO;
 import com.example.cvservice.dto.Result.UpdateResultDTO;
+import com.example.cvservice.entity.PageConstants;
 import com.example.cvservice.entity.main.Result;
 import com.example.cvservice.service.Result.ResultService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -71,7 +72,7 @@ public class ResultRestController {
                                                                   @RequestParam(required = false) Optional<Integer> toMark,
                                                                   @RequestParam(required = false) LocalDate fromDate,
                                                                   @RequestParam(required = false) LocalDate toDate) {
-        return ResponseEntity.ok(resultService.findResultsByParams(page.orElse(0), size.orElse(10), candidateName, candidateSecondName, candidatePatronymic, testName, testDesc, dirNames, fromDate, toDate, fromMark.orElse(0), toMark.orElse(100), sort, direction).getContent());
+        return ResponseEntity.ok(resultService.findResultsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_NUMBER), candidateName, candidateSecondName, candidatePatronymic, testName, testDesc, dirNames, fromDate, toDate, fromMark.orElse(0), toMark.orElse(100), sort, direction).getContent());
     }
 
 

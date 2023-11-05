@@ -3,6 +3,7 @@ package com.example.cvservice.controller.rest;
 
 import com.example.cvservice.dto.Test.NewTestDTO;
 import com.example.cvservice.dto.Test.UpdateTestDTO;
+import com.example.cvservice.entity.PageConstants;
 import com.example.cvservice.entity.main.Test;
 import com.example.cvservice.service.Test.TestService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -60,7 +61,7 @@ public class TestRestController {
                                                        @RequestParam(required = false) String name,
                                                        @RequestParam(required = false) String description,
                                                        @RequestParam(required = false) List<String> dir) {
-        return ResponseEntity.ok(testService.findTestsByParams(page.orElse(0), size.orElse(10), name, description, dir, sort, direction).getContent());
+        return ResponseEntity.ok(testService.findTestsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_NUMBER), name, description, dir, sort, direction).getContent());
     }
 
 }
