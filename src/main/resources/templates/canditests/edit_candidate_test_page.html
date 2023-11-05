@@ -43,7 +43,6 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
     function editCandidateTestRequest() {
 
         var formData = new FormData($('#updateCandidateTestForm')[0]);
@@ -51,7 +50,7 @@
         var candidateTestID = $('#updateCandidateTestForm').attr('value');
 
         $.ajax({
-            url: '/task/canditests/rest/update/' + candidateTestID,
+            url: '/v1/canditests/' + candidateTestID,
             type: 'PATCH',
             processData: false,
             contentType: false,
@@ -75,7 +74,6 @@
             }
         });
     }
-
     function validateBeforeSend() {
         var dateValue = $('#updated-date').val();
         var markValue = $('#updated-value').val();

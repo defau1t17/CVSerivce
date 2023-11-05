@@ -19,51 +19,51 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/task/directions/rest")
-@Tag(name = "Направления", description = "API для управления направлениями")
+@RequestMapping("/v1/directions")
+@Tag(name = "Directions", description = "API FOR MANAGING DIRECTIONS")
 public class DirectionRestController {
 
     @Autowired
     private DirectionService directionService;
 
-    @Operation(summary = "Добавить новое направление")
-    @ApiResponse(responseCode = "200", description = "Направление успешно добавлено")
-    @ApiResponse(responseCode = "409", description = "Ошибка при добавлении направления. Направление уже существует или пустое")
-    @PostMapping("/add")
+    @Operation(summary = "Add new Direction")
+    @ApiResponse(responseCode = "200", description = "New Direction has been added")
+    @ApiResponse(responseCode = "409", description = "Error while adding new Direction. Direction exists or DTO empty")
+    @PostMapping("/")
     public ResponseEntity<String> addNewDirection(@ModelAttribute NewDirectionDTO newDirectionDTO) {
         if (!new InputDirectionVerification().isDirectionEmpty(newDirectionDTO) && !new InputDirectionVerification().isDirectionExists(newDirectionDTO, directionService)) {
             directionService.save(new Direction(newDirectionDTO.getName(), newDirectionDTO.getDescription()));
-            return ResponseEntity.ok("Новое направление успешно добавлено");
+            return ResponseEntity.ok("New Direction has been added");
         }
-        return ResponseEntity.status(HttpStatus.CONFLICT).body("Ошибка добавления нового направления");
+        return ResponseEntity.status(HttpStatus.CONFLICT).body("Error while adding new Direction. Direction exists or DTO empty");
     }
 
-    @Operation(summary = "Обновить направление по ID")
-    @ApiResponse(responseCode = "200", description = "Направление успешно обновлено")
-    @ApiResponse(responseCode = "404", description = "Напревление с таким ID не найдено")
-    @PatchMapping("/update/{id}")
+    @Operation(summary = "Update Direction by ID")
+    @ApiResponse(responseCode = "200", description = "Direction has been updated")
+    @ApiResponse(responseCode = "404", description = "Direction with such ID not found")
+    @PatchMapping("/{id}")
     public ResponseEntity<String> addNewDirection(@PathVariable(value = "id") Long id, @ModelAttribute UpdateDirectionDTO updateDirectionDTO) {
         Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
         if (optionalDirection.isPresent()) {
             directionService.update(new UpdateDirectionData().updateDirection(optionalDirection.get(), updateDirectionDTO));
-            return ResponseEntity.ok("Направление успешно обновленно");
+            return ResponseEntity.ok("Direction has been updated");
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ошибка обновления нарпавления");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Direction with such ID not found");
         }
     }
 
-    @Operation(summary = "Получить направление по ID")
-    @ApiResponse(responseCode = "200", description = "Данные направления")
-    @ApiResponse(responseCode = "404", description = "Напревление с таким ID не найдено")
-    @GetMapping("/get/{id}")
+    @Operation(summary = "Get Direction ID")
+    @ApiResponse(responseCode = "200", description = "Direction's Data")
+    @ApiResponse(responseCode = "404", description = "Direction with such ID not found")
+    @GetMapping("/{id}")
     public ResponseEntity<Direction> getDirectionByID(@PathVariable(value = "id") Long id) {
         Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
         return optionalDirection.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @Operation(summary = "Обновить направление по параметрам")
-    @ApiResponse(responseCode = "200", description = "Данные направления")
-    @GetMapping("/get")
+    @Operation(summary = "Get Directions by params")
+    @ApiResponse(responseCode = "200", description = "Directions Data")
+    @GetMapping("")
     public ResponseEntity<List<Direction>> getDirectionsByParams(@RequestParam(required = false) Optional<Integer> page,
                                                                  @RequestParam(required = false) Optional<Integer> size,
                                                                  @RequestParam(required = false, defaultValue = "name") String sort,

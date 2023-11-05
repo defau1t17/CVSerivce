@@ -51,10 +51,8 @@
 
         var directionID = $('#update-direction-button').attr('value');
 
-        console.log(formData)
-
         $.ajax({
-            url: '/task/directions/rest/update/' + directionID,
+            url: '/v1/directions/' + directionID,
             type: 'PATCH',
             processData: false,
             contentType: false,
