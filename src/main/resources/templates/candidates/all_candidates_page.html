@@ -17,7 +17,7 @@
 <div class="all-candidates-container">
     <div class="candidates-list" th:each="candidate : ${allCandidates}">
         <div class="candidate">
-            <a th:href="@{/task/candidates/candidate/__${candidate.id}__}">
+            <a th:href="@{/candidates/__${candidate.id}__}">
                 <div class="candidate-image-block">
                     <img src="" th:if="${candidate.image != null}"
                          th:src="@{'data:image/*;base64,'+ ${candidate.image.generateBase64Image()}}"
@@ -32,12 +32,14 @@
 
             <div class="candidates-direction">
                 <ul th:each="direction : ${candidate.directions}">
-                    <li th:text="${direction.name}">direction</li>
+<!--                    <li th:text="${direction.name}">-->
+                        <a th:href="@{/directions/__${direction.id}__}" th:text="${direction.name}"></a>
+<!--                    </li>-->
                 </ul>
             </div>
             <div class="button-block">
                 <a class="candidate-process-button"
-                   th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">EDIT</a>
+                   th:href="@{/candidates/edit/__${candidate.id}__}">EDIT</a>
             </div>
         </div>
     </div>
@@ -58,8 +60,6 @@
         <input type="hidden" name="size" th:value="${pageSize}">
     </form>
 </div>
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -75,7 +75,6 @@
             }
         });
     });
-
     function sortData(element) {
         var radioInput = $(element).closest('.sort-inner-block').find('.sort-radio');
         radioInput.prop('checked', true);

@@ -16,12 +16,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/task/directions")
+@RequestMapping("/directions")
 public class DirectionController {
     @Autowired
     private DirectionService directionService;
 
-    @GetMapping("/all")
+    @GetMapping("")
     public String displayAllDirectionsPage(@RequestParam(required = false) Optional<Integer> page,
                                            @RequestParam(required = false) Optional<Integer> size,
                                            @RequestParam(required = false, defaultValue = "name") String sort,
@@ -29,9 +29,7 @@ public class DirectionController {
                                            @RequestParam(required = false) String name,
                                            @RequestParam(required = false) String description,
                                            Model model) {
-
         Page<Direction> directionsByParams = directionService.findDirectionsByParams(page.orElse(0), size.orElse(10), name, description, sort, direction);
-
         model.addAttribute("directions", directionsByParams);
         model.addAttribute("filterName", name);
         model.addAttribute("sort", sort);
@@ -42,14 +40,13 @@ public class DirectionController {
         return "/directions/all_directions_page";
     }
 
-
     @GetMapping("/add")
     public String displayAddNewDirectionsPage(Model model) {
         model.addAttribute("newDirection", new NewDirectionDTO());
         return "/directions/add_new_direction_page";
     }
 
-    @GetMapping("/direction/{id}")
+    @GetMapping("/{id}")
     public String displayDirectionPage(@PathVariable(value = "id") Long id, Model model) {
         Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
         Direction direction = null;
@@ -61,7 +58,7 @@ public class DirectionController {
 
     }
 
-    @GetMapping("/direction/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String editDirectionsByID(@PathVariable(value = "id") Long id, Model model) {
         Optional<Direction> optionalDirection = directionService.findDirectionByID(id);
         UpdateDirectionDTO updateDirectionDTO = new UpdateDirectionDTO();

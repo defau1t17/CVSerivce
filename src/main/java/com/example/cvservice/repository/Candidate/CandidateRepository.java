@@ -11,8 +11,4 @@ import org.springframework.stereotype.Repository;
 public interface CandidateRepository extends JpaRepository<Candidate, Long> {
     Page<Candidate> findAll(Specification<Candidate> candidateSpecification, Pageable pageable);
 
-//    Page<Candidate> findAll(Specification<Candidate> candidateSpecification);
-
-//    Page<Candidate> findAll(Specification<Candidate> candidateSpecification);
-
 }

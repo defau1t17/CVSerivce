@@ -18,7 +18,6 @@ public interface DirectionsRepository extends JpaRepository<Direction, Long> {
 
     Page<Direction> findAll(Specification<Direction> specification, Pageable pageable);
 
-    Direction findDirectionByName(String directionName);
 
 
 }

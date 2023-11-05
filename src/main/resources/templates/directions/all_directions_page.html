@@ -14,7 +14,7 @@
 <div class="directions-container">
     <div class="direction" th:each="direction : ${directions}">
         <div class="direction-name-field">
-            <a th:href="@{/task/directions/direction/__${direction.id}__}">
+            <a th:href="@{/directions/__${direction.id}__}">
                 <span th:text="${direction.name}">название</span>
             </a>
         </div>
@@ -24,7 +24,7 @@
         </div>
 
         <div class="direction-process-button">
-            <a th:href="@{/task/directions/direction/edit/__${direction.id}__}">Изменить</a>
+            <a th:href="@{/directions/edit/__${direction.id}__}">Изменить</a>
         </div>
     </div>
 </div>

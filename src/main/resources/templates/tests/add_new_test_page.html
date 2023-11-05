@@ -52,7 +52,7 @@
         console.log(formData)
 
         $.ajax({
-            url: '/v1/tests/',
+            url: '/api/v1/tests/',
             type: 'POST',
             processData: false,
             contentType: false,
@@ -61,7 +61,7 @@
                 if (xhr.status === 200) {
                     showNotification("Новый тест успешно добавлен!", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/tests/add"
+                        window.location.href = "/tests/add"
                     }, 1000);
 
                 }

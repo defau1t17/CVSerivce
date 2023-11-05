@@ -68,7 +68,7 @@ public class CandidateService implements EntityOperations {
                     .directions(newCandidateDTO.getDirections())
                     .candidateDescription(newCandidateDTO.getCandidateDesc())
                     .image(cvService.buildImage(newCandidateDTO.getImageFile()))
-                    .curriculumVitae(cvService.buildCV(newCandidateDTO.getCvFile())).build();
+                    .cv(cvService.buildCV(newCandidateDTO.getCvFile())).build();
             save(newCandidate);
             return newCandidate;
         } else throw new ObjectIsEmptyException();

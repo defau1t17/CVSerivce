@@ -34,7 +34,7 @@
             </div>
             <div th:if="${requestUpdateCandidate.cvFile != null}">
                 <label>Candidate CV FILE</label>
-                <a th:href="@{/task/view/file/candidate/__${requestUpdateCandidate.id}__}"
+                <a th:href="@{/file/__${requestUpdateCandidate.id}__}"
                    th:text="${requestUpdateCandidate.cvFile.name}"></a>
             </div>
             <div th:if="${requestUpdateCandidate.cvFile == null}">
@@ -72,7 +72,7 @@
         });
 
         $.ajax({
-            url: '/v1/candidates/' + update_id,
+            url: '/api/v1/candidates/' + update_id,
             type: 'PATCH',
             processData: false,
             contentType: false,
@@ -81,7 +81,7 @@
                 if (xhr.status === 200) {
                     showNotification("Данные успешно обновлены!", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/candidates/candidate/edit/" + update_id;
+                        window.location.href = "/candidates/edit/" + update_id;
                     }, 1000);
                 }
             },

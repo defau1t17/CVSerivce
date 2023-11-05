@@ -52,7 +52,7 @@
         var directionID = $('#update-direction-button').attr('value');
 
         $.ajax({
-            url: '/v1/directions/' + directionID,
+            url: '/api/v1/directions/' + directionID,
             type: 'PATCH',
             processData: false,
             contentType: false,
@@ -61,7 +61,7 @@
                 if (xhr.status === 200) {
                     showNotification("Направление успешно обновленно ", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/directions/direction/edit/" + directionID
+                        window.location.href = "/directions/edit/" + directionID
                     }, 1000);
                 }
             },

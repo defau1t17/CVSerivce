@@ -15,14 +15,14 @@
         <div class="candidate-info-block">
             <label>Кандидат :</label>
             <a th:field="*{candidateID}" th:value="${candidate.id}"
-               th:href="@{/task/candidates/candidate/__${candidate.id}__}"
+               th:href="@{/candidates/__${candidate.id}__}"
                th:text="${candidate.name}"></a>
             <input th:field="*{candidateID}" id="candidate-id" type="hidden" th:value="${result.candidateID}">
         </div>
         <label>Информация о тесте</label>
         <div class="test-edit-block">
             <input th:field="*{testID}" type="hidden" th:value="${result.testID}">
-            <a th:href="@{/task/tests/test/__${result.testID}__}" th:text="${result.testName}"></a>
+            <a th:href="@{/tests/__${result.testID}__}" th:text="${result.testName}"></a>
             <input th:field="*{date}" class="selected-value" id="updated-date" type="date"
                    th:value="${result.date}">
             <input th:field="*{mark}" class="selected-value" id="updated-value" min="0" max="100" type="number"
@@ -50,7 +50,7 @@
         var resultID = $('#updateResultForm').attr('value');
 
         $.ajax({
-            url: '/v1/results/' + resultID,
+            url: '/api/v1/results/' + resultID,
             type: 'PATCH',
             processData: false,
             contentType: false,
@@ -60,7 +60,7 @@
                 if (xhr.status === 200) {
                     showNotification("Результат обновлен ", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/results/edit/" + resultID
+                        window.location.href = "/results/edit/" + resultID
                     }, 1000);
                 }
             },

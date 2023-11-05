@@ -41,11 +41,9 @@
     function addNewCandidateRequest() {
 
         var formData = new FormData($('#newCandidateForm')[0]);
-
-
         console.log(formData)
         $.ajax({
-            url: '/v1/candidates/',
+            url: '/api/v1/candidates/',
             type: 'POST',
             contentType: false,
             processData: false,
@@ -54,7 +52,7 @@
                 if (xhr.status === 200) {
                     showNotification("Пользователь успешно добавлен", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/candidates/add"
+                        window.location.href = "/candidates/add"
                     }, 1000);
                     console.log("новый клиент был загружен на сервер")
                 }

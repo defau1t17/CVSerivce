@@ -13,17 +13,17 @@
 
     <div class="candidate-info">
         <label>Имя</label>
-        <a th:href="@{/task/candidates/candidate/__${candidate.id}__}"
+        <a th:href="@{/candidates/__${candidate.id}__}"
            th:text="${candidate.name + ' ' + candidate.secondName + ' ' + candidate.patronymic}"></a>
         <label>Направления</label>
         <div th:each="candidateDirections : ${candidate.directions}">
             <a th:text="${candidateDirections.name}"
-               th:href="@{/task/directions/direction/__${candidateDirections.id}__}"></a>
+               th:href="@{/directions/__${candidateDirections.id}__}"></a>
         </div>
     </div>
     <div class="candidates-tests" th:each="result : ${allResults}" th:value="${result.id}">
         <div>
-            <a th:text="${result.test.name}" th:href="@{/task/tests/test/__${result.test.id}__}"></a>
+            <a th:text="${result.test.name}" th:href="@{/tests/__${result.test.id}__}"></a>
             <span th:text="${result.test.description}"></span>
         </div>
         <div>
@@ -31,7 +31,7 @@
             <span th:text="${result.grade.mark}"></span>
         </div>
         <div class="button-block">
-            <a th:href="@{/task/results/edit/__${result.id}__}">Изменить тесты
+            <a th:href="@{/results/edit/__${result.id}__}">Изменить тесты
                 кандидата</a>
         </div>
 

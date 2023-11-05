@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/task/tests/")
+@RequestMapping("/tests")
 public class TestController {
 
     @Autowired
@@ -37,7 +37,7 @@ public class TestController {
         return "/tests/add_new_test_page";
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public String displayAllTestsPage(@RequestParam(required = false) Optional<Integer> page,
                                       @RequestParam(required = false) Optional<Integer> size,
                                       @RequestParam(required = false, defaultValue = "name") String sort,
@@ -59,7 +59,7 @@ public class TestController {
         return "/tests/all_tests_page";
     }
 
-    @GetMapping("/test/{id}")
+    @GetMapping("/{id}")
     public String displayTestPage(@PathVariable(value = "id") Long id, Model model) {
         Optional<Test> optionalTest = testService.findTestByID(id);
         Test test = null;
@@ -71,7 +71,7 @@ public class TestController {
         return "/tests/test_page";
     }
 
-    @GetMapping("/test/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String displayEditTestPage(@PathVariable(value = "id") Long id, Model model) {
         Optional<Test> optionalTest = testService.findTestByID(id);
         Test test = null;

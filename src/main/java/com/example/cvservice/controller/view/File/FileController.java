@@ -16,12 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/task/view/file")
+@RequestMapping("/file")
 public class FileController {
     @Autowired
     private CandidateService candidateService;
-
-    @GetMapping("/candidate/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<byte[]> viewFile(@PathVariable(value = "id") Long id) {
         System.out.println("i'm here");
         Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
@@ -29,7 +28,7 @@ public class FileController {
         CurriculumVitae curriculumVitae = null;
         if (optionalCandidate.isPresent()) {
             candidate = optionalCandidate.get();
-            curriculumVitae = candidate.getCurriculumVitae();
+            curriculumVitae = candidate.getCv();
         }
         if (curriculumVitae != null) {
             HttpHeaders headers = new HttpHeaders();

@@ -65,7 +65,7 @@
         var formData = new FormData($('#newResultForm')[0]);
 
         $.ajax({
-            url: '/v1/results/',
+            url: '/api/v1/results/',
             type: 'POST',
             processData: false,
             contentType: false,
@@ -75,7 +75,7 @@
                 if (xhr.status === 200) {
                     showNotification("Новый результат добавлен!", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/results/add"
+                        window.location.href = "/results/add"
                     }, 1000);
                 }
             },

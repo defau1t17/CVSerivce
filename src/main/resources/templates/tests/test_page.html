@@ -20,10 +20,10 @@
         </div>
 
         <div class="test-directions-block" th:each="testDirection : ${test.directions}">
-            <a th:href="@{/task/directions/direction/__${testDirection.id}__}" th:text="${testDirection.name}"></a>
+            <a th:href="@{/directions/__${testDirection.id}__}" th:text="${testDirection.name}"></a>
         </div>
         <div class="button-block">
-            <a th:href="@{/task/tests/test/edit/__${test.id}__}">Изменить тест</a>
+            <a th:href="@{/tests/edit/__${test.id}__}">Изменить тест</a>
         </div>
     </div>
 </div>

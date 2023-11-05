@@ -9,7 +9,6 @@
 </head>
 <body>
 <div th:replace="inner/navigation_header :: header"></div>
-
 <div th:replace="inner/sort_and_filter_canditests :: div"></div>
 <div class="candidates-tests-page">
     <div class="candidate-test" th:each="result: ${allResults}">
@@ -32,7 +31,7 @@
             </div>
         </div>
         <div class="button-block">
-            <a th:href="@{/task/results/candidate/__${result.candidate.id}__}">Просмотреть тесты
+            <a th:href="@{/results/__${result.candidate.id}__}">Просмотреть тесты
                 кандидата</a>
         </div>
     </div>

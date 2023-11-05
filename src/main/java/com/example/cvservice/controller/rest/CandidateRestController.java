@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/candidates")
+@RequestMapping("/api/v1/candidates")
 @Tag(name = "Candidates", description = "API FOR MANAGING CANDIDATES")
 public class CandidateRestController {
 

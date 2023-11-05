@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/task/results/")
+@RequestMapping("/results")
 public class ResultController {
 
     @Autowired
@@ -45,7 +45,7 @@ public class ResultController {
         return "/results/add_new_result_page";
     }
 
-    @GetMapping("/all")
+    @GetMapping("")
     public String displayAllResultsPage(@RequestParam(required = false) Optional<Integer> page,
                                         @RequestParam(required = false) Optional<Integer> size,
                                         @RequestParam(required = false, defaultValue = "candidate.name") String sort,
@@ -85,7 +85,7 @@ public class ResultController {
     }
 
 
-    @GetMapping("/candidate/{id}")
+    @GetMapping("/{id}")
     public String displayResultPage(@PathVariable(value = "id") Long id, Model model) {
         Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         List<Result> allResults = null;

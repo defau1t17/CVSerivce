@@ -44,7 +44,7 @@ public class DataInitializer implements CommandLineRunner {
 //                .patronymic("Test")
 //                .candidateDescription("Test")
 //                .directions(directions)
-//                .curriculumVitae(null)
+//                .cv(null)
 //                .image(null)
 //                .build();
 //        Test test = Test.builder()
@@ -65,7 +65,7 @@ public class DataInitializer implements CommandLineRunner {
 //                .patronymic("Test")
 //                .candidateDescription("Test")
 //                .directions(directions)
-//                .curriculumVitae(null)
+//                .cv(null)
 //                .image(null)
 //                .build();
 //

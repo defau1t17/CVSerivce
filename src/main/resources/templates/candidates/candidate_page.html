@@ -25,24 +25,24 @@
         <div class="candidate-directions-block">
             <ul th:each="direction : ${candidate.directions}">
                 <li>
-                    <a th:href="@{/task/directions/direction/__${direction.id}__}" th:text="${direction.name}"></a>
+                    <a th:href="@{/directions/__${direction.id}__}" th:text="${direction.name}"></a>
                 </li>
             </ul>
         </div>
 
-        <div th:if="${candidate.curriculumVitae != null}">
+        <div th:if="${candidate.cv != null}">
             <label>CV Файл Кандидата</label>
-            <a th:href="@{/task/view/file/candidate/__${candidate.id}__}"
-               th:text="${candidate.curriculumVitae.cvFileName}"></a>
+            <a th:href="@{/file/__${candidate.id}__}"
+               th:text="${candidate.cv.cvFileName}"></a>
         </div>
 
-        <div th:if="${candidate.curriculumVitae == null}">
+        <div th:if="${candidate.cv == null}">
             <label>NO CV FILE</label>
         </div>
     </div>
 
     <div class="button-block">
-        <a class="candidate-process-button" th:href="@{/task/candidates/candidate/edit/__${candidate.id}__}">Редактировать</a>
+        <a class="candidate-process-button" th:href="@{/candidates/edit/__${candidate.id}__}">Редактировать</a>
     </div>
 </div>
 

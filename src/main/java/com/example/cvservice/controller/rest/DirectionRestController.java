@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/directions")
+@RequestMapping("/api/v1/directions")
 @Tag(name = "Directions", description = "API FOR MANAGING DIRECTIONS")
 public class DirectionRestController {
 

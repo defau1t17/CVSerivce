@@ -14,7 +14,6 @@ public class GlobalAdvice extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = ObjectAlreadyExistsException.class)
     public ResponseEntity<Object> handleObjectAlreadyExistsException(RuntimeException ex, WebRequest request) {
-        String bodyOfResponse = "Object ";
         return handleExceptionInternal(ex, ex.getMessage(),
                 new HttpHeaders(), HttpStatus.CONFLICT, request);
     }

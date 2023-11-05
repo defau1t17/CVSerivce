@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/results")
+@RequestMapping("/api/v1/results")
 @Tag(name = "Results", description = "API FOR MANAGING RESULTS")
 public class ResultRestController {
     @Autowired

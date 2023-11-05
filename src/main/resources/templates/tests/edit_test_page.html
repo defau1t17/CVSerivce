@@ -50,7 +50,7 @@
 
 
         $.ajax({
-            url: '/v1/tests/' + update_id,
+            url: '/api/v1/tests/' + update_id,
             type: 'PATCH',
             processData: false,
             contentType: false,
@@ -59,7 +59,7 @@
                 if (xhr.status === 200) {
                     showNotification("Данные успешно обновлены!", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/tests/test/edit/" + update_id;
+                        window.location.href = "/tests/edit/" + update_id;
                     }, 1000);
                 }
             },
@@ -79,6 +79,7 @@
             updateTest();
         }
     }
+
     const notification = document.getElementById('notification');
 
     function showNotification(message, duration) {

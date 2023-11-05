@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/task/candidates")
+@RequestMapping("/candidates")
 public class CandidatesController {
 
     @Autowired
@@ -25,7 +25,7 @@ public class CandidatesController {
     @Autowired
     private CandidateService candidateService;
 
-    @GetMapping("/all")
+    @GetMapping("")
     public String allCandidatesPage(Model model,
                                     @RequestParam(required = false) Optional<Integer> page,
                                     @RequestParam(required = false) Optional<Integer> size,
@@ -58,7 +58,7 @@ public class CandidatesController {
         return "/candidates/add_new_candidate_page";
     }
 
-    @GetMapping("/candidate/{id}")
+    @GetMapping("/{id}")
     public String displayCandidatePage(@PathVariable(value = "id") Long id, Model model) {
         Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         Candidate candidate = null;
@@ -69,7 +69,7 @@ public class CandidatesController {
         return "/candidates/candidate_page";
     }
 
-    @GetMapping("/candidate/edit/{id}")
+    @GetMapping("/edit/{id}")
     public String displayUpdateCandidatePage(@PathVariable(value = "id") Long id, Model model) {
         Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         Candidate candidate = null;
@@ -77,14 +77,14 @@ public class CandidatesController {
 
         if (optionalCandidate.isPresent()) {
             candidate = optionalCandidate.get();
-            if (candidate.getCurriculumVitae() != null) {
+            if (candidate.getCv() != null) {
                 updateCandidateDTO = UpdateCandidateDTO.builder().id(candidate.getId())
                         .name(candidate.getName())
                         .second_name(candidate.getSecondName())
                         .patr(candidate.getPatronymic())
                         .directions(candidate.getDirections())
                         .candidateDesc(candidate.getCandidateDescription())
-                        .cvFile(CVService.createMultipartFileFormByteArray(candidate.getCurriculumVitae().getCvData(), "application/octet-stream", candidate.getCurriculumVitae().getCvFileName()))
+                        .cvFile(CVService.createMultipartFileFormByteArray(candidate.getCv().getCvData(), "application/octet-stream", candidate.getCv().getCvFileName()))
                         .imageFile(CVService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();
             } else {
                 updateCandidateDTO = UpdateCandidateDTO.builder().id(candidate.getId())

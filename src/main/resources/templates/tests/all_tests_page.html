@@ -14,7 +14,7 @@
 <div class="test-container">
     <div class="test-list" th:each="test : ${tests}">
         <div class="test">
-            <a th:href="@{/task/tests/test/__${test.id}__}">
+            <a th:href="@{/tests/__${test.id}__}">
                 <div class="test-name-block">
                     <label>Название теста :</label>
                     <span th:text="${test.name}"></span>
@@ -28,11 +28,11 @@
                 <label>Направление теста :</label>
                 <div th:each="direction : ${test.directions}">
                     <a th:text="${direction.name}"
-                       th:href="@{/task/directions/direction/__${direction.id}__}"></a>
+                       th:href="@{/directions/__${direction.id}__}"></a>
                 </div>
             </div>
             <div class="test-process-block">
-                <a class="process-button" th:href="@{/task/tests/test/edit/__${test.id}__}">Изменить</a>
+                <a class="process-button" th:href="@{/tests/edit/__${test.id}__}">Изменить</a>
             </div>
         </div>
     </div>

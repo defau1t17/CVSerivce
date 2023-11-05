@@ -47,7 +47,7 @@ public class Candidate {
     private Image image;
 
     @Embedded
-    private CurriculumVitae curriculumVitae;
+    private CurriculumVitae cv;
 
     @ManyToMany
     private List<Direction> directions;
@@ -66,7 +66,7 @@ public class Candidate {
             this.setCandidateDescription(updateCandidateDTO.getCandidateDesc());
         }
         if (updateCandidateDTO.getCvFile() != null && !updateCandidateDTO.getCvFile().isEmpty()) {
-            this.setCurriculumVitae(cvService.buildCV(updateCandidateDTO.getCvFile()));
+            this.setCv(cvService.buildCV(updateCandidateDTO.getCvFile()));
         }
         if (updateCandidateDTO.getImageFile() != null && !updateCandidateDTO.getImageFile().isEmpty()) {
             this.setImage(cvService.buildImage(updateCandidateDTO.getImageFile()));

@@ -47,7 +47,7 @@
         var formData = new FormData($('#newDirection')[0]);
 
         $.ajax({
-            url: '/v1/directions/',
+            url: '/api/v1/directions/',
             type: 'POST',
             processData: false,
             contentType: false,
@@ -56,7 +56,7 @@
                 if (xhr.status === 200) {
                     showNotification("Новое направление успешно добавлено!", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/directions/add"
+                        window.location.href = "/directions/add"
                     }, 1000);
 
                     console.log("новое направление было добавлено на сервер!")

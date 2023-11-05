@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/tests")
+@RequestMapping("/api/v1/tests")
 @Tag(name = "Tests", description = "API FOR MANAGING TESTS")
 public class TestRestController {
     @Autowired
