@@ -4,9 +4,7 @@ package com.example.cvservice.controller.rest;
 import com.example.cvservice.dto.Test.NewTestDTO;
 import com.example.cvservice.dto.Test.UpdateTestDTO;
 import com.example.cvservice.entity.main.Test;
-import com.example.cvservice.service.Test.InputTestValidation;
 import com.example.cvservice.service.Test.TestService;
-import com.example.cvservice.service.Test.UpdateDataTest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -29,27 +27,18 @@ public class TestRestController {
     @ApiResponse(responseCode = "200", description = "New Test has been added")
     @ApiResponse(responseCode = "403", description = "Error while adding new Test. Test exists or DTO empty")
     @PostMapping("/")
-    public ResponseEntity<String> addNewTest(@ModelAttribute NewTestDTO newTestDTO) {
-        if (!new InputTestValidation().isNewTestExists(testService, newTestDTO) && !new InputTestValidation().isNewTestEmpty(newTestDTO)) {
-            Test newTest = Test.builder().name(newTestDTO.getName()).description(newTestDTO.getDescription()).directions(newTestDTO.getTestDirections()).build();
-            testService.save(newTest);
-            return ResponseEntity.ok("New Test has been added");
-        }
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Error while adding new Test. Test exists or DTO empty");
+    public ResponseEntity<?> addNewTest(@ModelAttribute NewTestDTO newTestDTO) {
+        Test test = testService.validateBeforeSave(newTestDTO);
+        return ResponseEntity.ok(test);
     }
 
     @Operation(summary = "Update Test by ID")
     @ApiResponse(responseCode = "200", description = "Test has been updated")
     @ApiResponse(responseCode = "404", description = "Test with such ID not found")
     @PatchMapping("/{id}")
-    public ResponseEntity<String> updateTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateTestDTO updateTestDTO) {
-        Optional<Test> optionalTestTest = testService.findTestByID(id);
-        if (optionalTestTest.isPresent()) {
-            testService.update(new UpdateDataTest().updateTest(optionalTestTest.get(), updateTestDTO));
-            return ResponseEntity.ok("Test has been updated");
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Test with such ID not found");
-        }
+    public ResponseEntity<?> updateTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateTestDTO updateTestDTO) {
+        Test test = testService.validateBeforeUpdate(id, updateTestDTO);
+        return ResponseEntity.ok(test);
     }
 
     @Operation(summary = "Get Test by ID")

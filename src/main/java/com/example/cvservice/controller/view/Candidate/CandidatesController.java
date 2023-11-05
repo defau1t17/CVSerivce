@@ -5,7 +5,7 @@ import com.example.cvservice.dto.Candidate.UpdateCandidateDTO;
 import com.example.cvservice.entity.main.Candidate;
 import com.example.cvservice.service.Candidate.CandidateService;
 import com.example.cvservice.service.Direction.DirectionService;
-import com.example.cvservice.service.Files.FileService;
+import com.example.cvservice.service.Files.CVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -84,8 +84,8 @@ public class CandidatesController {
                         .patr(candidate.getPatronymic())
                         .directions(candidate.getDirections())
                         .candidateDesc(candidate.getCandidateDescription())
-                        .cvFile(FileService.createMultipartFileFormByteArray(candidate.getCurriculumVitae().getCvData(), "application/octet-stream", candidate.getCurriculumVitae().getCvFileName()))
-                        .imageFile(FileService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();
+                        .cvFile(CVService.createMultipartFileFormByteArray(candidate.getCurriculumVitae().getCvData(), "application/octet-stream", candidate.getCurriculumVitae().getCvFileName()))
+                        .imageFile(CVService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();
             } else {
                 updateCandidateDTO = UpdateCandidateDTO.builder().id(candidate.getId())
                         .name(candidate.getName())
@@ -95,7 +95,7 @@ public class CandidatesController {
 
                         .directions(candidate.getDirections())
                         .cvFile(null)
-                        .imageFile(FileService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();
+                        .imageFile(CVService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();
             }
         }
         model.addAttribute("allDirections", directionService.findAll());

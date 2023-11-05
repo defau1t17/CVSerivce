@@ -8,4 +8,5 @@ public class DirectionFilterDTO {
     private String name;
 
     private String description;
+
 }

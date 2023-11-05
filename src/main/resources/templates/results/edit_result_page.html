@@ -9,9 +9,9 @@
 <body>
 <div th:replace="inner/navigation_header :: header"></div>
 
-<div class="candidate-test-container" th:if="${candidateTest != null}">
-    <form id="updateCandidateTestForm" th:object="${candidateTest}" th:value="${candidateTest.candiTestID}">
-        <input th:field="*{candiTestID}" type="hidden" th:value="${candidateTest.candiTestID}">
+<div class="candidate-test-container" th:if="${result != null}">
+    <form id="updateResultForm" th:object="${result}" th:value="${result.candiTestID}">
+        <input th:field="*{candiTestID}" type="hidden" th:value="${result.candiTestID}">
         <div class="candidate-info-block">
             <label>Кандидат :</label>
             <a th:field="*{candidateID}" th:value="${candidate.id}"
@@ -21,12 +21,12 @@
         </div>
         <label>Информация о тесте</label>
         <div class="test-edit-block">
-            <input th:field="*{testID}" type="hidden" th:value="${candidateTest.testID}">
-            <a th:href="@{/task/tests/test/__${candidateTest.testID}__}" th:text="${candidateTest.testName}"></a>
+            <input th:field="*{testID}" type="hidden" th:value="${result.testID}">
+            <a th:href="@{/task/tests/test/__${result.testID}__}" th:text="${result.testName}"></a>
             <input th:field="*{date}" class="selected-value" id="updated-date" type="date"
-                   th:value="${candidateTest.date}">
+                   th:value="${result.date}">
             <input th:field="*{mark}" class="selected-value" id="updated-value" min="0" max="100" type="number"
-                   th:value="${candidateTest.mark}">
+                   th:value="${result.mark}">
         </div>
         <div>
             <button type="button" class="process-block" id="edit-test-results-button"
@@ -45,12 +45,12 @@
 <script>
     function editCandidateTestRequest() {
 
-        var formData = new FormData($('#updateCandidateTestForm')[0]);
+        var formData = new FormData($('#updateResultForm')[0]);
 
-        var candidateTestID = $('#updateCandidateTestForm').attr('value');
+        var resultID = $('#updateResultForm').attr('value');
 
         $.ajax({
-            url: '/v1/canditests/' + candidateTestID,
+            url: '/v1/results/' + resultID,
             type: 'PATCH',
             processData: false,
             contentType: false,
@@ -58,9 +58,9 @@
 
             success: function (data, status, xhr) {
                 if (xhr.status === 200) {
-                    showNotification("Тест кандидата успешно обновлен ", 1000);
+                    showNotification("Результат обновлен ", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/canditests/canditest/edit/candidate/" + candidateTestID
+                        window.location.href = "/task/results/edit/" + resultID
                     }, 1000);
                 }
             },
@@ -70,10 +70,10 @@
                 } else {
                     showNotification("Заполните все обязательные поля!", 1000);
                 }
-
             }
         });
     }
+
     function validateBeforeSend() {
         var dateValue = $('#updated-date').val();
         var markValue = $('#updated-value').val();

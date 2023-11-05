@@ -5,7 +5,5 @@ public interface EntityOperations {
 
     void update(Object object);
 
-    void delete(Object object);
-
 
 }

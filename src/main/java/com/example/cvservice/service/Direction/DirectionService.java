@@ -1,6 +1,11 @@
 package com.example.cvservice.service.Direction;
 
+import com.example.cvservice.dto.Direction.NewDirectionDTO;
+import com.example.cvservice.dto.Direction.UpdateDirectionDTO;
 import com.example.cvservice.entity.main.Direction;
+import com.example.cvservice.exception.ObjectAlreadyExistsException;
+import com.example.cvservice.exception.ObjectIsEmptyException;
+import com.example.cvservice.exception.ObjectNotFoundException;
 import com.example.cvservice.service.Filter.DirectionFilter;
 import com.example.cvservice.repository.Direction.DirectionsRepository;
 import com.example.cvservice.service.EntityOperations;
@@ -11,8 +16,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +28,6 @@ public class DirectionService implements EntityOperations {
 
 
     public List<Direction> findAll() {
-//        preLoad();
         return repository.findAll();
     }
 
@@ -57,21 +59,30 @@ public class DirectionService implements EntityOperations {
     @Override
     public void update(Object object) {
         repository.save((Direction) object);
+    }
+
+    public Direction validateBeforeSave(NewDirectionDTO newDirectionDTO) {
+        if (!findDirectionByName(newDirectionDTO.getName()).isPresent()) {
+            if (newDirectionDTO.isValid()) {
+                Direction direction = Direction.builder().name(newDirectionDTO.getName()).description(newDirectionDTO.getDescription()).build();
+                save(direction);
+                return direction;
+            } else throw new ObjectIsEmptyException();
+        }
+        throw new ObjectAlreadyExistsException("Direction", newDirectionDTO.getName());
+    }
+
+
+    public Direction validateBeforeUpdate(Long directionID, UpdateDirectionDTO updateDirectionDTO) {
+        if (findDirectionByID(directionID).isPresent()) {
+            if (updateDirectionDTO.isValid()) {
+                Direction updatedDirection = findDirectionByID(directionID).get().update(updateDirectionDTO);
+                update(updatedDirection);
+                return updatedDirection;
+            } else throw new ObjectIsEmptyException();
+        } else throw new ObjectNotFoundException("Direction", directionID);
 
     }
 
-    @Override
-    public void delete(Object object) {
-        repository.delete((Direction) object);
-    }
-
-    public void preLoad() {
-        Direction direction = new Direction();
-        ArrayList<Direction> directions = new ArrayList<>();
-        direction.setName("test");
-        direction.setDescription("testDesc");
-        directions.add(direction);
-        repository.saveAll(directions);
-    }
 
 }

@@ -20,4 +20,13 @@ public class UpdateTestDTO {
 
     private List<Direction> testDirections;
 
+    public boolean isValid() {
+        if (this.getName() == null || this.getName().isEmpty()) {
+            return false;
+        }
+        if (this.getTestDirections() == null || this.getTestDirections().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }

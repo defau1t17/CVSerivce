@@ -13,4 +13,18 @@ public class NewTestDTO {
     private String description;
 
     private ArrayList<Direction> testDirections;
+
+
+    public boolean isValid() {
+        if (this.getName() == null || this.getName().isEmpty()) {
+            return false;
+        }
+        if (this.getDescription() == null) {
+            return false;
+        }
+        if (this.getTestDirections() == null || this.getTestDirections().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 }

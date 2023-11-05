@@ -1,4 +1,4 @@
-package com.example.cvservice.dto.Canditests;
+package com.example.cvservice.dto.Result;
 
 import com.example.cvservice.dto.Candidate.CandidateFilterDTO;
 import com.example.cvservice.dto.Test.TestFilterDTO;
@@ -10,7 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 
 @Data
-public class CandiTestFilterDTO {
+public class ResultFilterDTO {
     private CandidateFilterDTO candidateFilterDTO;
     private TestFilterDTO testFilterDTO;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
