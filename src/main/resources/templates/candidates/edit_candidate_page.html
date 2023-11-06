@@ -4,47 +4,60 @@
     <meta charset="UTF-8">
     <title>Edit Candidate</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+    <link rel="stylesheet" th:href="@{/candidate_style/edit_candidate_style.css}">
 
 </head>
 <body>
 <div th:replace="inner/navigation_header :: header"></div>
 
-<div th:if="${requestUpdateCandidate != null}">
+<div class="container" th:if="${requestUpdateCandidate != null}">
     <form th:object="${requestUpdateCandidate}" enctype="multipart/form-data" id="requestUpdateCandidate">
         <div class="update-candidate" th:value="${requestUpdateCandidate.id}">
-            <img th:src="@{'data:image/*;base64,' + ${requestUpdateCandidate.generateBase64Image()}}"
-                 style="height: 200px">
-            <input th:field="*{name}" type="text" id="input-name-field" placeholder="Input candidate name" minlength="2"
+            <div class="update-image-block">
+                <img class="update-image"
+                     th:src="@{'data:image/*;base64,' + ${requestUpdateCandidate.generateBase64Image()}}">
+            </div>
+
+            <input class="input-field" th:field="*{name}" type="text" id="input-name-field"
+                   placeholder="Input candidate name" minlength="2"
                    maxlength="25" required th:value="${requestUpdateCandidate.name}">
-            <input th:field="*{second_name}" type="text" id="input-second-name-field"
+            <input class="input-field" th:field="*{second_name}" type="text" id="input-second-name-field"
                    placeholder="Input candidate second name" minlength="3" maxlength="25" required
                    th:value="${requestUpdateCandidate.second_name}">
-            <input th:field="*{patr}" type="text" id="input-patronymic-field" placeholder="Input candidate patronymic"
+            <input class="input-field" th:field="*{patr}" type="text" id="input-patronymic-field"
+                   placeholder="Input candidate patronymic"
                    required minlength="3" maxlength="25" th:value="${requestUpdateCandidate.patr}">
-            <textarea th:field="*{candidateDesc}" id="input-candidate-description-field"
+            <textarea class="text-input-field" th:field="*{candidateDesc}" id="input-candidate-description-field"
                       placeholder="Напишите о кандидате." th:text="${requestUpdateCandidate.candidateDesc}"
                       th:value="${requestUpdateCandidate.candidateDesc}"
                       required minlength="3" maxlength="100"></textarea>
             <div class="select-directions-container">
-                <div th:each="direction : ${allDirections}">
-                    <input th:field="*{directions}" th:value="${direction.id}" id="direction" type="checkbox"
-                           th:checked="${requestUpdateCandidate.directions != null && requestUpdateCandidate.directions.contains(direction)}">
-                    <label th:for="'direction-' + ${direction.id}" th:text="${direction.name}"></label>
-                </div>
+                <th:block th:each="direction : ${allDirections}">
+                    <label>
+                        <input th:field="*{directions}" th:value="${direction.id}" id="direction" type="checkbox"
+                               th:checked="${requestUpdateCandidate.directions != null && requestUpdateCandidate.directions.contains(direction)}">
+                        <span th:text="${direction.name}"></span>
+                    </label>
+                </th:block>
             </div>
-            <div th:if="${requestUpdateCandidate.cvFile != null}">
-                <label>Candidate CV FILE</label>
-                <a th:href="@{/file/__${requestUpdateCandidate.id}__}"
-                   th:text="${requestUpdateCandidate.cvFile.name}"></a>
+            <div class="cv-block" th:if="${requestUpdateCandidate.cvFile != null}">
+                <label class="def-label">Candidate CV FILE</label>
+                <a class="direction-link" th:href="@{/file/__${requestUpdateCandidate.id}__}">
+                    <span class="link-text" th:text="${requestUpdateCandidate.cvFile.name}"> </span>
+                </a>
             </div>
-            <div th:if="${requestUpdateCandidate.cvFile == null}">
+            <div class="cv-block" th:if="${requestUpdateCandidate.cvFile == null}">
                 <label>NO CV FILE</label>
             </div>
             <div class="input-file-container">
-                <input th:field="*{cvFile}" name="cvFile" type="file" id="input-cv-file" accept="application/pdf">
-                <input th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file">
+                <label class="def-label">Вставьте новый CV Файл</label>
+                <input class="input-file-field" th:field="*{cvFile}" name="cvFile" type="file" id="input-cv-file"
+                       accept="application/pdf">
+                <label class="def-label">Вставьте новую фотографию</label>
+                <input class="input-file-field" th:field="*{imageFile}" name="imageFile" type="file"
+                       id="input-image-file">
             </div>
-            <button type="button" onclick="validateBeforeSend()">Загрузить</button>
+            <button class="submit-button" type="button" onclick="validateBeforeSend()">Загрузить</button>
         </div>
     </form>
 </div>

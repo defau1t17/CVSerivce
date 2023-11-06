@@ -1,0 +1,88 @@
+.result-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.result {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.select-candidate-block {
+    margin-top: 10px;
+}
+
+.selection-block {
+    text-align: center;
+    color: white;
+    background: darkorange;
+    width: 250px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+}
+
+.selected-candidate {
+    height: 40px;
+}
+
+.selected-test {
+    height: 40px;
+
+}
+
+.select-test-block {
+    margin-top: 10px;
+}
+
+.select-grade-block {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.def-label {
+    margin-top: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #282828;
+}
+
+.selected-date, .selected-mark {
+    color: white;
+
+    text-align: center;
+    background: darkorange;
+    width: 250px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+}
+
+.button-block {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.process-button {
+    width: 250px;
+    height: 25px;
+    margin-top: 10px;
+    font-size: 15px;
+    background: #282828;
+    border-radius: 5px;
+    border: none;
+    color: white;
+}
+

@@ -1,10 +1,10 @@
 package com.example.cvservice.controller.rest;
 
-import com.example.cvservice.dto.Direction.NewDirectionDTO;
-import com.example.cvservice.dto.Direction.UpdateDirectionDTO;
+import com.example.cvservice.dto.NewDirectionDTO;
+import com.example.cvservice.dto.UpdateDirectionDTO;
 import com.example.cvservice.entity.PageConstants;
-import com.example.cvservice.entity.main.Direction;
-import com.example.cvservice.service.Direction.DirectionService;
+import com.example.cvservice.entity.Direction;
+import com.example.cvservice.service.DirectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

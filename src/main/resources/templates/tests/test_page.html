@@ -4,26 +4,31 @@
     <meta charset="UTF-8">
     <title>Test Page</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
-
+    <link rel="stylesheet" th:href="@{/tests_style/test_style.css}">
 </head>
 <body>
 <div th:replace="inner/navigation_header :: header"></div>
-
-<div th:if="${test != null}" th:object="${test}">
+<div class="container" th:if="${test != null}" th:object="${test}">
     <div class="test-info-block">
         <div class="test-name-block">
-            <span th:text="${test.name}"></span>
+            <label class="def-label">Название : </label>
+            <span class="test-info" th:text="${test.name}"></span>
         </div>
 
-        <div class="test-description-block">
-            <span th:text="${test.description}"></span>
+        <div class="test-name-block">
+            <label class="def-label">Описание : </label>
+            <span class="test-info" th:text="${test.description}"></span>
         </div>
-
-        <div class="test-directions-block" th:each="testDirection : ${test.directions}">
-            <a th:href="@{/directions/__${testDirection.id}__}" th:text="${testDirection.name}"></a>
+        <div class="test-directions-block">
+            <label style="text-align: center">Направления :</label>
+            <div th:each="testDirection : ${test.directions}">
+                <a class="direction-link" th:href="@{/directions/__${testDirection.id}__}">
+                    <span class="link-text" th:text="${testDirection.name}"></span>
+                </a>
+            </div>
         </div>
         <div class="button-block">
-            <a th:href="@{/tests/edit/__${test.id}__}">Изменить тест</a>
+            <a class="submit-button" th:href="@{/tests/edit/__${test.id}__}">Изменить тест</a>
         </div>
     </div>
 </div>

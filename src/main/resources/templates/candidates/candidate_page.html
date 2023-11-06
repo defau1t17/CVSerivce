@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <title>Candidate</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+    <link rel="stylesheet" th:href="@{/candidate_style/candidate_style.css}">
+
 </head>
 <body>
 
@@ -13,37 +15,41 @@
 <div class="candidate-container" th:if="${candidate != null }">
     <div class="candidate">
         <div class="candidate-image-block">
-            <img th:src="@{'data:image/jpg;base64,'+ ${candidate.image.generateBase64Image()}}">
+            <img class="candidate-image" th:src="@{'data:image/jpg;base64,'+ ${candidate.image.generateBase64Image()}}">
         </div>
 
         <div class="candidate-info-block" th:value="${candidate.id}">
-            <span th:text="${candidate.name}">name</span>
-            <span th:text="${candidate.secondName}">second name</span>
-            <span th:text="${candidate.patronymic}">patr</span>
+            <span class="info-text" th:text="${candidate.name}">name</span>
+            <span class="info-text" th:text="${candidate.secondName}">second name</span>
+            <span class="info-text" th:text="${candidate.patronymic}">patr</span>
         </div>
 
+        <span class="def-label">Направления : </span>
         <div class="candidate-directions-block">
-            <ul th:each="direction : ${candidate.directions}">
-                <li>
-                    <a th:href="@{/directions/__${direction.id}__}" th:text="${direction.name}"></a>
+            <ul>
+                <li th:each="direction : ${candidate.directions}">
+                    <a class="direction-link" th:href="@{/directions/__${direction.id}__}">
+                        <span class="link-text" th:text="${direction.name}"></span>
+                    </a>
                 </li>
             </ul>
         </div>
 
-        <div th:if="${candidate.cv != null}">
-            <label>CV Файл Кандидата</label>
-            <a th:href="@{/file/__${candidate.id}__}"
+        <div class="cv-block" th:if="${candidate.cv != null}">
+            <label class="def-label">CV Файл Кандидата</label>
+            <a class="file-link" th:href="@{/file/__${candidate.id}__}"
                th:text="${candidate.cv.cvFileName}"></a>
         </div>
 
-        <div th:if="${candidate.cv == null}">
-            <label>NO CV FILE</label>
+        <div class="cv-block" th:if="${candidate.cv == null}">
+            <label class="def-label">CV Файла Нет</label>
+        </div>
+        <div class="button-block">
+            <a class="candidate-process-button" th:href="@{/candidates/edit/__${candidate.id}__}">Редактировать</a>
         </div>
     </div>
 
-    <div class="button-block">
-        <a class="candidate-process-button" th:href="@{/candidates/edit/__${candidate.id}__}">Редактировать</a>
-    </div>
+
 </div>
 
 <div class="candidate-container" th:if="${candidate == null }">

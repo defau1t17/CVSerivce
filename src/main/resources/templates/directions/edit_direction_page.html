@@ -4,42 +4,42 @@
     <meta charset="UTF-8">
     <title>Edit Direction</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+    <link rel="stylesheet" th:href="@{/direction_style/edit_direction_style.css}">
+
 
 </head>
 <body>
 <div th:replace="inner/navigation_header :: header"></div>
-<div class="direction-container">
-    <div class="direction" th:if="${updateDirection != null}">
-        <form id="updateDirection" th:object="${updateDirection}">
+<div class="direction-container" th:if="${updateDirection != null}">
+    <form id="updateDirection" th:object="${updateDirection}">
+        <div class="direction">
             <div class="direction-info">
                 <label class="direction-label">Название Направления</label>
-                <input th:field="*{name}" class="direction-input-field" type="text" id="direction-name-field"
+                <input th:field="*{name}" class="input-field" type="text" id="direction-name-field"
                        placeholder="Java Developer Trainee" minlength="2" maxlength="30" required
                        th:value="${updateDirection.name}">
             </div>
             <div class="direction-info">
                 <label class="direction-label">Придумайте описание для Направления</label>
-                <textarea th:field="*{description}" class="direction-input-field" id="direction-description-field"
+                <textarea th:field="*{description}" class="text-input-field" id="direction-description-field"
                           placeholder="Новое развивающееся направление..." th:value="${updateDirection.description}"
                           minlength="2" maxlength="300"> </textarea>
             </div>
             <div class="button-block">
-                <button type="button" id="update-direction-button" th:value="${updateDirection.id}" class="form-button"
+                <button type="button" id="update-direction-button" th:value="${updateDirection.id}" class="submit-button"
                         onclick="validateBeforeSend()">
                     Добавить
                 </button>
             </div>
-        </form>
-    </div>
-    <div th:if="${updateDirection == null}">
-        <h1>Такого направления не существует</h1>
-    </div>
-
+        </div>
+    </form>
     <div id="notification" class="notification">
-
     </div>
-
 </div>
+<div th:if="${updateDirection == null}">
+    <h1>Такого направления не существует</h1>
+</div>
+
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>

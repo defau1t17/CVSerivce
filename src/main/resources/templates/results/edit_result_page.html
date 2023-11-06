@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Edit Candidate Test</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+    <link rel="stylesheet" th:href="@{/result_style/edit_result_style.css}">
 
 </head>
 <body>
@@ -11,32 +12,43 @@
 
 <div class="candidate-test-container" th:if="${result != null}">
     <form id="updateResultForm" th:object="${result}" th:value="${result.resultID}">
-        <input th:field="*{resultID}" type="hidden" th:value="${result.resultID}">
-        <div class="candidate-info-block">
-            <label>Кандидат :</label>
-            <a th:field="*{candidateID}" th:value="${candidate.id}"
-               th:href="@{/candidates/__${candidate.id}__}"
-               th:text="${candidate.name}"></a>
-            <input th:field="*{candidateID}" id="candidate-id" type="hidden" th:value="${result.candidateID}">
-        </div>
-        <label>Информация о тесте</label>
-        <div class="test-edit-block">
-            <input th:field="*{testID}" type="hidden" th:value="${result.testID}">
-            <a th:href="@{/tests/__${result.testID}__}" th:text="${result.testName}"></a>
-            <input th:field="*{date}" class="selected-value" id="updated-date" type="date"
-                   th:value="${result.date}">
-            <input th:field="*{mark}" class="selected-value" id="updated-value" min="0" max="100" type="number"
-                   th:value="${result.mark}">
-        </div>
-        <div>
-            <button type="button" class="process-block" id="edit-test-results-button"
-                    onclick="validateBeforeSend()">Изменить
-            </button>
+        <div class="result">
+            <input th:field="*{resultID}" type="hidden" th:value="${result.resultID}">
+            <div class="candidate-info-block">
+                <label class="def-label">Кандидат :</label>
+                <a class="link" th:field="*{candidateID}" th:value="${candidate.id}"
+                   th:href="@{/candidates/__${candidate.id}__}">
+                    <span class="link-text" th:text="${candidate.name}"></span>
+                </a>
+                <input th:field="*{candidateID}" id="candidate-id" type="hidden" th:value="${result.candidateID}">
+            </div>
+
+
+            <div class="test-edit-block">
+                <label class="def-label">Информация о тесте</label>
+                <input th:field="*{testID}" type="hidden" th:value="${result.testID}">
+                <a class="link" th:href="@{/tests/__${result.testID}__}">
+                    <span class="link-text" th:text="${result.testName}"></span>
+                </a>
+                <input th:field="*{date}" class="selected-date" id="updated-date" type="date"
+                       th:value="${result.date}">
+                <input th:field="*{mark}" class="selected-mark" id="updated-value" min="0" max="100" type="number"
+                       th:value="${result.mark}">
+            </div>
+            <div class="button-block">
+                <button type="button" class="process-button" id="edit-test-results-button"
+                        onclick="validateBeforeSend()">Изменить
+                </button>
+            </div>
         </div>
     </form>
+    <div id="notification" class="notification">
+
+    </div>
+
 </div>
 
-<div id="notification" class="notification">
+<div class="container" th:if="${result == null}">
 
 </div>
 

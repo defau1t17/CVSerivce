@@ -1,11 +1,11 @@
 package com.example.cvservice.controller.rest;
 
 
-import com.example.cvservice.dto.Result.ResultDTO;
-import com.example.cvservice.dto.Result.UpdateResultDTO;
+import com.example.cvservice.dto.ResultDTO;
+import com.example.cvservice.dto.UpdateResultDTO;
 import com.example.cvservice.entity.PageConstants;
-import com.example.cvservice.entity.main.Result;
-import com.example.cvservice.service.Result.ResultService;
+import com.example.cvservice.entity.Result;
+import com.example.cvservice.service.ResultService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;

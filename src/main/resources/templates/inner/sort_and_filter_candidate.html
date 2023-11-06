@@ -25,7 +25,6 @@
                    type="checkbox" th:text="${direction.name}"
                    th:checked="${filterDirections != null && filterDirections.contains(direction.name)}">
         </div>
-
         <div class="filter-button-block">
             <button class="submit-filter-button" type="submit">Фильтр</button>
         </div>
@@ -52,6 +51,7 @@
                         <input class="sort-radio" th:name="direction" th:value="ASC" type="radio">
                     </div>
                 </div>
+
                 <div class="sort-block">
                     <div class="sort-inner-block">
                         <img class="image" th:src="@{/images/down.png}" onclick="sortData(this)">

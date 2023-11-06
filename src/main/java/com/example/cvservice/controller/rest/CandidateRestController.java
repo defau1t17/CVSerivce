@@ -1,16 +1,13 @@
 package com.example.cvservice.controller.rest;
 
-import com.example.cvservice.controller.view.Candidate.CandidatesController;
-import com.example.cvservice.dto.Candidate.NewCandidateDTO;
-import com.example.cvservice.dto.Candidate.UpdateCandidateDTO;
+import com.example.cvservice.dto.NewCandidateDTO;
+import com.example.cvservice.dto.UpdateCandidateDTO;
 import com.example.cvservice.entity.PageConstants;
-import com.example.cvservice.entity.main.Candidate;
-import com.example.cvservice.service.Candidate.CandidateService;
+import com.example.cvservice.entity.Candidate;
+import com.example.cvservice.service.CandidateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

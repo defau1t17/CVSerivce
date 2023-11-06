@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <title>New Candidate Test</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+    <link rel="stylesheet" th:href="@{/result_style/add_new_result_style.css}">
 
 </head>
 <body>
 <div th:replace="inner/navigation_header :: header"></div>
-<div class="candidate-test-container">
-    <div class="canditest">
-        <form id="newResultForm" th:object="${newResult}">
+<div class="result-container">
+    <form id="newResultForm" th:object="${newResult}">
+        <div class="result">
             <div class="select-candidate-block">
-                <select th:field="*{candidateID}">
+                <select class="selection-block" th:field="*{candidateID}">
                     <option class="selected-candidate" value="0">Выбирете кандидата</option>
                     <option class="selected-candidate" th:each="candidate : ${allCandidates}"
                             th:value="${candidate.id}">
@@ -27,9 +28,8 @@
                     </option>
                 </select>
             </div>
-
             <div class="select-test-block">
-                <select th:field="*{testID}">
+                <select class="selection-block" th:field="*{testID}">
                     <option class="selected-test" value="0">Выберите тест</option>
                     <option class="selected-test" th:each="test : ${allTests}" th:value="${test.id}"
                             th:text="${test.name}">
@@ -38,8 +38,10 @@
                 </select>
             </div>
             <div class="select-grade-block">
+                <label class="def-label">Выберите дату прохождения теста</label>
                 <input class="selected-date" th:field="*{date}" type="date"
                        placeholder="Выберите дату прохождения теста">
+                <label class="def-label">Выберите оценку</label>
                 <input class="selected-mark" th:field="*{mark}" type="number" min="0" max="100"
                        placeholder="Выберите оценку теста.">
             </div>
@@ -48,22 +50,16 @@
                 <button type="button" class="process-button" onclick="validateBeforeSend()">Добавить</button>
                 <button type="reset" class="process-button">Очистить</button>
             </div>
-        </form>
+        </div>
+    </form>
+    <div id="notification" class="notification">
 
     </div>
 </div>
-
-<div id="notification" class="notification">
-
-</div>
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
     function addNewResult() {
-
         var formData = new FormData($('#newResultForm')[0]);
-
         $.ajax({
             url: '/api/v1/results/',
             type: 'POST',
@@ -85,7 +81,6 @@
                 }
                 if (xhr.status === 403) {
                     showNotification("Ошибка добавлния результата!", 1000);
-
                 }
             }
         });
@@ -104,7 +99,6 @@
         }
     }
 
-
     const notification = document.getElementById('notification');
 
     function showNotification(message, duration) {
@@ -115,8 +109,6 @@
             notification.style.opacity = '0';
         }, duration);
     }
-
-
 </script>
 
 </body>

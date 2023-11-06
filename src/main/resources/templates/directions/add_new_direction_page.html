@@ -4,33 +4,35 @@
     <meta charset="UTF-8">
     <title>Add New Direction</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
-
+    <link rel="stylesheet" th:href="@{/direction_style/add_new_direction_style.css}">
 </head>
 <body>
 
 <div th:replace="inner/navigation_header :: header"></div>
 
 <div class="direction-container">
-    <div class="direction">
-        <form id="newDirection" th:object="${newDirection}">
+    <form id="newDirection" th:object="${newDirection}">
+        <div class="direction">
             <div class="direction-info">
                 <label class="direction-label">Название Направления</label>
-                <input th:field="*{name}" class="direction-input-field" type="text" id="direction-name-field"
+                <input th:field="*{name}" class="input-field" type="text" id="direction-name-field"
                        placeholder="Java Developer Trainee" minlength="2" maxlength="30" required>
             </div>
             <div class="direction-info">
                 <label class="direction-label">Придумайте описание для Направления</label>
-                <textarea th:field="*{description}" class="direction-input-field" id="direction-description-field"
+                <textarea th:field="*{description}" class="text-input-field" id="direction-description-field"
                           placeholder="Новое развивающееся направление..." minlength="2" maxlength="300"> </textarea>
             </div>
             <div class="button-block">
-                <button type="button" id="add-new-direction-button" class="form-button" onclick="validateBeforeSend()">
+                <button type="button" id="add-new-direction-button" class="submit-button"
+                        onclick="validateBeforeSend()">
                     Добавить
                 </button>
-                <button type="reset" id="clear-direction-button" class="form-button">Очистить</button>
+                <button type="reset" id="clear-direction-button" class="submit-button">Очистить</button>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+
 
     <div id="notification" class="notification">
 
@@ -40,12 +42,8 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
-
     function addNewCandidateRequest() {
-
         var formData = new FormData($('#newDirection')[0]);
-
         $.ajax({
             url: '/api/v1/directions/',
             type: 'POST',
@@ -58,13 +56,11 @@
                     setTimeout(function () {
                         window.location.href = "/directions/add"
                     }, 1000);
-
                     console.log("новое направление было добавлено на сервер!")
                 }
             },
             error: function () {
                 showNotification("Направление с таким названием уже существует!", 1000);
-
             }
         });
     }

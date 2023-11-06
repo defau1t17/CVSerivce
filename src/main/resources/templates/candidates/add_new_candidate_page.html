@@ -3,33 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Add New</title>
-    <link rel="stylesheet" th:src="@{/candidates/add_new_candidate_style.css}">
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
-
+    <link rel="stylesheet" th:href="@{/candidate_style/new_candidate_style.css}">
 </head>
 <body>
 
 <div th:replace="inner/navigation_header :: header"></div>
-<div>
+<div class="new-candidate-container">
     <form th:object="${newCandidate}" enctype="multipart/form-data" id="newCandidateForm">
-        <input th:field="*{name}" type="text" id="input-name-field" placeholder="Введите имя кандидата" minlength="2"
-               maxlength="25" required>
-        <input th:field="*{second_name}" type="text" id="input-second-name-field"
-               placeholder="Введите фамилию кандидата" minlength="3" maxlength="25" required>
-        <input th:field="*{patr}" type="text" id="input-patronymic-field" placeholder="Введите отчество кандидата"
-               required minlength="3" maxlength="25">
-        <textarea th:field="*{candidateDesc}" id="input-candidate-description-field"
-                  placeholder="Внесите описанеи кандидата"
-                  required minlength="3" maxlength="100"></textarea>
-        <div class="select-directions-container">
-            <input th:each="direction : ${allDirections}" th:field="*{directions}" th:value="${direction.id}"
-                   id="direction" type="checkbox" th:text="${direction.name}">
+        <div class="input-block">
+            <input class="input-field" th:field="*{name}" type="text" id="input-name-field"
+                   placeholder="Введите имя кандидата"
+                   minlength="2"
+                   maxlength="25" required>
+            <input class="input-field" th:field="*{second_name}" type="text" id="input-second-name-field"
+                   placeholder="Введите фамилию кандидата" minlength="3" maxlength="25" required>
+            <input class="input-field" th:field="*{patr}" type="text" id="input-patronymic-field"
+                   placeholder="Введите отчество кандидата"
+                   required minlength="3" maxlength="25">
+
+            <textarea class="text-input-field" th:field="*{candidateDesc}" id="input-candidate-description-field"
+                      placeholder="Внесите описанеи кандидата"
+                      required minlength="3" maxlength="100"></textarea>
+            <div class="select-directions-container">
+                <th:block th:each="direction : ${allDirections}">
+                    <label>
+                        <input class="selection-block" type="checkbox" th:field="*{directions}" th:value="${direction.id}" />
+                        <span th:text="${direction.name}"></span>
+                    </label>
+                </th:block>
+            </div>
         </div>
+
         <div class="input-file-container">
-            <input th:field="*{cvFile}" accept="application/pdf" name="cvFile" type="file" id="input-cv-file">
-            <input th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file" accept=".png,.jpeg,.jpg">
+            <label>Вставьте CV</label>
+            <input class="input-file-field" th:field="*{cvFile}" accept="application/pdf" name="cvFile" type="file"
+                   id="input-cv-file">
+            <label>Вставьте Изображение</label>
+            <input class="input-file-field" th:field="*{imageFile}" name="imageFile" type="file" id="input-image-file"
+                   accept=".png,.jpeg,.jpg">
         </div>
-        <button type="button" onclick="validateBeforeSend()">ADD</button>
+        <button class="submit-button" type="button" onclick="validateBeforeSend()">ADD</button>
     </form>
 </div>
 <div id="notification" class="notification">

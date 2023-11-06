@@ -1,17 +1,8 @@
 package com.example.cvservice.service;
 
-import com.example.cvservice.entity.main.Candidate;
-import com.example.cvservice.entity.main.Direction;
-import com.example.cvservice.entity.main.Test;
-import com.example.cvservice.service.Candidate.CandidateService;
-import com.example.cvservice.service.Direction.DirectionService;
-import com.example.cvservice.service.Test.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class DataInitializer implements CommandLineRunner {

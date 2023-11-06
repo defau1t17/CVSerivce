@@ -32,9 +32,7 @@
 
             <div class="candidates-direction">
                 <ul th:each="direction : ${candidate.directions}">
-<!--                    <li th:text="${direction.name}">-->
-                        <a th:href="@{/directions/__${direction.id}__}" th:text="${direction.name}"></a>
-<!--                    </li>-->
+                    <a th:href="@{/directions/__${direction.id}__}" th:text="${direction.name}"></a>
                 </ul>
             </div>
             <div class="button-block">
@@ -66,22 +64,27 @@
         var url = new URLSearchParams(window.location.search);
         var sort = url.get('sort');
         var direction = url.get('direction');
-        $('.sort-form').each(function () {
-            var sortInput = $(this).find('.selected-radio[name="sort"]').val();
-            var directionInput = $(this).find('.sort-radio[name="direction"]').val();
 
+        $('.sort-form').each(function () {
+            console.log($(this).find('.sort-radio').val())
+            if ($(this).find('.selected-radio').val() === sort && $(this).find('.sort-radio').val() === direction) {
+                console.log(true)
+            }
+            var $form = $(this);
+            var sortInput = $form.find('.selected-radio[name="sort"]').val();
+            var directionInput = $form.find('.sort-radio[name="direction"]').val();
             if (sortInput === sort && directionInput === direction) {
-                $(this).find('.selected-radio[name="sort"]').closest('.image').css('background', '#8f8f8f');
+                $form.find('.sort-inner-block').css('background', '#8f8f8f');
             }
         });
     });
+
     function sortData(element) {
         var radioInput = $(element).closest('.sort-inner-block').find('.sort-radio');
         radioInput.prop('checked', true);
         var form = $(element).closest('.sort-form');
         form.submit();
     }
-
 </script>
 
 

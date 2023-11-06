@@ -4,29 +4,37 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
-
+    <link rel="stylesheet" th:href="@{/tests_style/edit_test_style.css}">
 </head>
 <body>
 <div th:replace="inner/navigation_header :: header"></div>
 
-<div th:if="${updateTest != null}">
+<div class="container" th:if="${updateTest != null}">
     <form th:object="${updateTest}" id="updateTestForm">
         <div class="update-test" th:value="${updateTest.id}">
-            <input th:field="*{name}" type="text" id="input-name-field" placeholder="Введите название теста"
-                   minlength="2"
-                   maxlength="40" required th:value="${updateTest.name}">
-            <textarea th:field="*{description}" id="input-candidate-description-field"
-                      placeholder="Напишите о кандидате." th:text="${updateTest.description}"
-                      th:value="${updateTest.description}"
-                      required minlength="3" maxlength="100"></textarea>
-            <div class="select-directions-container">
-                <div th:each="direction : ${allDirections}">
-                    <input th:field="*{testDirections}" th:value="${direction.id}" id="direction" type="checkbox"
-                           th:checked="${updateTest.testDirections != null && updateTest.testDirections.contains(direction)}">
-                    <label th:for="'direction-' + ${direction.id}" th:text="${direction.name}"></label>
-                </div>
+            <div class="edit-block">
+                <label class="def-label">Название</label>
+                <input class="input-field" th:field="*{name}" type="text" id="input-name-field" placeholder="Введите название теста"
+                       minlength="2"
+                       maxlength="40" required th:value="${updateTest.name}">
             </div>
-            <button type="button" onclick="validateBeforeSend()">Загрузить</button>
+            <div class="edit-block">
+                <label class="def-label">Описание</label>
+                <textarea class="text-input-field" th:field="*{description}" id="input-candidate-description-field"
+                          placeholder="Напишите о кандидате." th:text="${updateTest.description}"
+                          th:value="${updateTest.description}"
+                          required minlength="3" maxlength="100"></textarea>
+            </div>
+            <div class="select-directions-container">
+                <th:block th:each="direction : ${allDirections}">
+                    <label>
+                        <input th:field="*{testDirections}" th:value="${direction.id}" id="direction" type="checkbox"
+                               th:checked="${updateTest.testDirections != null && updateTest.testDirections.contains(direction)}">
+                        <span th:text="${direction.name}"></span>
+                    </label>
+                </th:block>
+            </div>
+            <button class="submit-button" type="button" onclick="validateBeforeSend()">Загрузить</button>
         </div>
     </form>
 </div>

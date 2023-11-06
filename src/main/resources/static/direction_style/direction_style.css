@@ -1,0 +1,53 @@
+.direction-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.direction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.direction-name-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.button-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.def-label {
+    font-weight: bold;
+    font-size: 18px;
+    text-decoration: underline darkorange;
+}
+
+.dir-text {
+    font-size: 17px;
+    color: black;
+}
+
+.submit-button {
+    margin-top: 15px;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #282828;
+    color: white;
+    font-size: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background 0.6s, color 0.36s;
+}
+
+.submit-button:hover {
+    background: darkorange;
+    color: white;
+}

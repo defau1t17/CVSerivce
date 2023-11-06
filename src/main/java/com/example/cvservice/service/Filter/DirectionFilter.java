@@ -1,7 +1,7 @@
 package com.example.cvservice.service.Filter;
 
-import com.example.cvservice.dto.Direction.DirectionFilterDTO;
-import com.example.cvservice.entity.main.Direction;
+import com.example.cvservice.dto.DirectionFilterDTO;
+import com.example.cvservice.entity.Direction;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
