@@ -7,8 +7,6 @@ import com.example.cvservice.entity.Candidate;
 import com.example.cvservice.service.CandidateService;
 import com.example.cvservice.service.DirectionService;
 import com.example.cvservice.service.CVService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -28,7 +26,6 @@ public class CandidatesController {
     @Autowired
     private CandidateService candidateService;
 
-    Logger logger = LoggerFactory.getLogger(CandidatesController.class);
 
 
     @GetMapping("")
@@ -52,7 +49,6 @@ public class CandidatesController {
         model.addAttribute("filterSecondName", secondName);
         model.addAttribute("filterPatr", patronymic);
         model.addAttribute("filterDirections", dir);
-        logger.info("All candidates page works ");
 
         return "/candidates/all_candidates_page";
     }
@@ -62,7 +58,6 @@ public class CandidatesController {
     public String displayAddNewCandidatePage(Model model) {
         model.addAttribute("allDirections", directionService.findAll());
         model.addAttribute("newCandidate", new NewCandidateDTO());
-        logger.info("Add new candidate page works ");
 
         return "/candidates/add_new_candidate_page";
     }
@@ -75,7 +70,6 @@ public class CandidatesController {
             candidate = optionalCandidate.get();
         }
         model.addAttribute("candidate", candidate);
-        logger.info("candidate by id page works");
 
         return "/candidates/candidate_page";
     }
@@ -108,13 +102,10 @@ public class CandidatesController {
                         .cvFile(null)
                         .imageFile(CVService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();
             }
-            logger.info("entity for edit has been created");
         }
         model.addAttribute("allDirections", directionService.findAll());
 
         model.addAttribute("requestUpdateCandidate", updateCandidateDTO);
-
-        logger.info("edit candidate page works ");
 
 
         return "/candidates/edit_candidate_page";

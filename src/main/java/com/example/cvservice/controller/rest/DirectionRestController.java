@@ -8,6 +8,8 @@ import com.example.cvservice.service.DirectionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,12 +25,16 @@ public class DirectionRestController {
     @Autowired
     private DirectionService directionService;
 
+    Logger logger = LoggerFactory.getLogger(DirectionRestController.class);
+
+
     @Operation(summary = "Add new Direction")
     @ApiResponse(responseCode = "200", description = "New Direction has been added")
     @ApiResponse(responseCode = "409", description = "Error while adding new Direction. Direction exists or DTO empty")
     @PostMapping("/")
     public ResponseEntity<?> addNewDirection(@ModelAttribute NewDirectionDTO newDirectionDTO) {
         Direction direction = directionService.saveNewDirection(newDirectionDTO);
+        logger.info("направление с [id: " + direction.getId() + " ] создано");
         return ResponseEntity.ok().body(direction);
     }
 
@@ -38,6 +44,7 @@ public class DirectionRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateDirectionByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateDirectionDTO updateDirectionDTO) {
         Direction direction = directionService.updateDirection(id, updateDirectionDTO);
+        logger.info("направление с [id: " + direction.getId() + " ] обновленно");
         return ResponseEntity.ok(direction);
     }
 

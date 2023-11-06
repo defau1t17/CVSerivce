@@ -8,8 +8,6 @@ import com.example.cvservice.exception.ObjectIsEmptyException;
 import com.example.cvservice.exception.ObjectNotFoundException;
 import com.example.cvservice.service.Filter.TestFilter;
 import com.example.cvservice.repository.TestRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,8 +24,6 @@ public class TestService implements EntityOperations {
     @Autowired
     private TestRepository testRepository;
 
-    Logger logger = LoggerFactory.getLogger(TestService.class);
-
     public Optional<Test> findTestByID(Long id) {
         return testRepository.findById(id);
     }
@@ -38,11 +34,8 @@ public class TestService implements EntityOperations {
 
     public Page<Test> findTestsByParams(int page, int size, String name, String description, List<String> directionNames, String sort, String direction) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.valueOf(direction), sort));
-        logger.info("page with tests_style has been created");
         return testRepository.findAll(TestFilter.filterTests(TestFilter.generateFilterFromParams(name, description, directionNames)), pageable);
     }
-
-
     public List<Test> findAll() {
         return testRepository.findAll();
     }
@@ -60,17 +53,12 @@ public class TestService implements EntityOperations {
     }
 
     public Test saveNewTest(NewTestDTO newTestDTO) {
-        logger.info("new test incoming");
         if (!findTestByName(newTestDTO.getName()).isPresent()) {
-            logger.info("new test doesen't exists");
             if (newTestDTO.isValid()) {
-                logger.info("new test valid");
                 Test newTest = Test.builder().name(newTestDTO.getName()).description(newTestDTO.getDescription()).directions(newTestDTO.getTestDirections()).build();
                 save(newTest);
-                logger.info("new test created");
                 return newTest;
             } else {
-                logger.warn("new test has been rejected");
                 throw new ObjectIsEmptyException();
             }
         }
@@ -78,23 +66,14 @@ public class TestService implements EntityOperations {
     }
 
     public Test updateTest(Long testID, UpdateTestDTO updateTestDTO) {
-        logger.info("updated test incoming");
-
         if (findTestByID(testID).isPresent()) {
-            logger.info("updated test exists");
             if (updateTestDTO.isValid()) {
-                logger.info("updated test valid");
                 Test updatedTest = findTestByID(testID).get().update(updateTestDTO);
                 update(updatedTest);
-                logger.info("test updated");
                 return updatedTest;
             } else {
-                logger.warn("updated test has been rejected");
                 throw new ObjectIsEmptyException();
             }
         } else throw new ObjectNotFoundException("Test", testID);
-
     }
-
-
 }

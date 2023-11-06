@@ -8,6 +8,8 @@ import com.example.cvservice.service.CandidateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,7 @@ import java.util.Optional;
 @Tag(name = "Candidates", description = "API FOR MANAGING CANDIDATES")
 public class CandidateRestController {
 
+    Logger logger = LoggerFactory.getLogger(CandidateRestController.class);
 
     @Autowired
     private CandidateService candidateService;
@@ -31,6 +34,7 @@ public class CandidateRestController {
     @PostMapping(value = "/")
     public ResponseEntity<?> addNewCandidate(@ModelAttribute NewCandidateDTO newCandidateDTO) {
         Candidate newCandidate = candidateService.saveNewCandidate(newCandidateDTO);
+        logger.info("новый кандидат [id : " + newCandidate.getId() + " ] успешно сохранен");
         return ResponseEntity.ok(newCandidate);
     }
 
@@ -64,6 +68,7 @@ public class CandidateRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCandidateByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandidateDTO updateCandidateDTO) throws IOException {
         Candidate updatedCandidate = candidateService.updateCandidate(id, updateCandidateDTO);
+        logger.info("новый кандидат [id : " + updatedCandidate.getId() + " ] успешно обновлен");
         return ResponseEntity.ok(updatedCandidate);
     }
 

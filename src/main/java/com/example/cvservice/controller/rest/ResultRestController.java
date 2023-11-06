@@ -9,6 +9,8 @@ import com.example.cvservice.service.ResultService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,9 @@ public class ResultRestController {
     @Autowired
     private ResultService resultService;
 
+    Logger logger = LoggerFactory.getLogger(ResultRestController.class);
+
+
     @Operation(summary = "Add new Candidate's Test")
     @ApiResponse(responseCode = "200", description = "New Candidate's Test has been added")
     @ApiResponse(responseCode = "409", description = "Error while new Candidate's Test. Candidate's Test exists or DTO empty")
@@ -32,6 +37,7 @@ public class ResultRestController {
     @PostMapping("/")
     public ResponseEntity<?> addNewCandidateTest(@ModelAttribute ResultDTO resultDTO) {
         Result result = resultService.saveNewResult(resultDTO);
+        logger.info("результат с [id: " + result.getId() + " ] создано");
         return ResponseEntity.ok(result);
     }
 
@@ -43,6 +49,7 @@ public class ResultRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCandiTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateResultDTO updateResultDTO) {
         Result result = resultService.updateResult(id, updateResultDTO);
+        logger.info("результат с [id: " + result.getId() + " ] создано");
         return ResponseEntity.ok(result);
     }
 
@@ -52,6 +59,7 @@ public class ResultRestController {
     @GetMapping("/{id}")
     public ResponseEntity<Result> getCandidateTestByID(@PathVariable(value = "id") Long id) {
         Optional<Result> optionalCandidatesTest = resultService.findResultByID(id);
+
         return optionalCandidatesTest.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 

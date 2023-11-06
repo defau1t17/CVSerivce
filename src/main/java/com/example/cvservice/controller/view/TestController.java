@@ -6,8 +6,6 @@ import com.example.cvservice.entity.PageConstants;
 import com.example.cvservice.entity.Test;
 import com.example.cvservice.service.DirectionService;
 import com.example.cvservice.service.TestService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -30,14 +28,11 @@ public class TestController {
     @Autowired
     private TestService testService;
 
-    Logger logger = LoggerFactory.getLogger(TestController.class);
-
 
     @GetMapping("/add")
     public String addNewTestPage(Model model) {
         model.addAttribute("newTest", new NewTestDTO());
         model.addAttribute("directions", directionService.findAll());
-        logger.info("add new test page works");
 
         return "/tests/add_new_test_page";
     }
@@ -61,7 +56,6 @@ public class TestController {
         model.addAttribute("filterDesc", description);
         model.addAttribute("pageSize", size.orElse(PageConstants.DEFAULT_PAGE_SIZE));
         model.addAttribute("pages", allTestByPageNumber.getTotalPages());
-        logger.info("all tests_style page works");
 
         return "/tests/all_tests_page";
     }
@@ -74,8 +68,6 @@ public class TestController {
             test = optionalTest.get();
         }
         model.addAttribute("test", test);
-        logger.info("test by id page works");
-
         return "/tests/test_page";
     }
 
@@ -90,8 +82,6 @@ public class TestController {
             model.addAttribute("updateTest", null);
         }
         model.addAttribute("allDirections", directionService.findAll());
-
-        logger.info("edit test by id page works");
         return "/tests/edit_test_page";
 
     }

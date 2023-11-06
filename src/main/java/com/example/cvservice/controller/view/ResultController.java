@@ -9,8 +9,6 @@ import com.example.cvservice.service.CandidateService;
 import com.example.cvservice.service.ResultService;
 import com.example.cvservice.service.DirectionService;
 import com.example.cvservice.service.TestService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -40,16 +38,12 @@ public class ResultController {
     @Autowired
     private DirectionService directionService;
 
-    Logger logger = LoggerFactory.getLogger(CandidatesController.class);
-
 
     @GetMapping("/add")
     public String addNewResultPage(Model model) {
         model.addAttribute("allCandidates", candidateService.findAllCandidates());
         model.addAttribute("allTests", testService.findAll());
         model.addAttribute("newResult", new ResultDTO());
-        logger.info("new result page works");
-
         return "/results/add_new_result_page";
     }
 
@@ -87,26 +81,18 @@ public class ResultController {
         model.addAttribute("allDirections", directionService.findAll());
         model.addAttribute("allResults", allResults);
         model.addAttribute("allTests", testService.findAll());
-
-        logger.info("all results page works");
-
-
         return "/results/all_results_page";
     }
-
 
     @GetMapping("/{id}")
     public String displayResultPage(@PathVariable(value = "id") Long id, Model model) {
         Optional<Candidate> optionalCandidate = candidateService.findCandidateByID(id);
         List<Result> allResults = null;
-
         if (optionalCandidate.isPresent()) {
             allResults = resultService.findAllResultsByCandidate(optionalCandidate.get());
             model.addAttribute("candidate", optionalCandidate.get());
         }
         model.addAttribute("allResults", allResults);
-        logger.info(" result by id page works");
-
         return "/results/result_page";
     }
 
@@ -130,9 +116,6 @@ public class ResultController {
         }
         model.addAttribute("result", resultDTO);
         model.addAttribute("allTests", testService.findAll());
-
-        logger.info("edit results by id  page works");
-
 
         return "/results/edit_result_page";
     }

@@ -5,8 +5,6 @@ import com.example.cvservice.dto.UpdateDirectionDTO;
 import com.example.cvservice.entity.PageConstants;
 import com.example.cvservice.entity.Direction;
 import com.example.cvservice.service.DirectionService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -24,7 +22,6 @@ public class DirectionController {
     @Autowired
     private DirectionService directionService;
 
-    Logger logger = LoggerFactory.getLogger(DirectionController.class);
 
     @GetMapping("")
     public String displayAllDirectionsPage(@RequestParam(required = false) Optional<Integer> page,
@@ -42,14 +39,12 @@ public class DirectionController {
         model.addAttribute("filterDesc", description);
         model.addAttribute("pageSize", size.orElse(PageConstants.DEFAULT_PAGE_SIZE));
         model.addAttribute("pages", directionsByParams.getTotalPages());
-        logger.info("all directions page works");
         return "/directions/all_directions_page";
     }
 
     @GetMapping("/add")
     public String displayAddNewDirectionsPage(Model model) {
         model.addAttribute("newDirection", new NewDirectionDTO());
-        logger.info("add new direction page works");
         return "/directions/add_new_direction_page";
     }
 
@@ -61,7 +56,6 @@ public class DirectionController {
             direction = optionalDirection.get();
         }
         model.addAttribute("direction", direction);
-        logger.info("direction by id page works");
 
         return "/directions/direction_page";
 
@@ -78,13 +72,10 @@ public class DirectionController {
             updateDirectionDTO.setName(direction.getName());
             updateDirectionDTO.setDescription(direction.getDescription());
             model.addAttribute("updateDirection", updateDirectionDTO);
-            logger.info("edit entity created");
 
         } else {
             model.addAttribute("updateDirection", null);
         }
-        logger.info("edit direction by id page works");
-
         return "/directions/edit_direction_page";
     }
 }

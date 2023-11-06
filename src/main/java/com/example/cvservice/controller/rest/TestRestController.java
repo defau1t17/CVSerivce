@@ -9,6 +9,8 @@ import com.example.cvservice.service.TestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,12 +26,15 @@ public class TestRestController {
     @Autowired
     private TestService testService;
 
+    Logger logger = LoggerFactory.getLogger(TestRestController.class);
+
     @Operation(summary = "Add new Test")
     @ApiResponse(responseCode = "200", description = "New Test has been added")
     @ApiResponse(responseCode = "403", description = "Error while adding new Test. Test exists or DTO empty")
     @PostMapping("/")
     public ResponseEntity<?> addNewTest(@ModelAttribute NewTestDTO newTestDTO) {
         Test test = testService.saveNewTest(newTestDTO);
+        logger.info("тест с [id: " + test.getId() + " ] создан");
         return ResponseEntity.ok(test);
     }
 
@@ -39,6 +44,7 @@ public class TestRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateTestDTO updateTestDTO) {
         Test test = testService.updateTest(id, updateTestDTO);
+        logger.info("тест с [id: " + test.getId() + " ] обновлен");
         return ResponseEntity.ok(test);
     }
 
