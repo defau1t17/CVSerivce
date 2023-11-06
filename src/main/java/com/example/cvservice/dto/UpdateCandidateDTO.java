@@ -1,6 +1,6 @@
 package com.example.cvservice.dto;
 
-import com.example.cvservice.entity.Direction;
+import com.example.cvservice.entity.Specialization;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +30,7 @@ public class UpdateCandidateDTO {
     private MultipartFile cvFile;
     private MultipartFile imageFile;
 
-    private List<Direction> directions;
+    private List<Specialization> specializations;
 
     public String generateBase64Image() throws IOException {
         return Base64.encodeBase64String(this.imageFile.getBytes());
@@ -48,7 +48,7 @@ public class UpdateCandidateDTO {
             return false;
 
         }
-        if (this.getDirections() == null || this.getDirections().isEmpty()) {
+        if (this.getSpecializations() == null || this.getSpecializations().isEmpty()) {
             return false;
         }
         return true;

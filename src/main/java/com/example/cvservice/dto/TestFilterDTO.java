@@ -12,7 +12,7 @@ public class TestFilterDTO {
 
     private String description;
 
-    private List<String> directionNames;
+    private List<String> specializationNames;
 
 
 }

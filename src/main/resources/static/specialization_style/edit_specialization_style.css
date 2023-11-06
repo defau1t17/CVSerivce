@@ -1,24 +1,25 @@
-.direction-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.direction {
+.specialization-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.direction-info {
+.specialization {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 }
 
-.direction-label {
+.specialization-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.specialization-label {
     font-size: 18px;
     font-weight: bold;
     color: #282828;

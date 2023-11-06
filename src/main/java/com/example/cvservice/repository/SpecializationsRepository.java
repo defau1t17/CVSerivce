@@ -1,6 +1,6 @@
 package com.example.cvservice.repository;
 
-import com.example.cvservice.entity.Direction;
+import com.example.cvservice.entity.Specialization;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -11,12 +11,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface DirectionsRepository extends JpaRepository<Direction, Long> {
-    Optional<Direction> findByName(String name);
+public interface SpecializationsRepository extends JpaRepository<Specialization, Long> {
+    Optional<Specialization> findByName(String name);
 
-    List<Direction> findAllByNameIn(List<String> names);
+    List<Specialization> findAllByNameIn(List<String> names);
 
-    Page<Direction> findAll(Specification<Direction> specification, Pageable pageable);
+    Page<Specialization> findAll(Specification<Specialization> specification, Pageable pageable);
 
 
 

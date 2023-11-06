@@ -1,6 +1,6 @@
 package com.example.cvservice.dto;
 
-import com.example.cvservice.entity.Direction;
+import com.example.cvservice.entity.Specialization;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ public class NewTestDTO {
 
     private String description;
 
-    private ArrayList<Direction> testDirections;
+    private ArrayList<Specialization> testSpecializations;
 
 
     public boolean isValid() {
@@ -22,7 +22,7 @@ public class NewTestDTO {
         if (this.getDescription() == null) {
             return false;
         }
-        if (this.getTestDirections() == null || this.getTestDirections().isEmpty()) {
+        if (this.getTestSpecializations() == null || this.getTestSpecializations().isEmpty()) {
             return false;
         }
         return true;

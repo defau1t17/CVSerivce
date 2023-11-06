@@ -7,7 +7,7 @@ import com.example.cvservice.entity.Candidate;
 import com.example.cvservice.entity.Result;
 import com.example.cvservice.service.CandidateService;
 import com.example.cvservice.service.ResultService;
-import com.example.cvservice.service.DirectionService;
+import com.example.cvservice.service.SpecializationService;
 import com.example.cvservice.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -36,7 +36,7 @@ public class ResultController {
     private ResultService resultService;
 
     @Autowired
-    private DirectionService directionService;
+    private SpecializationService specializationService;
 
 
     @GetMapping("/add")
@@ -57,19 +57,19 @@ public class ResultController {
                                         @RequestParam(required = false, value = "cPatr") String candidatePatronymic,
                                         @RequestParam(required = false, value = "tName") String testName,
                                         @RequestParam(required = false, value = "tDesc") String testDesc,
-                                        @RequestParam(required = false) List<String> dirNames,
+                                        @RequestParam(required = false) List<String> specName,
                                         @RequestParam(required = false) Optional<Integer> fromMark,
                                         @RequestParam(required = false) Optional<Integer> toMark,
                                         @RequestParam(required = false) LocalDate fromDate,
                                         @RequestParam(required = false) LocalDate toDate,
                                         Model model) {
-        Page<Result> allResults = resultService.findResultsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), candidateName, candidateSecondName, candidatePatronymic, testName, testDesc, dirNames, fromDate, toDate, fromMark.orElse(0), toMark.orElse(100), sort, direction);
+        Page<Result> allResults = resultService.findResultsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), candidateName, candidateSecondName, candidatePatronymic, testName, testDesc, specName, fromDate, toDate, fromMark.orElse(0), toMark.orElse(100), sort, direction);
         model.addAttribute("cName", candidateName);
         model.addAttribute("cSecondName", candidateSecondName);
         model.addAttribute("cPatr", candidatePatronymic);
         model.addAttribute("tName", testName);
         model.addAttribute("tDesc", testDesc);
-        model.addAttribute("dirNames", dirNames);
+        model.addAttribute("specNames", specName);
         model.addAttribute("fromMark", fromMark.orElse(0));
         model.addAttribute("toMark", toMark.orElse(100));
         model.addAttribute("fromDate", fromDate);
@@ -77,8 +77,7 @@ public class ResultController {
         model.addAttribute("sort", sort);
         model.addAttribute("direction", direction);
         model.addAttribute("pageSize", size.orElse(PageConstants.DEFAULT_PAGE_SIZE));
-
-        model.addAttribute("allDirections", directionService.findAll());
+        model.addAttribute("allSpecializations", specializationService.findAll());
         model.addAttribute("allResults", allResults);
         model.addAttribute("allTests", testService.findAll());
         return "/results/all_results_page";

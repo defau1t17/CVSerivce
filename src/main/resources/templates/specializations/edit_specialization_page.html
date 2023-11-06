@@ -2,31 +2,32 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Direction</title>
+    <title>Edit Specialization</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
-    <link rel="stylesheet" th:href="@{/direction_style/edit_direction_style.css}">
+    <link rel="stylesheet" th:href="@{/specialization_style/edit_specialization_style.css}">
 
 
 </head>
 <body>
 <div th:replace="inner/navigation_header :: header"></div>
-<div class="direction-container" th:if="${updateDirection != null}">
-    <form id="updateDirection" th:object="${updateDirection}">
-        <div class="direction">
-            <div class="direction-info">
-                <label class="direction-label">Название Направления</label>
-                <input th:field="*{name}" class="input-field" type="text" id="direction-name-field"
+<div class="specialization-container" th:if="${updateSpecialization != null}">
+    <form id="updateSpec" th:object="${updateSpecialization}">
+        <div class="specialization">
+            <div class="specialization-info">
+                <label class="specialization-label">Название Направления</label>
+                <input th:field="*{name}" class="input-field" type="text" id="specialization-name-field"
                        placeholder="Java Developer Trainee" minlength="2" maxlength="30" required
-                       th:value="${updateDirection.name}">
+                       th:value="${updateSpecialization.name}">
             </div>
-            <div class="direction-info">
-                <label class="direction-label">Придумайте описание для Направления</label>
-                <textarea th:field="*{description}" class="text-input-field" id="direction-description-field"
-                          placeholder="Новое развивающееся направление..." th:value="${updateDirection.description}"
+            <div class="specialization-info">
+                <label class="specialization-label">Придумайте описание для Направления</label>
+                <textarea th:field="*{description}" class="text-input-field" id="specialization-description-field"
+                          placeholder="Новое развивающееся направление..." th:value="${updateSpecialization.description}"
                           minlength="2" maxlength="300"> </textarea>
             </div>
             <div class="button-block">
-                <button type="button" id="update-direction-button" th:value="${updateDirection.id}" class="submit-button"
+                <button type="button" id="update-specialization-button" th:value="${updateSpecialization.id}"
+                        class="submit-button"
                         onclick="validateBeforeSend()">
                     Добавить
                 </button>
@@ -36,7 +37,7 @@
     <div id="notification" class="notification">
     </div>
 </div>
-<div th:if="${updateDirection == null}">
+<div th:if="${updateSpecialization == null}">
     <h1>Такого направления не существует</h1>
 </div>
 
@@ -47,12 +48,12 @@
 
     function addNewCandidateRequest() {
 
-        var formData = new FormData($('#updateDirection')[0]);
+        var formData = new FormData($('#updateSpec')[0]);
 
-        var directionID = $('#update-direction-button').attr('value');
+        var specID = $('#update-specialization-button').attr('value');
 
         $.ajax({
-            url: '/api/v1/directions/' + directionID,
+            url: '/api/v1/specializations/' + specID,
             type: 'PATCH',
             processData: false,
             contentType: false,
@@ -61,7 +62,7 @@
                 if (xhr.status === 200) {
                     showNotification("Направление успешно обновленно ", 1000);
                     setTimeout(function () {
-                        window.location.href = "/directions/edit/" + directionID
+                        window.location.href = "/specializations/edit/" + specID
                     }, 1000);
                 }
             },
@@ -73,8 +74,8 @@
 
 
     function validateBeforeSend() {
-        var dirname = $('#direction-name-field').val();
-        if (dirname.length < 2) {
+        var specName = $('#specialization-name-field').val();
+        if (specName.length < 2) {
             showNotification("Обязательно введите название!", 1000);
             return;
         } else {

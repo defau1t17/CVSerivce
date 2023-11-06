@@ -3,7 +3,7 @@ package com.example.cvservice.dto;
 import lombok.Data;
 
 @Data
-public class DirectionFilterDTO {
+public class SpecializationFilterDTO {
 
     private String name;
 

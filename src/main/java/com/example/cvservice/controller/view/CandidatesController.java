@@ -5,7 +5,7 @@ import com.example.cvservice.dto.UpdateCandidateDTO;
 import com.example.cvservice.entity.PageConstants;
 import com.example.cvservice.entity.Candidate;
 import com.example.cvservice.service.CandidateService;
-import com.example.cvservice.service.DirectionService;
+import com.example.cvservice.service.SpecializationService;
 import com.example.cvservice.service.CVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,7 +21,7 @@ import java.util.Optional;
 public class CandidatesController {
 
     @Autowired
-    private DirectionService directionService;
+    private SpecializationService specializationService;
 
     @Autowired
     private CandidateService candidateService;
@@ -37,18 +37,18 @@ public class CandidatesController {
                                     @RequestParam(required = false) String name,
                                     @RequestParam(required = false) String secondName,
                                     @RequestParam(required = false) String patronymic,
-                                    @RequestParam(required = false) List<String> dir) {
-        Page<Candidate> allCandidatesByPageNumber = candidateService.findAllCandidatesByPageNumber(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), sort, direction, name, secondName, patronymic, dir);
+                                    @RequestParam(required = false) List<String> spec) {
+        Page<Candidate> allCandidatesByPageNumber = candidateService.findAllCandidatesByPageNumber(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), sort, direction, name, secondName, patronymic, spec);
         model.addAttribute("allCandidates", allCandidatesByPageNumber);
         model.addAttribute("pageSize", size.orElse(PageConstants.DEFAULT_PAGE_SIZE));
         model.addAttribute("pages", allCandidatesByPageNumber.getTotalPages());
         model.addAttribute("sort", sort);
         model.addAttribute("direction", direction);
-        model.addAttribute("allDirections", directionService.findAll());
+        model.addAttribute("allSpecializations", specializationService.findAll());
         model.addAttribute("filterName", name);
         model.addAttribute("filterSecondName", secondName);
         model.addAttribute("filterPatr", patronymic);
-        model.addAttribute("filterDirections", dir);
+        model.addAttribute("filterSpec", spec);
 
         return "/candidates/all_candidates_page";
     }
@@ -56,7 +56,7 @@ public class CandidatesController {
 
     @GetMapping("/add")
     public String displayAddNewCandidatePage(Model model) {
-        model.addAttribute("allDirections", directionService.findAll());
+        model.addAttribute("allSpecializations", specializationService.findAll());
         model.addAttribute("newCandidate", new NewCandidateDTO());
 
         return "/candidates/add_new_candidate_page";
@@ -87,7 +87,7 @@ public class CandidatesController {
                         .name(candidate.getName())
                         .second_name(candidate.getSecondName())
                         .patr(candidate.getPatronymic())
-                        .directions(candidate.getDirections())
+                        .specializations(candidate.getSpecializations())
                         .candidateDesc(candidate.getCandidateDescription())
                         .cvFile(CVService.createMultipartFileFormByteArray(candidate.getCv().getCvData(), "application/octet-stream", candidate.getCv().getCvFileName()))
                         .imageFile(CVService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();
@@ -98,12 +98,12 @@ public class CandidatesController {
                         .patr(candidate.getPatronymic())
                         .candidateDesc(candidate.getCandidateDescription())
 
-                        .directions(candidate.getDirections())
+                        .specializations(candidate.getSpecializations())
                         .cvFile(null)
                         .imageFile(CVService.createMultipartFileFormByteArray(candidate.getImage().getImageData(), "application/octet-stream", candidate.getImage().getImageFileName())).build();
             }
         }
-        model.addAttribute("allDirections", directionService.findAll());
+        model.addAttribute("allSpecializations", specializationService.findAll());
 
         model.addAttribute("requestUpdateCandidate", updateCandidateDTO);
 

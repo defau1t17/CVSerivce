@@ -2,7 +2,7 @@ package com.example.cvservice.service.Filter;
 
 import com.example.cvservice.dto.ResultFilterDTO;
 import com.example.cvservice.entity.Result;
-import com.example.cvservice.entity.Direction;
+import com.example.cvservice.entity.Specialization;
 import com.example.cvservice.entity.Test;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
@@ -33,10 +33,10 @@ public class ResultFilter {
             if (resultFilterDTO.getTestFilterDTO().getDescription() != null && StringUtils.hasText(resultFilterDTO.getTestFilterDTO().getDescription().trim())) {
                 predicates.add(builder.like(root.get("test").get("description"), "%" + resultFilterDTO.getTestFilterDTO().getDescription() + "%"));
             }
-            if (resultFilterDTO.getTestFilterDTO().getDirectionNames() != null && !resultFilterDTO.getTestFilterDTO().getDirectionNames().isEmpty()) {
+            if (resultFilterDTO.getTestFilterDTO().getSpecializationNames() != null && !resultFilterDTO.getTestFilterDTO().getSpecializationNames().isEmpty()) {
                 Join<Result, Test> testJoin = root.join("test");
-                Join<Test, Direction> directionJoin = testJoin.join("directions");
-                predicates.add(directionJoin.get("name").in(resultFilterDTO.getTestFilterDTO().getDirectionNames()));
+                Join<Test, Specialization> specJoin = testJoin.join("specializations");
+                predicates.add(specJoin.get("name").in(resultFilterDTO.getTestFilterDTO().getSpecializationNames()));
             }
             if (resultFilterDTO.getFromDate() != null && resultFilterDTO.getToDate() != null) {
                 predicates.add(builder.between(root.get("grade").get("date"), resultFilterDTO.getFromDate(), resultFilterDTO.getToDate()));
@@ -53,11 +53,11 @@ public class ResultFilter {
     }
 
     public ResultFilterDTO generateResultFilterDTOFromParams(String candidateName, String candidateSecondName, String candidatePatr,
-                                                                String testName, String testDesc, List<String> directionNames,
+                                                                String testName, String testDesc, List<String> specNames,
                                                                 LocalDate fromDate, LocalDate toDate, int fromMark, int toMark) {
         ResultFilterDTO resultFilterDTO = new ResultFilterDTO();
         resultFilterDTO.setCandidateFilterDTO(new CandidateFilter().generateCandidateFromParams(candidateName, candidateSecondName, candidatePatr, null));
-        resultFilterDTO.setTestFilterDTO(TestFilter.generateFilterFromParams(testName, testDesc, directionNames));
+        resultFilterDTO.setTestFilterDTO(TestFilter.generateFilterFromParams(testName, testDesc, specNames));
 
         if (fromDate != null) {
             resultFilterDTO.setFromDate(fromDate);

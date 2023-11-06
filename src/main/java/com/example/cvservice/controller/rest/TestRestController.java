@@ -66,8 +66,8 @@ public class TestRestController {
                                                        @RequestParam(required = false, defaultValue = "ASC") String direction,
                                                        @RequestParam(required = false) String name,
                                                        @RequestParam(required = false) String description,
-                                                       @RequestParam(required = false) List<String> dir) {
-        return ResponseEntity.ok(testService.findTestsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_NUMBER), name, description, dir, sort, direction).getContent());
+                                                       @RequestParam(required = false) List<String> spec) {
+        return ResponseEntity.ok(testService.findTestsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_NUMBER), name, description, spec, sort, direction).getContent());
     }
 
 }

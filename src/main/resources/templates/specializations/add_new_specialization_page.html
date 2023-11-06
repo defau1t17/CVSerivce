@@ -2,33 +2,33 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Add New Direction</title>
+    <title>Add New Specialization</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
-    <link rel="stylesheet" th:href="@{/direction_style/add_new_direction_style.css}">
+    <link rel="stylesheet" th:href="@{/specialization_style/add_new_specialization_style.css}">
 </head>
 <body>
 
 <div th:replace="inner/navigation_header :: header"></div>
 
-<div class="direction-container">
-    <form id="newDirection" th:object="${newDirection}">
-        <div class="direction">
-            <div class="direction-info">
-                <label class="direction-label">Название Направления</label>
-                <input th:field="*{name}" class="input-field" type="text" id="direction-name-field"
+<div class="specialization-container">
+    <form id="newSpec" th:object="${newSpecialization}">
+        <div class="specialization">
+            <div class="specialization-info">
+                <label class="specialization-label">Название Направления</label>
+                <input th:field="*{name}" class="input-field" type="text" id="specialization-name-field"
                        placeholder="Java Developer Trainee" minlength="2" maxlength="30" required>
             </div>
-            <div class="direction-info">
-                <label class="direction-label">Придумайте описание для Направления</label>
-                <textarea th:field="*{description}" class="text-input-field" id="direction-description-field"
+            <div class="specialization-info">
+                <label class="specialization-label">Придумайте описание для Направления</label>
+                <textarea th:field="*{description}" class="text-input-field" id="specialization-description-field"
                           placeholder="Новое развивающееся направление..." minlength="2" maxlength="300"> </textarea>
             </div>
             <div class="button-block">
-                <button type="button" id="add-new-direction-button" class="submit-button"
+                <button type="button" id="add-new-specialization-button" class="submit-button"
                         onclick="validateBeforeSend()">
                     Добавить
                 </button>
-                <button type="reset" id="clear-direction-button" class="submit-button">Очистить</button>
+                <button type="reset" id="clear-specialization-button" class="submit-button">Очистить</button>
             </div>
         </div>
     </form>
@@ -43,9 +43,9 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     function addNewCandidateRequest() {
-        var formData = new FormData($('#newDirection')[0]);
+        var formData = new FormData($('#newSpec')[0]);
         $.ajax({
-            url: '/api/v1/directions/',
+            url: '/api/v1/specializations/',
             type: 'POST',
             processData: false,
             contentType: false,
@@ -54,7 +54,7 @@
                 if (xhr.status === 200) {
                     showNotification("Новое направление успешно добавлено!", 1000);
                     setTimeout(function () {
-                        window.location.href = "/directions/add"
+                        window.location.href = "/specializations/add"
                     }, 1000);
                     console.log("новое направление было добавлено на сервер!")
                 }
@@ -66,9 +66,8 @@
     }
 
     function validateBeforeSend() {
-        var dirname = $('#direction-name-field').val();
-        console.log(dirname)
-        if (dirname.length < 2) {
+        var specName = $('#specialization-name-field').val();
+        if (specName.length < 2) {
             showNotification("Обязательно введите названии и описание!", 1000);
             return;
         } else {

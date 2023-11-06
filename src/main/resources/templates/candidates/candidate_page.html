@@ -25,11 +25,11 @@
         </div>
 
         <span class="def-label">Направления : </span>
-        <div class="candidate-directions-block">
+        <div class="candidate-specializations-block">
             <ul>
-                <li th:each="direction : ${candidate.directions}">
-                    <a class="direction-link" th:href="@{/directions/__${direction.id}__}">
-                        <span class="link-text" th:text="${direction.name}"></span>
+                <li th:each="specialization : ${candidate.specializations}">
+                    <a class="specialization-link" th:href="@{/specializations/__${specialization.id}__}">
+                        <span class="link-text" th:text="${specialization.name}"></span>
                     </a>
                 </li>
             </ul>

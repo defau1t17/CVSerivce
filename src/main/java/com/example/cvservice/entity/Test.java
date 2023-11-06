@@ -30,14 +30,14 @@ public class Test {
     private String description;
 
     @ManyToMany
-    private List<Direction> directions;
+    private List<Specialization> specializations;
 
     public Test update(UpdateTestDTO updateTestDTO) {
         if (updateTestDTO.getName() != null && !updateTestDTO.getName().trim().isEmpty()) {
             this.setName(updateTestDTO.getName());
         }
-        if (updateTestDTO.getTestDirections() != null && !updateTestDTO.getTestDirections().isEmpty()) {
-            this.setDirections(updateTestDTO.getTestDirections());
+        if (updateTestDTO.getTestSpecializations() != null && !updateTestDTO.getTestSpecializations().isEmpty()) {
+            this.setSpecializations(updateTestDTO.getTestSpecializations());
         }
         if (updateTestDTO.getDescription() != null) {
             this.setDescription(updateTestDTO.getDescription());

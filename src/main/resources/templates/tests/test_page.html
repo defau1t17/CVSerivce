@@ -19,11 +19,11 @@
             <label class="def-label">Описание : </label>
             <span class="test-info" th:text="${test.description}"></span>
         </div>
-        <div class="test-directions-block">
+        <div class="test-specializations-block">
             <label style="text-align: center">Направления :</label>
-            <div th:each="testDirection : ${test.directions}">
-                <a class="direction-link" th:href="@{/directions/__${testDirection.id}__}">
-                    <span class="link-text" th:text="${testDirection.name}"></span>
+            <div th:each="testSpec : ${test.specializations}">
+                <a class="specialization-link" th:href="@{/specializations/__${testSpec.id}__}">
+                    <span class="link-text" th:text="${testSpec.name}"></span>
                 </a>
             </div>
         </div>

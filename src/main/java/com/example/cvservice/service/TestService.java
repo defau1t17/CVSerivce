@@ -55,7 +55,7 @@ public class TestService implements EntityOperations {
     public Test saveNewTest(NewTestDTO newTestDTO) {
         if (!findTestByName(newTestDTO.getName()).isPresent()) {
             if (newTestDTO.isValid()) {
-                Test newTest = Test.builder().name(newTestDTO.getName()).description(newTestDTO.getDescription()).directions(newTestDTO.getTestDirections()).build();
+                Test newTest = Test.builder().name(newTestDTO.getName()).description(newTestDTO.getDescription()).specializations(newTestDTO.getTestSpecializations()).build();
                 save(newTest);
                 return newTest;
             } else {

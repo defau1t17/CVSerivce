@@ -25,16 +25,15 @@
             <textarea class="text-input-field" th:field="*{candidateDesc}" id="input-candidate-description-field"
                       placeholder="Внесите описанеи кандидата"
                       required minlength="3" maxlength="100"></textarea>
-            <div class="select-directions-container">
-                <th:block th:each="direction : ${allDirections}">
+            <div class="select-specializations-container">
+                <th:block th:each="specialization : ${allSpecializations}">
                     <label>
-                        <input class="selection-block" type="checkbox" th:field="*{directions}" th:value="${direction.id}" />
-                        <span th:text="${direction.name}"></span>
+                        <input class="selection-block" type="checkbox" th:field="*{specializations}" th:value="${specialization.id}" />
+                        <span th:text="${specialization.name}"></span>
                     </label>
                 </th:block>
             </div>
         </div>
-
         <div class="input-file-container">
             <label>Вставьте CV</label>
             <input class="input-file-field" th:field="*{cvFile}" accept="application/pdf" name="cvFile" type="file"

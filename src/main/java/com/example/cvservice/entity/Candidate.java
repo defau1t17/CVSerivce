@@ -48,7 +48,7 @@ public class Candidate {
     private CurriculumVitae cv;
 
     @ManyToMany
-    private List<Direction> directions;
+    private List<Specialization> specializations;
 
     public Candidate update(UpdateCandidateDTO updateCandidateDTO, CVService cvService) {
         if (updateCandidateDTO.getName() != null && !updateCandidateDTO.getName().trim().isEmpty()) {
@@ -69,8 +69,8 @@ public class Candidate {
         if (updateCandidateDTO.getImageFile() != null && !updateCandidateDTO.getImageFile().isEmpty()) {
             this.setImage(cvService.buildImage(updateCandidateDTO.getImageFile()));
         }
-        if (updateCandidateDTO.getDirections() != null && updateCandidateDTO.getDirections().size() != 0) {
-            this.setDirections(updateCandidateDTO.getDirections());
+        if (updateCandidateDTO.getSpecializations() != null && updateCandidateDTO.getSpecializations().size() != 0) {
+            this.setSpecializations(updateCandidateDTO.getSpecializations());
         }
         return this;
     }

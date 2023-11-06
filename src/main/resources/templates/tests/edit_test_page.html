@@ -14,7 +14,8 @@
         <div class="update-test" th:value="${updateTest.id}">
             <div class="edit-block">
                 <label class="def-label">Название</label>
-                <input class="input-field" th:field="*{name}" type="text" id="input-name-field" placeholder="Введите название теста"
+                <input class="input-field" th:field="*{name}" type="text" id="input-name-field"
+                       placeholder="Введите название теста"
                        minlength="2"
                        maxlength="40" required th:value="${updateTest.name}">
             </div>
@@ -25,12 +26,13 @@
                           th:value="${updateTest.description}"
                           required minlength="3" maxlength="100"></textarea>
             </div>
-            <div class="select-directions-container">
-                <th:block th:each="direction : ${allDirections}">
+            <div class="select-specializations-container">
+                <th:block th:each="specialization : ${allSpecializations}">
                     <label>
-                        <input th:field="*{testDirections}" th:value="${direction.id}" id="direction" type="checkbox"
-                               th:checked="${updateTest.testDirections != null && updateTest.testDirections.contains(direction)}">
-                        <span th:text="${direction.name}"></span>
+                        <input th:field="*{testSpecializations}" th:value="${specialization.id}" id="specialization"
+                               type="checkbox"
+                               th:checked="${updateTest.testSpecializations != null && updateTest.testSpecializations.contains(specialization)}">
+                        <span th:text="${specialization.name}"></span>
                     </label>
                 </th:block>
             </div>
@@ -80,8 +82,8 @@
 
     function validateBeforeSend() {
         var name = $('#input-name-field').val();
-        var checkedDirection = $('input[type="checkbox"]:checked').length;
-        if (name.length < 2 || checkedDirection === 0) {
+        var checkedSpec = $('input[type="checkbox"]:checked').length;
+        if (name.length < 2 || checkedSpec === 0) {
             showNotification("Тест должен иметь название и как минимум одно направление!", 1000);
         } else {
             updateTest();

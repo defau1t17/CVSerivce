@@ -25,12 +25,12 @@
                 <textarea class="text-input-field" th:field="*{description}" placeholder="Введите описание теста."
                           id="test-description-field" minlength="2" maxlength=""></textarea>
             </div>
-            <div class="select-directions-container">
-                <th:block th:each="direction : ${directions}">
+            <div class="select-specializations-container">
+                <th:block th:each="specialization : ${specializations}">
                     <label>
-                        <input class="selection-block" th:field="*{testDirections}"
-                               th:value="${direction.id}" id="direction" type="checkbox">
-                        <span th:text="${direction.name}"></span>
+                        <input class="selection-block" th:field="*{testSpecializations}"
+                               th:value="${specialization.id}" id="specialization" type="checkbox">
+                        <span th:text="${specialization.name}"></span>
                     </label>
                 </th:block>
             </div>
@@ -67,7 +67,7 @@
                 if (xhr.status === 200) {
                     showNotification("Новый тест успешно добавлен!", 1000);
                     setTimeout(function () {
-                        window.location.href = "../../static/tests_style/add"
+                        window.location.href = "/tests/add"
                     }, 1000);
 
                 }
@@ -80,9 +80,9 @@
 
     function validateBeforeSend() {
         var testName = $('#test-name-filed').val();
-        var checkedDirection = $('input[type="checkbox"]:checked').length;
+        var checkedSpec = $('input[type="checkbox"]:checked').length;
 
-        if (testName.length < 2 || checkedDirection === 0) {
+        if (testName.length < 2 || checkedSpec === 0) {
             showNotification("Обязательно выбирите название и как минимум одно направление!", 1000);
         } else {
             addNewCandidateRequest();

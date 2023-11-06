@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 public class DataInitializer implements CommandLineRunner {
 
     @Autowired
-    private DirectionService directionService;
+    private SpecializationService specializationService;
 
     @Autowired
     private CandidateService candidateService;
@@ -18,7 +18,7 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-//        directionService.saveIfNotExists(new Direction(0L, "backend", "test"));
+//        directionService.saveIfNotExists(new Specialization(0L, "backend", "test"));
     
 
 //        directionService.save(ios);
@@ -26,36 +26,36 @@ public class DataInitializer implements CommandLineRunner {
 //        directionService.save(design);
 
 
-//        List<Direction> directions = new ArrayList<>();
-//        directions.add(backend);
-//        directions.add(android);
+//        List<Specialization> specializations = new ArrayList<>();
+//        specializations.add(backend);
+//        specializations.add(android);
 //        Candidate candidate = Candidate.builder()
 //                .name("Test")
 //                .secondName("Test")
 //                .patronymic("Test")
 //                .candidateDescription("Test")
-//                .directions(directions)
+//                .specializations(specializations)
 //                .cv(null)
 //                .image(null)
 //                .build();
 //        Test test = Test.builder()
 //                .name("Test")
 //                .description("Java Test")
-//                .directions(directions)
+//                .specializations(specializations)
 //                .build();
 //
 //        testService.save(test);
 //        candidateService.save(candidate);
 //
 //
-//        directions.add(android);
-//        directions.add(ios);
+//        specializations.add(android);
+//        specializations.add(ios);
 //        Candidate candidate1 = Candidate.builder()
 //                .name("Test")
 //                .secondName("Test")
 //                .patronymic("Test")
 //                .candidateDescription("Test")
-//                .directions(directions)
+//                .specializations(specializations)
 //                .cv(null)
 //                .image(null)
 //                .build();
@@ -63,7 +63,7 @@ public class DataInitializer implements CommandLineRunner {
 //        Test test2 = Test.builder()
 //                .name("Test 2")
 //                .description("Global Test")
-//                .directions(directions)
+//                .specializations(specializations)
 //                .build();
 //
 //        testService.save(test2);

@@ -1,6 +1,6 @@
 package com.example.cvservice.dto;
 
-import com.example.cvservice.entity.Direction;
+import com.example.cvservice.entity.Specialization;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,7 +21,7 @@ public class NewCandidateDTO {
 
     private MultipartFile imageFile;
 
-    private List<Direction> directions;
+    private List<Specialization> specializations;
 
     public boolean isValid() {
         if (this.getName() == null || this.getName().trim().isEmpty()) {
@@ -35,7 +35,7 @@ public class NewCandidateDTO {
             return false;
 
         }
-        if (this.getDirections() == null || this.getDirections().isEmpty()) {
+        if (this.getSpecializations() == null || this.getSpecializations().isEmpty()) {
             return false;
         }
         return true;

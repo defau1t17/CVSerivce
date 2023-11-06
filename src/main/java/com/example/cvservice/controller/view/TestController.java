@@ -4,7 +4,7 @@ import com.example.cvservice.dto.NewTestDTO;
 import com.example.cvservice.dto.UpdateTestDTO;
 import com.example.cvservice.entity.PageConstants;
 import com.example.cvservice.entity.Test;
-import com.example.cvservice.service.DirectionService;
+import com.example.cvservice.service.SpecializationService;
 import com.example.cvservice.service.TestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +23,7 @@ import java.util.Optional;
 public class TestController {
 
     @Autowired
-    private DirectionService directionService;
+    private SpecializationService specializationService;
 
     @Autowired
     private TestService testService;
@@ -32,7 +32,7 @@ public class TestController {
     @GetMapping("/add")
     public String addNewTestPage(Model model) {
         model.addAttribute("newTest", new NewTestDTO());
-        model.addAttribute("directions", directionService.findAll());
+        model.addAttribute("specializations", specializationService.findAll());
 
         return "/tests/add_new_test_page";
     }
@@ -44,12 +44,12 @@ public class TestController {
                                       @RequestParam(required = false, defaultValue = "ASC") String direction,
                                       @RequestParam(required = false) String name,
                                       @RequestParam(required = false) String description,
-                                      @RequestParam(required = false) List<String> dir,
+                                      @RequestParam(required = false) List<String> spec,
                                       Model model) {
-        Page<Test> allTestByPageNumber = testService.findTestsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), name, description, dir, sort, direction);
-        model.addAttribute("allDirections", directionService.findAll());
+        Page<Test> allTestByPageNumber = testService.findTestsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), name, description, spec, sort, direction);
+        model.addAttribute("allSpecializations", specializationService.findAll());
         model.addAttribute("tests", allTestByPageNumber);
-        model.addAttribute("filterDirections", dir);
+        model.addAttribute("filterSpecializations", spec);
         model.addAttribute("filterName", name);
         model.addAttribute("sort", sort);
         model.addAttribute("direction", direction);
@@ -77,11 +77,11 @@ public class TestController {
         Test test = null;
         if (optionalTest.isPresent()) {
             test = optionalTest.get();
-            model.addAttribute("updateTest", new UpdateTestDTO(test.getId(), test.getName(), test.getDescription(), test.getDirections()));
+            model.addAttribute("updateTest", new UpdateTestDTO(test.getId(), test.getName(), test.getDescription(), test.getSpecializations()));
         } else {
             model.addAttribute("updateTest", null);
         }
-        model.addAttribute("allDirections", directionService.findAll());
+        model.addAttribute("allSpecializations", specializationService.findAll());
         return "/tests/edit_test_page";
 
     }

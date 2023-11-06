@@ -4,9 +4,7 @@ package com.example.cvservice.dto;
 import lombok.Data;
 
 @Data
-public class UpdateDirectionDTO {
-
-    private Long id;
+public class NewSpecializationDTO {
 
     private String name;
 
@@ -16,7 +14,9 @@ public class UpdateDirectionDTO {
         if (this.getName() == null || this.getName().isEmpty()) {
             return false;
         }
+        if (this.getDescription() == null) {
+            return false;
+        }
         return true;
     }
-
 }

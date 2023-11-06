@@ -22,9 +22,10 @@
         </select>
         <input class="input-block" type="text" name="tDesc" th:value="${tDesc}" placeholder="Описание теста">
         <div class="selection-block">
-            <input class="selection-checkbox" th:each="direction : ${allDirections}" th:name="dirNames"
-                   th:value="${direction.name}" id="direction" type="checkbox" th:text="${direction.name}"
-                   th:checked="${dirNames != null && dirNames.contains(direction.name)}">
+            <input class="selection-checkbox" th:each="specialization : ${allSpecializations}" th:name="specNames"
+                   th:value="${specialization.name}" id="specialization" type="checkbox"
+                   th:text="${specialization.name}"
+                   th:checked="${specNames != null && specNames.contains(specialization.name)}">
         </div>
         <input class="input-block" type="number" th:name="fromMark" th:value="${fromMark}"
                placeholder="Введите минимальный балл за тест" min="0" max="100">
@@ -52,8 +53,8 @@
                 <input type="hidden" th:name="cPatr" th:value="${cPatr}">
                 <input type="hidden" th:name="tName" th:value="${tName}">
                 <input type="hidden" name="tDesc" th:value="${tDesc}">
-                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
-                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="specNames" th:if="${specNames != null}"
+                       th:attr="value=${#strings.arrayJoin(specNames, ',')}">
                 <input type="hidden" th:name="fromMark" th:value="${fromMark}">
                 <input type="hidden" th:name="toMark" th:value="${toMark}">
                 <input type="hidden" th:name="fromDate" th:value="${fromDate}">
@@ -81,8 +82,8 @@
                 <input type="hidden" th:name="cPatr" th:value="${cPatr}">
                 <input type="hidden" th:name="tName" th:value="${tName}">
                 <input type="hidden" name="tDesc" th:value="${tDesc}">
-                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
-                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="specNames" th:if="${specNames != null}"
+                       th:attr="value=${#strings.arrayJoin(specNames, ',')}">
                 <input type="hidden" th:name="fromMark" th:value="${fromMark}">
                 <input type="hidden" th:name="toMark" th:value="${toMark}">
                 <input type="hidden" th:name="fromDate" th:value="${fromDate}">
@@ -110,8 +111,8 @@
                 <input type="hidden" th:name="cPatr" th:value="${cPatr}">
                 <input type="hidden" th:name="tName" th:value="${tName}">
                 <input type="hidden" name="tDesc" th:value="${tDesc}">
-                <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
-                       th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                <input type="hidden" th:name="specNames" th:if="${specNames != null}"
+                       th:attr="value=${#strings.arrayJoin(specNames, ',')}">
                 <input type="hidden" th:name="fromMark" th:value="${fromMark}">
                 <input type="hidden" th:name="toMark" th:value="${toMark}">
                 <input type="hidden" th:name="fromDate" th:value="${fromDate}">
@@ -130,7 +131,7 @@
             </form>
             <div class="sort-main-block">
                 <span>Название теста</span>
-                <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <form class="sort-form" action="">
                     <input type="hidden" name="page" th:value="${0}">
                     <input type="hidden" name="size" th:value="${pageSize}">
                     <input type="hidden" th:name="cName" th:value="${cName}">
@@ -138,8 +139,8 @@
                     <input type="hidden" th:name="cPatr" th:value="${cPatr}">
                     <input type="hidden" th:name="tName" th:value="${tName}">
                     <input type="hidden" name="tDesc" th:value="${tDesc}">
-                    <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
-                           th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                    <input type="hidden" th:name="specNames" th:if="${specNames != null}"
+                           th:attr="value=${#strings.arrayJoin(specNames, ',')}">
                     <input type="hidden" th:name="fromMark" th:value="${fromMark}">
                     <input type="hidden" th:name="toMark" th:value="${toMark}">
                     <input type="hidden" th:name="fromDate" th:value="${fromDate}">
@@ -167,8 +168,8 @@
                     <input type="hidden" th:name="cPatr" th:value="${cPatr}">
                     <input type="hidden" th:name="tName" th:value="${tName}">
                     <input type="hidden" name="tDesc" th:value="${tDesc}">
-                    <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
-                           th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                    <input type="hidden" th:name="specNames" th:if="${specNames != null}"
+                           th:attr="value=${#strings.arrayJoin(specNames, ',')}">
                     <input type="hidden" th:name="fromMark" th:value="${fromMark}">
                     <input type="hidden" th:name="toMark" th:value="${toMark}">
                     <input type="hidden" th:name="fromDate" th:value="${fromDate}">
@@ -188,7 +189,7 @@
             </div>
             <div class="sort-main-block">
                 <span>Направления</span>
-                <form class="sort-form" action="" th:with="sortDirection='ASC'">
+                <form class="sort-form" action="">
                     <input type="hidden" name="page" th:value="${0}">
                     <input type="hidden" name="size" th:value="${pageSize}">
                     <input type="hidden" th:name="cName" th:value="${cName}">
@@ -196,13 +197,13 @@
                     <input type="hidden" th:name="cPatr" th:value="${cPatr}">
                     <input type="hidden" th:name="tName" th:value="${tName}">
                     <input type="hidden" name="tDesc" th:value="${tDesc}">
-                    <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
-                           th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                    <input type="hidden" th:name="specNames" th:if="${specNames != null}"
+                           th:attr="value=${#strings.arrayJoin(specNames, ',')}">
                     <input type="hidden" th:name="fromMark" th:value="${fromMark}">
                     <input type="hidden" th:name="toMark" th:value="${toMark}">
                     <input type="hidden" th:name="fromDate" th:value="${fromDate}">
                     <input type="hidden" th:name="toDate" th:value="${toDate}">
-                    <input type="hidden" class="selected-radio" th:name="sort" th:value="test.directions.name">
+                    <input type="hidden" class="selected-radio" th:name="sort" th:value="test.specializations.name">
                     <div class="sort-block">
                         <div class="sort-inner-block">
                             <img class="image" th:src="@{/images/up.png}" onclick="sortData(this)">
@@ -225,8 +226,8 @@
                     <input type="hidden" th:name="cPatr" th:value="${cPatr}">
                     <input type="hidden" th:name="tName" th:value="${tName}">
                     <input type="hidden" name="tDesc" th:value="${tDesc}">
-                    <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
-                           th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                    <input type="hidden" th:name="specNames" th:if="${specNames != null}"
+                           th:attr="value=${#strings.arrayJoin(specNames, ',')}">
                     <input type="hidden" th:name="fromMark" th:value="${fromMark}">
                     <input type="hidden" th:name="toMark" th:value="${toMark}">
                     <input type="hidden" th:name="fromDate" th:value="${fromDate}">
@@ -254,8 +255,8 @@
                     <input type="hidden" th:name="cPatr" th:value="${cPatr}">
                     <input type="hidden" th:name="tName" th:value="${tName}">
                     <input type="hidden" name="tDesc" th:value="${tDesc}">
-                    <input type="hidden" th:name="dirNames" th:if="${dirNames != null}"
-                           th:attr="value=${#strings.arrayJoin(dirNames, ',')}">
+                    <input type="hidden" th:name="specNames" th:if="${specNames != null}"
+                           th:attr="value=${#strings.arrayJoin(specNames, ',')}">
                     <input type="hidden" th:name="fromMark" th:value="${fromMark}">
                     <input type="hidden" th:name="toMark" th:value="${toMark}">
                     <input type="hidden" th:name="fromDate" th:value="${fromDate}">

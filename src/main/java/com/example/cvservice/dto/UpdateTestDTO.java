@@ -1,6 +1,6 @@
 package com.example.cvservice.dto;
 
-import com.example.cvservice.entity.Direction;
+import com.example.cvservice.entity.Specialization;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,13 +18,13 @@ public class UpdateTestDTO {
 
     private String description;
 
-    private List<Direction> testDirections;
+    private List<Specialization> testSpecializations;
 
     public boolean isValid() {
         if (this.getName() == null || this.getName().isEmpty()) {
             return false;
         }
-        if (this.getTestDirections() == null || this.getTestDirections().isEmpty()) {
+        if (this.getTestSpecializations() == null || this.getTestSpecializations().isEmpty()) {
             return false;
         }
         return true;

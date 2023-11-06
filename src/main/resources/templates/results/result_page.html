@@ -18,9 +18,9 @@
                       th:text="${candidate.name + ' ' + candidate.secondName + ' ' + candidate.patronymic}"></span>
             </a>
             <label class="def-label">Направления Кандидата</label>
-            <div th:each="candidateDirections : ${candidate.directions}">
-                <a class="link" th:href="@{/directions/__${candidateDirections.id}__}">
-                    <span class="link-text" th:text="${candidateDirections.name}"></span>
+            <div th:each="candidateSpec : ${candidate.specializations}">
+                <a class="link" th:href="@{/specializations/__${candidateSpec.id}__}">
+                    <span class="link-text" th:text="${candidateSpec.name}"></span>
                 </a>
             </div>
         </div>

@@ -59,7 +59,6 @@ public class ResultRestController {
     @GetMapping("/{id}")
     public ResponseEntity<Result> getCandidateTestByID(@PathVariable(value = "id") Long id) {
         Optional<Result> optionalCandidatesTest = resultService.findResultByID(id);
-
         return optionalCandidatesTest.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
@@ -75,12 +74,12 @@ public class ResultRestController {
                                                                   @RequestParam(required = false, value = "cPatr") String candidatePatronymic,
                                                                   @RequestParam(required = false, value = "tName") String testName,
                                                                   @RequestParam(required = false, value = "tDesc") String testDesc,
-                                                                  @RequestParam(required = false) List<String> dirNames,
+                                                                  @RequestParam(required = false) List<String> specNames,
                                                                   @RequestParam(required = false) Optional<Integer> fromMark,
                                                                   @RequestParam(required = false) Optional<Integer> toMark,
                                                                   @RequestParam(required = false) LocalDate fromDate,
                                                                   @RequestParam(required = false) LocalDate toDate) {
-        return ResponseEntity.ok(resultService.findResultsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_NUMBER), candidateName, candidateSecondName, candidatePatronymic, testName, testDesc, dirNames, fromDate, toDate, fromMark.orElse(0), toMark.orElse(100), sort, direction).getContent());
+        return ResponseEntity.ok(resultService.findResultsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_NUMBER), candidateName, candidateSecondName, candidatePatronymic, testName, testDesc, specNames, fromDate, toDate, fromMark.orElse(0), toMark.orElse(100), sort, direction).getContent());
     }
 
 
