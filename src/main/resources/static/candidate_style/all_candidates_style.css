@@ -1,0 +1,68 @@
+.all-candidates-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.candidate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 200px;
+    margin-top: 10px;
+}
+
+.candidate-image-block {
+    margin-top: 5px;
+}
+
+.candidate-info-block {
+    display: flex;
+    flex-direction: row;
+    margin-top: 5px;
+
+}
+
+.candidates-direction {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.link {
+    text-decoration: underline darkorange;
+    margin-left: 5px;
+}
+
+.link-text {
+    color: black;
+}
+
+.pagination-links-container {
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+}
+
+.candidate-image {
+    height: 100px;
+    border-radius: 40%;
+}
+
+.candidate-process-button {
+    margin-top: 10px;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #282828;
+    color: white;
+    font-size: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background 0.6s, color 0.36s;
+}
+
+.candidate-process-button:hover {
+    background: darkorange;
+    color: white;
+}

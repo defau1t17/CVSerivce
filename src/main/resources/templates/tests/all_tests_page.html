@@ -3,36 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>All Tests</title>
-    <link rel="stylesheet" th:href="@{/inner_style/filter_and_sort_style.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/filter.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/sort.css}">
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+    <link rel="stylesheet" th:href="@{/tests_style/all_tests_style.css}">
 
 </head>
 <body>
 <div th:replace="inner/navigation_header :: header"></div>
 <div th:replace="inner/sort_and_filter_tests :: div"></div>
-
 <div class="test-container">
     <div class="test-list" th:each="test : ${tests}">
         <div class="test">
-            <a th:href="@{/tests/__${test.id}__}">
-                <div class="test-name-block">
-                    <label>Название теста :</label>
-                    <span th:text="${test.name}"></span>
-                </div>
-            </a>
+            <div class="info-block">
+                <label class="def-label">Название теста :</label>
+                <a class="link" th:href="@{/tests/__${test.id}__}">
+                    <span class="link-text" th:text="${test.name}"></span>
+                </a>
+            </div>
             <div class="test-description-block">
-                <label>Описание теста :</label>
-                <span th:text="${test.description}" th:value="${test.description}"></span>
+                <label class="def-label">Описание теста :</label>
+                <span class="text" th:text="${test.description}" th:value="${test.description}"></span>
             </div>
             <div class="test-direction-block">
-                <label>Направление теста :</label>
+                <label class="def-label">Направление теста :</label>
                 <div th:each="direction : ${test.directions}">
-                    <a th:text="${direction.name}"
-                       th:href="@{/directions/__${direction.id}__}"></a>
+                    <a class="link" th:href="@{/directions/__${direction.id}__}">
+                        <span class="link-text" th:text="${direction.name}"></span>
+                    </a>
                 </div>
             </div>
             <div class="test-process-block">
-                <a class="process-button" th:href="@{tests_style}">Изменить</a>
+                <a class="process-link" th:href="@{/tests/edit/__${test.id}__}">Изменить</a>
             </div>
         </div>
     </div>
@@ -60,11 +62,16 @@
         var sort = url.get('sort');
         var direction = url.get('direction');
         $('.sort-form').each(function () {
-            var sortInput = $(this).find('.selected-radio[name="sort"]').val();
-            var directionInput = $(this).find('.sort-radio[name="direction"]').val();
-            if (sortInput === sort && directionInput === direction) {
-                $(this).find('.sort-inner-block').css('background', '#8f8f8f');
-            }
+            var $form = $(this);
+            var $sortInnerBlocks = $form.find('.sort-inner-block');
+            var sortInput = $form.find('.selected-radio[name="sort"]').val();
+            $sortInnerBlocks.each(function () {
+                var $sortInnerBlock = $(this);
+                var directionInput = $sortInnerBlock.find('.sort-radio[name="direction"]').val();
+                if (sortInput === sort && directionInput === direction) {
+                    $sortInnerBlock.css('background', '#8f8f8f');
+                }
+            });
         });
     });
 

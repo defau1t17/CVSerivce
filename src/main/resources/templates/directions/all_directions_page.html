@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>All Directions</title>
-    <link rel="stylesheet" th:href="@{/inner_style/filter_and_sort_style.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/filter.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/sort.css}">
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+    <link rel="stylesheet" th:href="@{/direction_style/all_directions_style.css}">
 
 </head>
 <body>
@@ -14,21 +16,21 @@
 <div class="directions-container">
     <div class="direction" th:each="direction : ${directions}">
         <div class="direction-name-field">
-            <a th:href="@{/directions/__${direction.id}__}">
-                <span th:text="${direction.name}">название</span>
+            <label class="def-label">Название</label>
+            <a class="link" th:href="@{/directions/__${direction.id}__}">
+                <span class="link-text" th:text="${direction.name}">название</span>
             </a>
         </div>
-
         <div class="direction-name-field">
-            <span th:text="${direction.description}" th:value="${direction.description}">Описание</span>
+            <label class="def-label">Название</label>
+            <span class="link-text" th:text="${direction.description}"
+                  th:value="${direction.description}">Описание</span>
         </div>
-
         <div class="direction-process-button">
-            <a th:href="@{/directions/edit/__${direction.id}__}">Изменить</a>
+            <a class="process-link" th:href="@{/directions/edit/__${direction.id}__}">Изменить</a>
         </div>
     </div>
 </div>
-
 <div class="pagination-links-container" th:if="${directions.totalPages >= 0}">
     <form action="">
         <input type="hidden" name="sort" th:value="${sort}">
@@ -43,17 +45,21 @@
 </div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-
     $(document).ready(function () {
         var url = new URLSearchParams(window.location.search);
         var sort = url.get('sort');
         var direction = url.get('direction');
         $('.sort-form').each(function () {
-            var sortInput = $(this).find('.selected-radio[name="sort"]').val();
-            var directionInput = $(this).find('.sort-radio[name="direction"]').val();
-            if (sortInput === sort && directionInput === direction) {
-                $(this).find('.sort-inner-block').css('background', '#8f8f8f');
-            }
+            var $form = $(this);
+            var $sortInnerBlocks = $form.find('.sort-inner-block');
+            var sortInput = $form.find('.selected-radio[name="sort"]').val();
+            $sortInnerBlocks.each(function () {
+                var $sortInnerBlock = $(this);
+                var directionInput = $sortInnerBlock.find('.sort-radio[name="direction"]').val();
+                if (sortInput === sort && directionInput === direction) {
+                    $sortInnerBlock.css('background', '#8f8f8f');
+                }
+            });
         });
     });
 
@@ -63,7 +69,6 @@
         var form = $(element).closest('.sort-form');
         form.submit();
     }
-
 </script>
 
 

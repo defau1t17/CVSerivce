@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/inner_style/filter_and_sort_style.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/filter.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/sort.css}">
 </head>
 <body>
 
 
 <div class="filter">
-    <form action="" id="filter-candidate-form">
+    <form action="" id="filter-candidate-form" class="filter-form">
         <input type="hidden" name="page" th:value="${0}">
         <input type="hidden" name="size" th:value="${pageSize}">
         <input class="input-block" type="text" th:name="name" th:value="${filterName}"
@@ -20,9 +21,7 @@
                placeholder="Введите отчество кандидата">
         <div class="selection-block">
             <input class="selection-checkbox" th:each="direction : ${allDirections}" th:name="dir"
-                   th:value="${direction.name}"
-                   id="direction"
-                   type="checkbox" th:text="${direction.name}"
+                   th:value="${direction.name}" id="direction" type="checkbox" th:text="${direction.name}"
                    th:checked="${filterDirections != null && filterDirections.contains(direction.name)}">
         </div>
         <div class="filter-button-block">
@@ -50,9 +49,6 @@
                         <img class="image" th:src="@{/images/up.png}" onclick="sortData(this)">
                         <input class="sort-radio" th:name="direction" th:value="ASC" type="radio">
                     </div>
-                </div>
-
-                <div class="sort-block">
                     <div class="sort-inner-block">
                         <img class="image" th:src="@{/images/down.png}" onclick="sortData(this)">
                         <input class="sort-radio" th:name="direction" th:value="DESC" type="radio">
@@ -75,8 +71,6 @@
                             <img class="image" th:src="@{/images/up.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="ASC" type="radio">
                         </div>
-                    </div>
-                    <div class="sort-block">
                         <div class="sort-inner-block">
                             <img class="image" th:src="@{/images/down.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="DESC" type="radio">
@@ -100,8 +94,6 @@
                             <img class="image" th:src="@{/images/up.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="ASC" type="radio">
                         </div>
-                    </div>
-                    <div class="sort-block">
                         <div class="sort-inner-block">
                             <img class="image" th:src="@{/images/down.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="DESC" type="radio">
@@ -125,8 +117,6 @@
                             <img class="image" th:src="@{/images/up.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="ASC" type="radio">
                         </div>
-                    </div>
-                    <div class="sort-block">
                         <div class="sort-inner-block">
                             <img class="image" th:src="@{/images/down.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="DESC" type="radio">

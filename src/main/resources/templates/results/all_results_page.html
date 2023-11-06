@@ -3,39 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <title>All Candidates Page</title>
-    <link rel="stylesheet" th:href="@{/inner_style/filter_and_sort_style.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/filter.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/sort.css}">
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
-
+    <link rel="stylesheet" th:href="@{/result_style/all_results_style.css}">
 </head>
 <body>
+
 <div th:replace="inner/navigation_header :: header"></div>
-<div th:replace="inner/sort_and_filter_canditests :: div"></div>
+
+<div th:replace="inner/sort_and_filter_results :: div"></div>
+
 <div class="candidates-tests-page">
     <div class="candidate-test" th:each="result: ${allResults}">
-        <div class="candidate-info">
-            <label>Кандидат</label>
-            <span th:text="${result.candidate.name}"></span>
-            <span th:text="${result.candidate.secondName}"></span>
-            <span th:text="${result.candidate.patronymic}"></span>
-        </div>
-        <div>
-            <div>
-                <span th:text="'Название : ' + ${result.test.name}"></span>
-                <span th:text="'Описание : ' +  ${result.test.description}"></span>
-                <li th:each="testDirection : ${result.test.directions}" th:text="${testDirection.name}"></li>
+        <div class="result">
+            <div class="candidate-info">
+                <label class="def-label">Кандидат</label>
+                <span class="text" th:text="${result.candidate.name}"></span>
+                <span class="text" th:text="${result.candidate.secondName}"></span>
+                <span class="text" th:text="${result.candidate.patronymic}"></span>
             </div>
             <div>
-                <label>Оценка и дата прохождения</label>
-                <span th:text=" 'Дата прохождения : ' + ${result.grade.date}"></span>
-                <span th:text="'Оценка : ' + ${result.grade.mark}"></span>
+                <div class="test-info">
+                    <label class="def-label">Название :</label>
+                    <span class="text" th:text="${result.test.name}"></span>
+                    <label class="def-label">Направления :</label>
+                    <li  th:each="testDirection : ${result.test.directions}" th:text="${testDirection.name}"></li>
+                </div>
+                <div class="grade-info">
+                    <div class="date">
+                        <label class="def-label">Дата Прохождения</label>
+                        <span class="text" th:text="${result.grade.date}"></span>
+                    </div>
+                    <div class="mark">
+                        <label class="def-label">Оценка</label>
+                        <span class="text" th:text="${result.grade.mark}"></span>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="button-block">
-            <a th:href="@{/results/__${result.candidate.id}__}">Просмотреть тесты
-                кандидата</a>
+            <div class="result-process-button">
+                <a class="process-link" th:href="@{/results/__${result.candidate.id}__}">Просмотреть тесты
+                    кандидата</a>
+            </div>
         </div>
     </div>
 </div>
+
 <div class="pagination-links-container">
     <form action="">
         <input type="hidden" th:name="cName" th:value="${cName}">
@@ -57,8 +70,6 @@
         <input type="hidden" name="direction" th:value="${direction}">
     </form>
 </div>
-
-
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -66,11 +77,16 @@
         var sort = url.get('sort');
         var direction = url.get('direction');
         $('.sort-form').each(function () {
-            var sortInput = $(this).find('.selected-radio[name="sort"]').val();
-            var directionInput = $(this).find('.sort-radio[name="direction"]').val();
-            if (sortInput === sort && directionInput === direction) {
-                $(this).find('.sort-inner-block').css('background', '#8f8f8f');
-            }
+            var $form = $(this);
+            var $sortInnerBlocks = $form.find('.sort-inner-block');
+            var sortInput = $form.find('.selected-radio[name="sort"]').val();
+            $sortInnerBlocks.each(function () {
+                var $sortInnerBlock = $(this);
+                var directionInput = $sortInnerBlock.find('.sort-radio[name="direction"]').val();
+                if (sortInput === sort && directionInput === direction) {
+                    $sortInnerBlock.css('background', '#8f8f8f');
+                }
+            });
         });
     });
 
@@ -80,8 +96,8 @@
         var form = $(element).closest('.sort-form');
         form.submit();
     }
-
 </script>
+
 
 </body>
 </html>

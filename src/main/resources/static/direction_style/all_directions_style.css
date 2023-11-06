@@ -1,0 +1,70 @@
+.directions-container {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.direction {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 150px;
+    margin-top: 10px;
+    position: relative;
+}
+
+.link {
+    text-decoration: underline darkorange;
+    margin-left: 5px;
+}
+
+.def-label {
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+}
+
+.link-text {
+    color: black;
+}
+
+.direction-name-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.direction-process-button {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 5px;
+    background: #282828;
+    color: white;
+    font-size: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background 0.6s, color 0.36s;
+}
+
+.direction-process-button:hover {
+    background: darkorange;
+    color: white;
+}
+
+.pagination-links-container {
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    transform: translateX(-50%);
+}
+
+.process-link {
+    color: white;
+    font-size: 15px;
+    text-decoration: none;
+}
