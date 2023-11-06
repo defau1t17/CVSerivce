@@ -1,0 +1,80 @@
+.candidate-test-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.candidate-info-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.candidate-info-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.test-edit-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.button-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.def-label {
+    margin-top: 15px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #282828;
+}
+
+.link {
+    text-decoration: underline darkorange;
+}
+
+.link-text {
+    color: black;
+    font-size: 18px;
+}
+
+.process-button {
+    width: 250px;
+    height: 25px;
+    margin-top: 10px;
+    font-size: 15px;
+    background: #282828;
+    border-radius: 5px;
+    border: none;
+    color: white;
+}
+
+.selected-date, .selected-mark {
+    color: white;
+
+    text-align: center;
+    background: darkorange;
+    width: 250px;
+    height: 30px;
+    border-radius: 10px;
+    border: none;
+    margin-top: 10px;
+}
+
+.notification {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: bold;
+}

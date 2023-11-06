@@ -1,13 +1,16 @@
 package com.example.cvservice.controller.rest;
 
 
-import com.example.cvservice.dto.Test.NewTestDTO;
-import com.example.cvservice.dto.Test.UpdateTestDTO;
-import com.example.cvservice.entity.main.Test;
-import com.example.cvservice.service.Test.TestService;
+import com.example.cvservice.dto.NewTestDTO;
+import com.example.cvservice.dto.UpdateTestDTO;
+import com.example.cvservice.entity.PageConstants;
+import com.example.cvservice.entity.Test;
+import com.example.cvservice.service.TestService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +20,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/tests")
+@RequestMapping("/api/v1/tests")
 @Tag(name = "Tests", description = "API FOR MANAGING TESTS")
 public class TestRestController {
     @Autowired
     private TestService testService;
+
+    Logger logger = LoggerFactory.getLogger(TestRestController.class);
 
     @Operation(summary = "Add new Test")
     @ApiResponse(responseCode = "200", description = "New Test has been added")
@@ -29,6 +34,7 @@ public class TestRestController {
     @PostMapping("/")
     public ResponseEntity<?> addNewTest(@ModelAttribute NewTestDTO newTestDTO) {
         Test test = testService.saveNewTest(newTestDTO);
+        logger.info("тест с [id: " + test.getId() + " ] создан");
         return ResponseEntity.ok(test);
     }
 
@@ -38,6 +44,7 @@ public class TestRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateTestDTO updateTestDTO) {
         Test test = testService.updateTest(id, updateTestDTO);
+        logger.info("тест с [id: " + test.getId() + " ] обновлен");
         return ResponseEntity.ok(test);
     }
 
@@ -59,8 +66,8 @@ public class TestRestController {
                                                        @RequestParam(required = false, defaultValue = "ASC") String direction,
                                                        @RequestParam(required = false) String name,
                                                        @RequestParam(required = false) String description,
-                                                       @RequestParam(required = false) List<String> dir) {
-        return ResponseEntity.ok(testService.findTestsByParams(page.orElse(0), size.orElse(10), name, description, dir, sort, direction).getContent());
+                                                       @RequestParam(required = false) List<String> spec) {
+        return ResponseEntity.ok(testService.findTestsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_NUMBER), name, description, spec, sort, direction).getContent());
     }
 
 }

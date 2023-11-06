@@ -4,30 +4,35 @@
     <meta charset="UTF-8">
     <title>New Test</title>
     <link rel="stylesheet" th:href="@{/inner_style/navigation_header_style.css}">
+    <link rel="stylesheet" th:href="@{/tests_style/add_new_test_style.css}">
 
 </head>
 <body>
 <div th:replace="inner/navigation_header :: header"></div>
 
 <div class="test-container">
-    <div class="test">
-        <form id="newTestForm" th:object="${newTest}">
+
+    <form id="newTestForm" th:object="${newTest}">
+        <div class="test">
             <div class="test-input-block">
                 <label class="test-label">Название</label>
-                <input th:field="*{name}" type="text" placeholder="Введите название теста." id="test-name-filed"
+                <input class="input-field" th:field="*{name}" type="text" placeholder="Введите название теста."
+                       id="test-name-filed"
                        minlength="2" maxlength="50">
             </div>
             <div class="test-input-block">
-                <label class="test-label">Название</label>
-                <textarea th:field="*{description}" placeholder="Введите название теста."
+                <label class="test-label">Описание</label>
+                <textarea class="text-input-field" th:field="*{description}" placeholder="Введите описание теста."
                           id="test-description-field" minlength="2" maxlength=""></textarea>
             </div>
-            <div class="test-directions-block">
-                <div class="select-directions-container">
-                    <input th:each="direction : ${directions}" th:field="*{testDirections}"
-                           th:value="${direction.id}"
-                           id="direction" type="checkbox" th:text="${direction.name}">
-                </div>
+            <div class="select-specializations-container">
+                <th:block th:each="specialization : ${specializations}">
+                    <label>
+                        <input class="selection-block" th:field="*{testSpecializations}"
+                               th:value="${specialization.id}" id="specialization" type="checkbox">
+                        <span th:text="${specialization.name}"></span>
+                    </label>
+                </th:block>
             </div>
             <div class="button-block">
                 <button type="button" id="create-new-test-button" class="test-process-button"
@@ -35,8 +40,9 @@
                 </button>
                 <button type="reset" class="test-process-button">Очистить</button>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
+
     <div id="notification" class="notification">
 
     </div>
@@ -52,7 +58,7 @@
         console.log(formData)
 
         $.ajax({
-            url: '/v1/tests/',
+            url: '/api/v1/tests/',
             type: 'POST',
             processData: false,
             contentType: false,
@@ -61,7 +67,7 @@
                 if (xhr.status === 200) {
                     showNotification("Новый тест успешно добавлен!", 1000);
                     setTimeout(function () {
-                        window.location.href = "/task/tests/add"
+                        window.location.href = "/tests/add"
                     }, 1000);
 
                 }
@@ -74,9 +80,9 @@
 
     function validateBeforeSend() {
         var testName = $('#test-name-filed').val();
-        var checkedDirection = $('input[type="checkbox"]:checked').length;
+        var checkedSpec = $('input[type="checkbox"]:checked').length;
 
-        if (testName.length < 2 || checkedDirection === 0) {
+        if (testName.length < 2 || checkedSpec === 0) {
             showNotification("Обязательно выбирите название и как минимум одно направление!", 1000);
         } else {
             addNewCandidateRequest();

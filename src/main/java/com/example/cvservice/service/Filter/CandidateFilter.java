@@ -1,9 +1,9 @@
 package com.example.cvservice.service.Filter;
 
-import com.example.cvservice.dto.Candidate.CandidateFilterDTO;
-import com.example.cvservice.entity.main.Candidate;
-import com.example.cvservice.entity.main.Direction;
-import com.example.cvservice.service.Direction.DirectionService;
+import com.example.cvservice.dto.CandidateFilterDTO;
+import com.example.cvservice.entity.Candidate;
+import com.example.cvservice.entity.Specialization;
+import com.example.cvservice.service.SpecializationService;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CandidateFilter {
 
-    public Specification<Candidate> filterCandidateByParams(CandidateFilterDTO candidateFilter, DirectionService service) {
+    public Specification<Candidate> filterCandidateByParams(CandidateFilterDTO candidateFilter, SpecializationService service) {
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
             if (candidateFilter.getName() != null && !candidateFilter.getName().isEmpty()) {
@@ -25,17 +25,16 @@ public class CandidateFilter {
             if (candidateFilter.getPatr() != null && !candidateFilter.getPatr().isEmpty()) {
                 predicates.add(builder.like(root.get("patronymic"), "%" + candidateFilter.getPatr() + "%"));
             }
-            if (candidateFilter.getDirectionNames() != null && !candidateFilter.getDirectionNames().isEmpty()) {
-                Join<Candidate, Direction> directionJoin = root.join("directions");
-                List<String> directionNames = candidateFilter.getDirectionNames();
-                predicates.add(directionJoin.get("name").in(directionNames));
+            if (candidateFilter.getSpecializationNames() != null && !candidateFilter.getSpecializationNames().isEmpty()) {
+                Join<Candidate, Specialization> specificationJoin = root.join("specializations");
+                List<String> specializationNames = candidateFilter.getSpecializationNames();
+                predicates.add(specificationJoin.get("name").in(specializationNames));
             }
 
             return builder.and(predicates.toArray(new Predicate[0]));
         };
     }
-
-    public CandidateFilterDTO generateCandidateFromParams(String name, String secondName, String patr, List<String> dirNames) {
+    public CandidateFilterDTO generateCandidateFromParams(String name, String secondName, String patr, List<String> spec) {
         CandidateFilterDTO candidateFilter = new CandidateFilterDTO();
         if (name != null && !name.trim().isEmpty()) {
             candidateFilter.setName(name.trim());
@@ -46,8 +45,8 @@ public class CandidateFilter {
         if (patr != null && !patr.trim().isEmpty()) {
             candidateFilter.setPatr(patr.trim());
         }
-        if (dirNames != null && !dirNames.isEmpty()) {
-            candidateFilter.setDirectionNames(dirNames);
+        if (spec != null && !spec.isEmpty()) {
+            candidateFilter.setSpecializationNames(spec);
         }
         return candidateFilter;
     }

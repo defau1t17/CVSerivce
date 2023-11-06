@@ -1,0 +1,87 @@
+.test-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.test {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.input-field {
+    margin-top: 10px;
+    width: 250px;
+    height: 25px;
+    border: none;
+    background-color: darkorange;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+}
+
+.text-input-field {
+    margin-top: 10px;
+    min-width: 250px;
+    min-height: 100px;
+    max-width: 250px;
+    max-height: 150px;
+    background-color: darkorange;
+    border-radius: 10px;
+    color: white;
+    font-size: 15px;
+}
+
+
+.test-input-block {
+    display: flex;
+    margin-top: 10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.select-specializations-container label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.button-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    flex-direction: column;
+}
+
+.test-process-button {
+    width: 250px;
+    height: 25px;
+    background: black;
+    color: white;
+    border: none;
+    margin-top: 10px;
+    border-radius: 5px;
+}
+.test-label{
+    font-size: 17px;
+    color: black;
+    font-weight: bold;
+}
+
+.notification {
+    font-size: 16px;
+    text-align: center;
+    margin-top: 5px;
+}

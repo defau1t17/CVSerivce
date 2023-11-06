@@ -1,12 +1,15 @@
 package com.example.cvservice.controller.rest;
 
-import com.example.cvservice.dto.Candidate.NewCandidateDTO;
-import com.example.cvservice.dto.Candidate.UpdateCandidateDTO;
-import com.example.cvservice.entity.main.Candidate;
-import com.example.cvservice.service.Candidate.CandidateService;
+import com.example.cvservice.dto.NewCandidateDTO;
+import com.example.cvservice.dto.UpdateCandidateDTO;
+import com.example.cvservice.entity.PageConstants;
+import com.example.cvservice.entity.Candidate;
+import com.example.cvservice.service.CandidateService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +19,11 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/candidates")
+@RequestMapping("/api/v1/candidates")
 @Tag(name = "Candidates", description = "API FOR MANAGING CANDIDATES")
 public class CandidateRestController {
+
+    Logger logger = LoggerFactory.getLogger(CandidateRestController.class);
 
     @Autowired
     private CandidateService candidateService;
@@ -29,6 +34,7 @@ public class CandidateRestController {
     @PostMapping(value = "/")
     public ResponseEntity<?> addNewCandidate(@ModelAttribute NewCandidateDTO newCandidateDTO) {
         Candidate newCandidate = candidateService.saveNewCandidate(newCandidateDTO);
+        logger.info("новый кандидат [id : " + newCandidate.getId() + " ] успешно сохранен");
         return ResponseEntity.ok(newCandidate);
     }
 
@@ -53,7 +59,7 @@ public class CandidateRestController {
                                                                   @RequestParam(required = false) String secondName,
                                                                   @RequestParam(required = false) String patronymic,
                                                                   @RequestParam(required = false) List<String> dir) {
-        return ResponseEntity.ok(candidateService.findAllCandidatesByPageNumber(page.orElse(0), size.orElse(10), sort, direction, name, secondName, patronymic, dir).getContent());
+        return ResponseEntity.ok(candidateService.findAllCandidatesByPageNumber(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_SIZE), sort, direction, name, secondName, patronymic, dir).getContent());
     }
 
     @Operation(summary = "Update Candidate by ID")
@@ -62,6 +68,7 @@ public class CandidateRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCandidateByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandidateDTO updateCandidateDTO) throws IOException {
         Candidate updatedCandidate = candidateService.updateCandidate(id, updateCandidateDTO);
+        logger.info("новый кандидат [id : " + updatedCandidate.getId() + " ] успешно обновлен");
         return ResponseEntity.ok(updatedCandidate);
     }
 

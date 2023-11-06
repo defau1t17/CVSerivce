@@ -1,0 +1,84 @@
+.candidates-tests-page {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.result {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 250px;
+    margin-top: 10px;
+    position: relative;
+}
+
+.candidate-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.test-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.grade-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.date {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.mark {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+    margin-left: 5px;
+}
+
+
+.pagination-links-container {
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    transform: translateX(-50%);
+}
+
+.link {
+    text-decoration: underline darkorange;
+    margin-left: 5px;
+}
+
+.def-label {
+    font-size: 20px;
+    font-weight: bold;
+    color: black;
+}
+
+.link-text {
+    color: black;
+}
+
+
+.process-link {
+    text-decoration: underline darkorange;
+    color: black;
+    font-size: 15px;
+}

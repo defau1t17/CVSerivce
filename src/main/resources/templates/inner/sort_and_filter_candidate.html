@@ -3,13 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" th:href="@{/inner_style/filter_and_sort_style.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/filter.css}">
+    <link rel="stylesheet" th:href="@{/inner_style/sort.css}">
 </head>
 <body>
 
 
 <div class="filter">
-    <form action="" id="filter-candidate-form">
+    <form action="" id="filter-candidate-form" class="filter-form">
         <input type="hidden" name="page" th:value="${0}">
         <input type="hidden" name="size" th:value="${pageSize}">
         <input class="input-block" type="text" th:name="name" th:value="${filterName}"
@@ -19,13 +20,11 @@
         <input class="input-block" type="text" th:name="patronymic" th:value="${filterPatr}"
                placeholder="Введите отчество кандидата">
         <div class="selection-block">
-            <input class="selection-checkbox" th:each="direction : ${allDirections}" th:name="dir"
-                   th:value="${direction.name}"
-                   id="direction"
-                   type="checkbox" th:text="${direction.name}"
-                   th:checked="${filterDirections != null && filterDirections.contains(direction.name)}">
+            <input class="selection-checkbox" th:each="specialization : ${allSpecializations}" th:name="spec"
+                   th:value="${specialization.name}" id="specialization" type="checkbox"
+                   th:text="${specialization.name}"
+                   th:checked="${filterSpec != null && filterSpec.contains(specialization.name)}">
         </div>
-
         <div class="filter-button-block">
             <button class="submit-filter-button" type="submit">Фильтр</button>
         </div>
@@ -37,22 +36,20 @@
     <div class="sort-container">
         <div class="sort-main-block">
             <span>Имя</span>
-            <form class="sort-form" action="" th:with="sortDirection='ASC'">
+            <form class="sort-form" action="">
                 <input type="hidden" name="page" th:value="${0}">
                 <input type="hidden" name="size" th:value="${pageSize}">
                 <input type="hidden" th:name="name" th:value="${filterName}">
                 <input type="hidden" th:name="secondName" th:value="${filterSecondName}">
                 <input type="hidden" th:name="patronymic" th:value="${filterPatr}">
-                <input type="hidden" th:name="dir" th:if="${filterDirections != null}"
-                       th:attr="value=${#strings.arrayJoin(filterDirections, ',')}">
+                <input type="hidden" th:name="spec" th:if="${filterSpec != null}"
+                       th:attr="value=${#strings.arrayJoin(filterSpec, ',')}">
                 <input type="hidden" class="selected-radio" th:name="sort" th:value="name">
                 <div class="sort-block">
                     <div class="sort-inner-block">
                         <img class="image" th:src="@{/images/up.png}" onclick="sortData(this)">
                         <input class="sort-radio" th:name="direction" th:value="ASC" type="radio">
                     </div>
-                </div>
-                <div class="sort-block">
                     <div class="sort-inner-block">
                         <img class="image" th:src="@{/images/down.png}" onclick="sortData(this)">
                         <input class="sort-radio" th:name="direction" th:value="DESC" type="radio">
@@ -67,16 +64,14 @@
                     <input type="hidden" th:name="name" th:value="${filterName}">
                     <input type="hidden" th:name="secondName" th:value="${filterSecondName}">
                     <input type="hidden" th:name="patronymic" th:value="${filterPatr}">
-                    <input type="hidden" th:name="dir" th:if="${filterDirections != null}"
-                           th:attr="value=${#strings.arrayJoin(filterDirections, ',')}">
+                    <input type="hidden" th:name="spec" th:if="${filterSpec != null}"
+                           th:attr="value=${#strings.arrayJoin(filterSpec, ',')}">
                     <input type="hidden" class="selected-radio" th:name="sort" th:value="secondName">
                     <div class="sort-block">
                         <div class="sort-inner-block">
                             <img class="image" th:src="@{/images/up.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="ASC" type="radio">
                         </div>
-                    </div>
-                    <div class="sort-block">
                         <div class="sort-inner-block">
                             <img class="image" th:src="@{/images/down.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="DESC" type="radio">
@@ -92,16 +87,14 @@
                     <input type="hidden" th:name="name" th:value="${filterName}">
                     <input type="hidden" th:name="secondName" th:value="${filterSecondName}">
                     <input type="hidden" th:name="patronymic" th:value="${filterPatr}">
-                    <input type="hidden" th:name="dir" th:if="${filterDirections != null}"
-                           th:attr="value=${#strings.arrayJoin(filterDirections, ',')}">
+                    <input type="hidden" th:name="spec" th:if="${filterSpec != null}"
+                           th:attr="value=${#strings.arrayJoin(filterSpec, ',')}">
                     <input type="hidden" class="selected-radio" th:name="sort" th:value="patronymic">
                     <div class="sort-block">
                         <div class="sort-inner-block">
                             <img class="image" th:src="@{/images/up.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="ASC" type="radio">
                         </div>
-                    </div>
-                    <div class="sort-block">
                         <div class="sort-inner-block">
                             <img class="image" th:src="@{/images/down.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="DESC" type="radio">
@@ -117,16 +110,14 @@
                     <input type="hidden" th:name="name" th:value="${filterName}">
                     <input type="hidden" th:name="secondName" th:value="${filterSecondName}">
                     <input type="hidden" th:name="patronymic" th:value="${filterPatr}">
-                    <input type="hidden" th:name="dir" th:if="${filterDirections != null}"
-                           th:attr="value=${#strings.arrayJoin(filterDirections, ',')}">
-                    <input type="hidden" class="selected-radio" th:name="sort" th:value="directions.name">
+                    <input type="hidden" th:name="spec" th:if="${filterSpec != null}"
+                           th:attr="value=${#strings.arrayJoin(filterSpec, ',')}">
+                    <input type="hidden" class="selected-radio" th:name="sort" th:value="specializations.name">
                     <div class="sort-block">
                         <div class="sort-inner-block">
                             <img class="image" th:src="@{/images/up.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="ASC" type="radio">
                         </div>
-                    </div>
-                    <div class="sort-block">
                         <div class="sort-inner-block">
                             <img class="image" th:src="@{/images/down.png}" onclick="sortData(this)">
                             <input class="sort-radio" th:name="direction" th:value="DESC" type="radio">

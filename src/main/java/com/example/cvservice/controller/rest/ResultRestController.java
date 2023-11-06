@@ -1,13 +1,16 @@
 package com.example.cvservice.controller.rest;
 
 
-import com.example.cvservice.dto.Result.ResultDTO;
-import com.example.cvservice.dto.Result.UpdateResultDTO;
-import com.example.cvservice.entity.main.Result;
-import com.example.cvservice.service.Result.ResultService;
+import com.example.cvservice.dto.ResultDTO;
+import com.example.cvservice.dto.UpdateResultDTO;
+import com.example.cvservice.entity.PageConstants;
+import com.example.cvservice.entity.Result;
+import com.example.cvservice.service.ResultService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +21,14 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/v1/results")
+@RequestMapping("/api/v1/results")
 @Tag(name = "Results", description = "API FOR MANAGING RESULTS")
 public class ResultRestController {
     @Autowired
     private ResultService resultService;
+
+    Logger logger = LoggerFactory.getLogger(ResultRestController.class);
+
 
     @Operation(summary = "Add new Candidate's Test")
     @ApiResponse(responseCode = "200", description = "New Candidate's Test has been added")
@@ -31,6 +37,7 @@ public class ResultRestController {
     @PostMapping("/")
     public ResponseEntity<?> addNewCandidateTest(@ModelAttribute ResultDTO resultDTO) {
         Result result = resultService.saveNewResult(resultDTO);
+        logger.info("результат с [id: " + result.getId() + " ] создано");
         return ResponseEntity.ok(result);
     }
 
@@ -42,6 +49,7 @@ public class ResultRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCandiTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateResultDTO updateResultDTO) {
         Result result = resultService.updateResult(id, updateResultDTO);
+        logger.info("результат с [id: " + result.getId() + " ] создано");
         return ResponseEntity.ok(result);
     }
 
@@ -66,12 +74,12 @@ public class ResultRestController {
                                                                   @RequestParam(required = false, value = "cPatr") String candidatePatronymic,
                                                                   @RequestParam(required = false, value = "tName") String testName,
                                                                   @RequestParam(required = false, value = "tDesc") String testDesc,
-                                                                  @RequestParam(required = false) List<String> dirNames,
+                                                                  @RequestParam(required = false) List<String> specNames,
                                                                   @RequestParam(required = false) Optional<Integer> fromMark,
                                                                   @RequestParam(required = false) Optional<Integer> toMark,
                                                                   @RequestParam(required = false) LocalDate fromDate,
                                                                   @RequestParam(required = false) LocalDate toDate) {
-        return ResponseEntity.ok(resultService.findResultsByParams(page.orElse(0), size.orElse(10), candidateName, candidateSecondName, candidatePatronymic, testName, testDesc, dirNames, fromDate, toDate, fromMark.orElse(0), toMark.orElse(100), sort, direction).getContent());
+        return ResponseEntity.ok(resultService.findResultsByParams(page.orElse(PageConstants.DEFAULT_PAGE_NUMBER), size.orElse(PageConstants.DEFAULT_PAGE_NUMBER), candidateName, candidateSecondName, candidatePatronymic, testName, testDesc, specNames, fromDate, toDate, fromMark.orElse(0), toMark.orElse(100), sort, direction).getContent());
     }
 
 
