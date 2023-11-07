@@ -34,7 +34,7 @@ public class CandidateRestController {
     @PostMapping(value = "/")
     public ResponseEntity<?> addNewCandidate(@ModelAttribute NewCandidateDTO newCandidateDTO) {
         Candidate newCandidate = candidateService.saveNewCandidate(newCandidateDTO);
-        logger.info("новый кандидат [id : " + newCandidate.getId() + " ] успешно сохранен");
+        logger.info("new candidate [id : " + newCandidate.getId() + " ] saved");
         return ResponseEntity.ok(newCandidate);
     }
 
@@ -68,7 +68,7 @@ public class CandidateRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCandidateByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateCandidateDTO updateCandidateDTO) throws IOException {
         Candidate updatedCandidate = candidateService.updateCandidate(id, updateCandidateDTO);
-        logger.info("новый кандидат [id : " + updatedCandidate.getId() + " ] успешно обновлен");
+        logger.info("candidate [id : " + updatedCandidate.getId() + " ] updated");
         return ResponseEntity.ok(updatedCandidate);
     }
 

@@ -34,7 +34,7 @@ public class TestController {
         model.addAttribute("newTest", new NewTestDTO());
         model.addAttribute("specializations", specializationService.findAll());
 
-        return "/tests/add_new_test_page";
+        return "tests/add_new_test_page";
     }
 
     @GetMapping("")
@@ -57,7 +57,7 @@ public class TestController {
         model.addAttribute("pageSize", size.orElse(PageConstants.DEFAULT_PAGE_SIZE));
         model.addAttribute("pages", allTestByPageNumber.getTotalPages());
 
-        return "/tests/all_tests_page";
+        return "tests/all_tests_page";
     }
 
     @GetMapping("/{id}")
@@ -68,7 +68,7 @@ public class TestController {
             test = optionalTest.get();
         }
         model.addAttribute("test", test);
-        return "/tests/test_page";
+        return "tests/test_page";
     }
 
     @GetMapping("/edit/{id}")
@@ -82,7 +82,7 @@ public class TestController {
             model.addAttribute("updateTest", null);
         }
         model.addAttribute("allSpecializations", specializationService.findAll());
-        return "/tests/edit_test_page";
+        return "tests/edit_test_page";
 
     }
 

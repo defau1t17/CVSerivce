@@ -44,7 +44,7 @@ public class ResultController {
         model.addAttribute("allCandidates", candidateService.findAllCandidates());
         model.addAttribute("allTests", testService.findAll());
         model.addAttribute("newResult", new ResultDTO());
-        return "/results/add_new_result_page";
+        return "results/add_new_result_page";
     }
 
     @GetMapping("")
@@ -80,7 +80,7 @@ public class ResultController {
         model.addAttribute("allSpecializations", specializationService.findAll());
         model.addAttribute("allResults", allResults);
         model.addAttribute("allTests", testService.findAll());
-        return "/results/all_results_page";
+        return "results/all_results_page";
     }
 
     @GetMapping("/{id}")
@@ -92,7 +92,7 @@ public class ResultController {
             model.addAttribute("candidate", optionalCandidate.get());
         }
         model.addAttribute("allResults", allResults);
-        return "/results/result_page";
+        return "results/result_page";
     }
 
     @GetMapping("/edit/{id}")
@@ -116,7 +116,7 @@ public class ResultController {
         model.addAttribute("result", resultDTO);
         model.addAttribute("allTests", testService.findAll());
 
-        return "/results/edit_result_page";
+        return "results/edit_result_page";
     }
 
 }
