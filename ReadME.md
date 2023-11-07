@@ -50,3 +50,5 @@
 
 `docker-compose --build`
 
+Перейдите на url localhost:8080
+
