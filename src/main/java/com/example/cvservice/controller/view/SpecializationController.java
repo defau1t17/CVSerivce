@@ -39,13 +39,13 @@ public class SpecializationController {
         model.addAttribute("filterDesc", description);
         model.addAttribute("pageSize", size.orElse(PageConstants.DEFAULT_PAGE_SIZE));
         model.addAttribute("pages", specializations.getTotalPages());
-        return "/specializations/all_specializations_page";
+        return "specializations/all_specializations_page";
     }
 
     @GetMapping("/add")
     public String displayAddNewSpecializationPage(Model model) {
         model.addAttribute("newSpecialization", new NewSpecializationDTO());
-        return "/specializations/add_new_specialization_page";
+        return "specializations/add_new_specialization_page";
     }
 
     @GetMapping("/{id}")
@@ -57,7 +57,7 @@ public class SpecializationController {
         }
         model.addAttribute("specialization", specialization);
 
-        return "/specializations/specialization_page";
+        return "specializations/specialization_page";
 
     }
 
@@ -75,6 +75,6 @@ public class SpecializationController {
         } else {
             model.addAttribute("updateSpecialization", null);
         }
-        return "/specializations/edit_specialization_page";
+        return "specializations/edit_specialization_page";
     }
 }

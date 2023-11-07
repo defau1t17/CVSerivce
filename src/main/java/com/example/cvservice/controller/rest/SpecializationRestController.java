@@ -34,7 +34,7 @@ public class SpecializationRestController {
     @PostMapping("/")
     public ResponseEntity<?> addNewSpecialization(@ModelAttribute NewSpecializationDTO newSpecializationDTO) {
         Specialization specialization = specializationService.saveNewSpecialization(newSpecializationDTO);
-        logger.info("направление с [id: " + specialization.getId() + " ] создано");
+        logger.info("specialization  [id: " + specialization.getId() + " ] created");
         return ResponseEntity.ok().body(specialization);
     }
 
@@ -44,7 +44,7 @@ public class SpecializationRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateSpecializationByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateSpecializationDTO updateSpecializationDTO) {
         Specialization specialization = specializationService.updateSpecialization(id, updateSpecializationDTO);
-        logger.info("направление с [id: " + specialization.getId() + " ] обновленно");
+        logger.info("specialization  [id: " + specialization.getId() + " ] updated");
         return ResponseEntity.ok(specialization);
     }
 

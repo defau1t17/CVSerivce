@@ -34,7 +34,7 @@ public class TestRestController {
     @PostMapping("/")
     public ResponseEntity<?> addNewTest(@ModelAttribute NewTestDTO newTestDTO) {
         Test test = testService.saveNewTest(newTestDTO);
-        logger.info("тест с [id: " + test.getId() + " ] создан");
+        logger.info("test  [id: " + test.getId() + " ] created");
         return ResponseEntity.ok(test);
     }
 
@@ -44,7 +44,7 @@ public class TestRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateTestDTO updateTestDTO) {
         Test test = testService.updateTest(id, updateTestDTO);
-        logger.info("тест с [id: " + test.getId() + " ] обновлен");
+        logger.info("test  [id: " + test.getId() + " ] updated");
         return ResponseEntity.ok(test);
     }
 

@@ -50,7 +50,7 @@ public class CandidatesController {
         model.addAttribute("filterPatr", patronymic);
         model.addAttribute("filterSpec", spec);
 
-        return "/candidates/all_candidates_page";
+        return "candidates/all_candidates_page";
     }
 
 
@@ -59,7 +59,7 @@ public class CandidatesController {
         model.addAttribute("allSpecializations", specializationService.findAll());
         model.addAttribute("newCandidate", new NewCandidateDTO());
 
-        return "/candidates/add_new_candidate_page";
+        return "candidates/add_new_candidate_page";
     }
 
     @GetMapping("/{id}")
@@ -71,7 +71,7 @@ public class CandidatesController {
         }
         model.addAttribute("candidate", candidate);
 
-        return "/candidates/candidate_page";
+        return "candidates/candidate_page";
     }
 
     @GetMapping("/edit/{id}")
@@ -108,7 +108,7 @@ public class CandidatesController {
         model.addAttribute("requestUpdateCandidate", updateCandidateDTO);
 
 
-        return "/candidates/edit_candidate_page";
+        return "candidates/edit_candidate_page";
     }
 
 

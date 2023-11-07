@@ -37,7 +37,7 @@ public class ResultRestController {
     @PostMapping("/")
     public ResponseEntity<?> addNewCandidateTest(@ModelAttribute ResultDTO resultDTO) {
         Result result = resultService.saveNewResult(resultDTO);
-        logger.info("результат с [id: " + result.getId() + " ] создано");
+        logger.info("result  [id: " + result.getId() + " ] created");
         return ResponseEntity.ok(result);
     }
 
@@ -49,7 +49,7 @@ public class ResultRestController {
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateCandiTestByID(@PathVariable(value = "id") Long id, @ModelAttribute UpdateResultDTO updateResultDTO) {
         Result result = resultService.updateResult(id, updateResultDTO);
-        logger.info("результат с [id: " + result.getId() + " ] создано");
+        logger.info("result  [id: " + result.getId() + " ] updated");
         return ResponseEntity.ok(result);
     }
 
