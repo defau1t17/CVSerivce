@@ -1,54 +1,55 @@
 # CVService
 
-## Тестовое задание на Java Developer Trainee от Krainet
+## Krainet's Java Developer Trainee test case
 
-## Стек
+### Stack
 
 * Java 17
 * Spring Boot 3.1.5
 * Spring Data JPA
 * PostgreSQL
-* Docker Compose
+* Docker
 * Swagger 3
 * Slf4j
 
-## Реаизовано
+### Released 
 
-* ### Направление
+* ### Direction
 
-1. [X] Добавление, изменение, отображение списка направлений с использованием фильтрации, сортировки и постраничного
-   ввода.
-
-
-* ### Тесты
-
-1. [X] Добавление, изменение, отображение списка тестов с использованием фильтрации, сортировки и постраничного ввода
+1. [X] Add, modify, display a list of destinations using filtering, sorting, and paginated
+   input.
 
 
-* ### Кандидаты
+* ### Tests
 
-1. [X] Добавление, изменение, отображение списка направлений с использованием фильтрации, сортировки и постраничного
-   ввода.
-
-
-* ### Тесты Кандидатов
-
-1. [X] Добавление, изменение, отображение списка теста кандидатов с использованием фильтрации, сортировки и
-   постраничного ввода.
-
-Добавление и изменение происходит за счет отправки AJAX запроса на REST API, где оно сначала валидируется, если объект
-прошел валидацию, он добавляется в базу данных. Отображение и фильтрации реализованы за счет использования спецификаций,
-запрограммированных на поиск данных.Реализованна возможность просмотра CV файлов в браузере, кликнув на ссылку. Все изменения в базе данных обрабатываются миграциями **Spring Data JPA**
+1. [X] Adding, modifying, displaying a list of tests using filtering, sorting, and paginated input
 
 
-## Запуск
+* ### Candidates
+
+1. [X] Adding, modifying, displaying a list of referrals using filtering, sorting, and paginated
+   input.
+
+
+* #### Candidate Tests
+
+1. [X] Adding, modifying, displaying a list of candidate tests using filtering, sorting and
+   paginated input.
+
+Adding and modifying is done by sending an AJAX request to the REST API where it is first validated, if the object
+passes validation, it is added to the database. Display and filtering are implemented by using specifications,
+The ability to view CV files in a browser by clicking on a link is implemented. All changes in the database are handled by **Spring Data JPA** migrations.
+
+
+## Deploy
  
+* Go to the root project directory 
 
-Перейдите в папку с проектом 
+* Type the command :
 
-Пропишите команду 
+`docker compose up -d` 
 
-`docker-compose --build`
+* Go to url : 
 
-Перейдите на url `http://localhost:8080`
+`http://localhost:8080`
 
