@@ -14,31 +14,13 @@
 
 ### Released 
 
-* ### Direction
 
-1. [X] Add, modify, display a list of destinations using filtering, sorting, and paginated
-   input.
-
-
-* ### Tests
-
-1. [X] Adding, modifying, displaying a list of tests using filtering, sorting, and paginated input
-
-
-* ### Candidates
-
-1. [X] Adding, modifying, displaying a list of referrals using filtering, sorting, and paginated
-   input.
-
-
-* #### Candidate Tests
-
-1. [X] Adding, modifying, displaying a list of candidate tests using filtering, sorting and
-   paginated input.
-
-Adding and modifying is done by sending an AJAX request to the REST API where it is first validated, if the object
-passes validation, it is added to the database. Display and filtering are implemented by using specifications,
-The ability to view CV files in a browser by clicking on a link is implemented. All changes in the database are handled by **Spring Data JPA** migrations.
+1. [X] Designed and implemented functionality for adding and modifying data via AJAX requests to REST API.
+2. [X] Implemented a mechanism for validating data before saving it in the database.
+3. [X] Implemented specifications for efficient data display and filtering.
+4. [X] Developed the ability to view resume (CV) files in a browser by organizing access to them through links.
+5. [X] Implemented database migrations using Spring Data JPA to handle changes in data structure.
+6. [X] Containerized the application using Docker for easy deployment and scaling.
 
 
 ## Deploy
