@@ -1,6 +1,6 @@
 # CVService
 
-## Krainet's Java Developer Trainee test case
+## Krainet's Java Developer Trainee Task
 
 ### Stack
 
